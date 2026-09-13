@@ -2,12 +2,12 @@
 
 给定 GitHub 仓库与 Issue，逐步构建能够读取代码、定位问题、修改代码、运行测试、根据反馈继续修复并生成 Patch 的 Agent。
 
-**当前已完成 Milestone 1：基础设施、Git worktree、仓库工具和可信示例验证。** 当前演示是预先编排的工具调用，没有 LLM，没有自主定位能力，也不是独立隐藏测试评测。完整架构见 [Agent.md](Agent.md)，实施记录见 [第一阶段构建记录](docs/milestone-1.md)。
+**Milestone 1 已完成；现已新增 DeepSeek 优先的兼容模型适配器与最小 Agent Loop。** `demo` 保留预先编排的工具验证，`run` 使用模型选择动作。模型接入的离线测试不等于真实修复成功率，线上联调待配置密钥。完整架构见 [AGENTS.md](AGENTS.md)，实施记录见 [第一阶段构建记录](docs/milestone-1.md)。
 
 ## 架构
 
 ```text
-宿主机配置 / 脚本（后续替换为 Agent Runtime）
+宿主机配置 → Agent Runtime / 可信演示脚本
     ├── AgentState：代码版本、测试状态、停止原因
     ├── ToolRegistry：参数校验、串行执行、错误处理、Trace
     │     ├── list_files / read_file / search_code / edit_file
@@ -82,6 +82,24 @@ uv build
 
 默认 pytest 只收集 `tests/`。直接运行 `examples/calculator` 的原始测试出现失败是示例设计，不是工程测试被跳过；集成测试会断言它在修复前失败、修复后成功。
 
+## 使用 DeepSeek 运行 Agent
+
+在本地 `.env` 添加模型配置，保留已有目录设置：
+
+```dotenv
+AGENTICFIX_MODEL_PROVIDER=deepseek
+AGENTICFIX_MODEL_NAME=deepseek-flash
+AGENTICFIX_MODEL_API_KEY=在本地填写密钥
+```
+
+```bash
+uv run python main.py run
+```
+
+默认使用可信 Calculator，但修复动作由模型决定。支持 DeepSeek、OpenAI、Gemini、Qwen、Claude 的兼容层预设，以及自定义 OpenAI-compatible 地址；切换时修改 provider、model_name、api_key，必要时覆盖 base_url。
+
+详细设置、其他服务的兼容范围和预算说明见 [模型接入说明](docs/models.md)，本轮进度见 [第二阶段构建记录](docs/milestone-2.md)。当前没有真实厂商请求验证，不能宣称全部服务线上可用。
+
 ## 配置
 
 复制 `.env.example` 为 `.env` 后按需调整。未配置时使用以下默认值，目录相对执行命令时的工作目录解析。
@@ -130,8 +148,8 @@ uv build
 - Patch 包含所有已跟踪文件变更（即使路径匹配缓存目录）；未跟踪文件遵守 Git ignore，并额外排除 `.venv`、`__pycache__`、`.pytest_cache`、`.ruff_cache`、`.mypy_cache`、`node_modules`、`.DS_Store`。
 - 第一版编辑工具不创建、删除文件；Patch 对新增和删除的支持通过独立夹具测试。
 - Trace 遮盖敏感字段及显式传入的已知密钥，但不是通用秘密扫描器；不要把含密钥的仓库作为示例输入。
-- 目前没有 Agent Loop、模型预算、隐藏评测、自动 PR 或 API 服务；不应把演示结果当成真实 Issue 修复率。
+- 模型 Loop 和预算已实现；尚无隐藏评测、自动 PR 或 API 服务。线上模型效果待验证，不把确定性测试结果当成真实 Issue 修复率。
 
 ## 下一阶段
 
-Milestone 2 在现有工具之上接入模型适配器、结构化 Tool Calling、手写 Loop、预算和测试反馈重试。同时准备首批真实历史 Issue 的复现环境和独立验收条件。
+接下来配置 DeepSeek 密钥完成真实调用联调，验证简单任务，再准备首批真实历史 Issue 的复现环境和独立验收条件。

@@ -3,9 +3,9 @@
 > 阶段：Milestone 1 — Foundation + Worktree + Repository Tools
 > 创建日期：2026-09-14
 > 当前状态：已完成，工具链、集成验证与交付文档通过验收
-> 架构依据：[Agent.md](../Agent.md) 第 3、7、8、16、31、43 节
+> 架构依据：[AGENTS.md](../AGENTS.md) 第 3、7、8、16、31、43 节
 
-本文记录第一阶段的构建计划、实施进度、验证证据和遗留问题。计划项不代表已实现；每次开发后更新对应状态和实际结果。架构约束以 `Agent.md` 为准，调整范围时同步更新两份文档。
+本文记录第一阶段的构建计划、实施进度、验证证据和遗留问题。计划项不代表已实现；每次开发后更新对应状态和实际结果。架构约束以 `AGENTS.md` 为准，调整范围时同步更新两份文档。
 
 ## 1. 阶段目标
 
@@ -74,7 +74,7 @@ Patch 导出的新增、删除及二进制能力由独立测试夹具验证，�
 | 6 | LocalSandbox、测试工具、Diff 工具 | sandbox/base.py、sandbox/local.py、tools/test_tools.py、tools/git_tools.py | 已完成 |
 | 7 | Calculator、完整链路验证和使用说明 | examples/calculator/、tests/、scripts/、README.md | 已完成 |
 
-文件清单是实施计划，具体新增文件在每次开发前说明；保持 Agent.md 中的模块边界。
+文件清单是实施计划，具体新增文件在每次开发前说明；保持 AGENTS.md 中的模块边界。
 
 ## 5. 接口落实清单
 
