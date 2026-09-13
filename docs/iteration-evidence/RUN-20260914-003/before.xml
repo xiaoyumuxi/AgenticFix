@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="15" time="0.025" timestamp="2026-09-14T01:14:09.680725+08:00" hostname="yaojingxi.local"><testcase classname="test_acceptance" name="test_cases[data0-expected0]" time="0.000"><failure message="IndexError: list index out of range">data = [], expected = []
+
+    @pytest.mark.parametrize(
+        "data,expected",
+        [
+            ([], []),
+            ([[0, 0]], [[0, 0]]),
+            ([[2, 3], [1, 2]], [[1, 3]]),
+            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),
+            ([[1, 2], [1, 2]], [[1, 2]]),
+            ([[-5, -1], [-2, 2]], [[-5, 2]]),
+            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),
+            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),
+            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),
+            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),
+        ],
+    )
+    def test_cases(data, expected):
+        before = deepcopy(data)
+&gt;       assert merge_intervals(data) == expected
+               ^^^^^^^^^^^^^^^^^^^^^
+
+test_acceptance.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+intervals = []
+
+    def merge_intervals(intervals):
+        intervals.sort()
+&gt;       merged = [list(intervals[0])]
+                       ^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+intervals.py:3: IndexError</failure></testcase><testcase classname="test_acceptance" name="test_cases[data1-expected1]" time="0.000" /><testcase classname="test_acceptance" name="test_cases[data2-expected2]" time="0.000"><failure message="assert [[1, 2], [2, 3]] == [[1, 3]]&#10;  &#10;  At index 0 diff: [1, 2] != [1, 3]&#10;  Left contains one more item: [2, 3]&#10;  Use -v to get more diff">data = [[1, 2], [2, 3]], expected = [[1, 3]]
+
+    @pytest.mark.parametrize(
+        "data,expected",
+        [
+            ([], []),
+            ([[0, 0]], [[0, 0]]),
+            ([[2, 3], [1, 2]], [[1, 3]]),
+            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),
+            ([[1, 2], [1, 2]], [[1, 2]]),
+            ([[-5, -1], [-2, 2]], [[-5, 2]]),
+            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),
+            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),
+            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),
+            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),
+        ],
+    )
+    def test_cases(data, expected):
+        before = deepcopy(data)
+&gt;       assert merge_intervals(data) == expected
+E       assert [[1, 2], [2, 3]] == [[1, 3]]
+E         
+E         At index 0 diff: [1, 2] != [1, 3]
+E         Left contains one more item: [2, 3]
+E         Use -v to get more diff
+
+test_acceptance.py:24: AssertionError</failure></testcase><testcase classname="test_acceptance" name="test_cases[data3-expected3]" time="0.000"><failure message="assert [[1, 3], [4, 6]] == [[1, 10]]&#10;  &#10;  At index 0 diff: [1, 3] != [1, 10]&#10;  Left contains one more item: [4, 6]&#10;  Use -v to get more diff">data = [[1, 10], [2, 3], [4, 6]], expected = [[1, 10]]
+
+    @pytest.mark.parametrize(
+        "data,expected",
+        [
+            ([], []),
+            ([[0, 0]], [[0, 0]]),
+            ([[2, 3], [1, 2]], [[1, 3]]),
+            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),
+            ([[1, 2], [1, 2]], [[1, 2]]),
+            ([[-5, -1], [-2, 2]], [[-5, 2]]),
+            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),
+            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),
+            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),
+            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),
+        ],
+    )
+    def test_cases(data, expected):
+        before = deepcopy(data)
+&gt;       assert merge_intervals(data) == expected
+E       assert [[1, 3], [4, 6]] == [[1, 10]]
+E         
+E         At index 0 diff: [1, 3] != [1, 10]
+E         Left contains one more item: [4, 6]
+E         Use -v to get more diff
+
+test_acceptance.py:24: AssertionError</failure></testcase><testcase classname="test_acceptance" name="test_cases[data4-expected4]" time="0.000" /><testcase classname="test_acceptance" name="test_cases[data5-expected5]" time="0.000" /><testcase classname="test_acceptance" name="test_cases[data6-expected6]" time="0.000"><failure message="assert [[0.5, 1.5], [1.5, 2.5]] == [[0.5, 2.5]]&#10;  &#10;  At index 0 diff: [0.5, 1.5] != [0.5, 2.5]&#10;  Left contains one more item: [1.5, 2.5]&#10;  Use -v to get more diff">data = [[0.5, 1.5], [1.5, 2.5]], expected = [[0.5, 2.5]]
+
+    @pytest.mark.parametrize(
+        "data,expected",
+        [
+            ([], []),
+            ([[0, 0]], [[0, 0]]),
+            ([[2, 3], [1, 2]], [[1, 3]]),
+            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),
+            ([[1, 2], [1, 2]], [[1, 2]]),
+            ([[-5, -1], [-2, 2]], [[-5, 2]]),
+            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),
+            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),
+            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),
+            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),
+        ],
+    )
+    def test_cases(data, expected):
+        before = deepcopy(data)
+&gt;       assert merge_intervals(data) == expected
+E       assert [[0.5, 1.5], [1.5, 2.5]] == [[0.5, 2.5]]
+E         
+E         At index 0 diff: [0.5, 1.5] != [0.5, 2.5]
+E         Left contains one more item: [1.5, 2.5]
+E         Use -v to get more diff
+
+test_acceptance.py:24: AssertionError</failure></testcase><testcase classname="test_acceptance" name="test_cases[data7-expected7]" time="0.000"><failure message="assert [[1, 2], [2, 3], [3, 4]] == [[1, 4]]&#10;  &#10;  At index 0 diff: [1, 2] != [1, 4]&#10;  Left contains 2 more items, first extra item: [2, 3]&#10;  Use -v to get more diff">data = [[1, 2], [2, 3], [3, 4]], expected = [[1, 4]]
+
+    @pytest.mark.parametrize(
+        "data,expected",
+        [
+            ([], []),
+            ([[0, 0]], [[0, 0]]),
+            ([[2, 3], [1, 2]], [[1, 3]]),
+            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),
+            ([[1, 2], [1, 2]], [[1, 2]]),
+            ([[-5, -1], [-2, 2]], [[-5, 2]]),
+            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),
+            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),
+            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),
+            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),
+        ],
+    )
+    def test_cases(data, expected):
+        before = deepcopy(data)
+&gt;       assert merge_intervals(data) == expected
+E       assert [[1, 2], [2, 3], [3, 4]] == [[1, 4]]
+E         
+E         At index 0 diff: [1, 2] != [1, 4]
+E         Left contains 2 more items, first extra item: [2, 3]
+E         Use -v to get more diff
+
+test_acceptance.py:24: AssertionError</failure></testcase><testcase classname="test_acceptance" name="test_cases[data8-expected8]" time="0.000"><failure message="assert [[1, 2], [9, 10]] == [[9, 10], [1, 2]]&#10;  &#10;  At index 0 diff: [1, 2] != [9, 10]&#10;  Use -v to get more diff">data = [[1, 2], [9, 10]], expected = [[1, 2], [9, 10]]
+
+    @pytest.mark.parametrize(
+        "data,expected",
+        [
+            ([], []),
+            ([[0, 0]], [[0, 0]]),
+            ([[2, 3], [1, 2]], [[1, 3]]),
+            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),
+            ([[1, 2], [1, 2]], [[1, 2]]),
+            ([[-5, -1], [-2, 2]], [[-5, 2]]),
+            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),
+            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),
+            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),
+            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),
+        ],
+    )
+    def test_cases(data, expected):
+        before = deepcopy(data)
+        assert merge_intervals(data) == expected
+&gt;       assert data == before
+E       assert [[1, 2], [9, 10]] == [[9, 10], [1, 2]]
+E         
+E         At index 0 diff: [1, 2] != [9, 10]
+E         Use -v to get more diff
+
+test_acceptance.py:25: AssertionError</failure></testcase><testcase classname="test_acceptance" name="test_cases[data9-expected9]" time="0.000"><failure message="assert [[1, 5], [5, 5], [5, 8]] == [[1, 8]]&#10;  &#10;  At index 0 diff: [1, 5] != [1, 8]&#10;  Left contains 2 more items, first extra item: [5, 5]&#10;  Use -v to get more diff">data = [[1, 5], [5, 5], [5, 8]], expected = [[1, 8]]
+
+    @pytest.mark.parametrize(
+        "data,expected",
+        [
+            ([], []),
+            ([[0, 0]], [[0, 0]]),
+            ([[2, 3], [1, 2]], [[1, 3]]),
+            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),
+            ([[1, 2], [1, 2]], [[1, 2]]),
+            ([[-5, -1], [-2, 2]], [[-5, 2]]),
+            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),
+            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),
+            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),
+            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),
+        ],
+    )
+    def test_cases(data, expected):
+        before = deepcopy(data)
+&gt;       assert merge_intervals(data) == expected
+E       assert [[1, 5], [5, 5], [5, 8]] == [[1, 8]]
+E         
+E         At index 0 diff: [1, 5] != [1, 8]
+E         Left contains 2 more items, first extra item: [5, 5]
+E         Use -v to get more diff
+
+test_acceptance.py:24: AssertionError</failure></testcase><testcase classname="test_intervals" name="test_disjoint" time="0.000" /><testcase classname="test_intervals" name="test_empty" time="0.000"><failure message="IndexError: list index out of range">def test_empty():
+&gt;       assert merge_intervals([]) == []
+               ^^^^^^^^^^^^^^^^^^^
+
+test_intervals.py:9: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+intervals = []
+
+    def merge_intervals(intervals):
+        intervals.sort()
+&gt;       merged = [list(intervals[0])]
+                       ^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+intervals.py:3: IndexError</failure></testcase><testcase classname="test_intervals" name="test_touching" time="0.000"><failure message="assert [[1, 3], [3, 5]] == [[1, 5]]&#10;  &#10;  At index 0 diff: [1, 3] != [1, 5]&#10;  Left contains one more item: [3, 5]&#10;  Use -v to get more diff">def test_touching():
+&gt;       assert merge_intervals([[1, 3], [3, 5]]) == [[1, 5]]
+E       assert [[1, 3], [3, 5]] == [[1, 5]]
+E         
+E         At index 0 diff: [1, 3] != [1, 5]
+E         Left contains one more item: [3, 5]
+E         Use -v to get more diff
+
+test_intervals.py:13: AssertionError</failure></testcase><testcase classname="test_intervals" name="test_nested" time="0.000"><failure message="assert [[1, 3]] == [[1, 10]]&#10;  &#10;  At index 0 diff: [1, 3] != [1, 10]&#10;  Use -v to get more diff">def test_nested():
+&gt;       assert merge_intervals([[1, 10], [2, 3]]) == [[1, 10]]
+E       assert [[1, 3]] == [[1, 10]]
+E         
+E         At index 0 diff: [1, 3] != [1, 10]
+E         Use -v to get more diff
+
+test_intervals.py:17: AssertionError</failure></testcase><testcase classname="test_intervals" name="test_no_mutation" time="0.000"><failure message="assert [[1, 5], [4, 6]] == [[4, 6], [1, 5]]&#10;  &#10;  At index 0 diff: [1, 5] != [4, 6]&#10;  Use -v to get more diff">def test_no_mutation():
+        data = [[4, 6], [1, 5]]
+        assert merge_intervals(data) == [[1, 6]]
+&gt;       assert data == [[4, 6], [1, 5]]
+E       assert [[1, 5], [4, 6]] == [[4, 6], [1, 5]]
+E         
+E         At index 0 diff: [1, 5] != [4, 6]
+E         Use -v to get more diff
+
+test_intervals.py:23: AssertionError</failure></testcase></testsuite></testsuites>

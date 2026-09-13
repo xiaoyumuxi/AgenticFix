@@ -1,0 +1,12 @@
+{
+  "task": "intervals",
+  "agent_commit": "66f48ec0e6fbdbf6705a733bbadca87283ee5fa1",
+  "frozen_files": {
+    "examples/intervals/intervals.py": "68fd1f59de544ea5c5ad65ab52c9f8867ee8ea90285a51970e2c0f826079e235",
+    "examples/intervals/issue.md": "94cd28384c1f4f226d7c7f2feb031f001d1be1d5a8030650dea5125993908ca5",
+    "examples/intervals/pytest.ini": "07e12af78809b103a9e003b9bf24f9718928fa263046b37bf3ebc9ebbf802ceb",
+    "examples/intervals/test_intervals.py": "14cbcd5e7b318c88b2945372f4d71f8d6fcc5b4da91f4d9ee0cd677704823ab8",
+    "validation/intervals/test_acceptance.py": "1b5b4e2c2d0bbc8aa27966d67bc523131cc9044cb3f5dfd74a0ebc37ecaa1666"
+  },
+  "scope": "Trusted authored fixture; checks frozen before model run"
+}

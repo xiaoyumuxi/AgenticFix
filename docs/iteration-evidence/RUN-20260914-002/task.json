@@ -1,0 +1,13 @@
+{
+  "run_id": "agent-579c61919ecb",
+  "source": "/Users/yaoyao/Dev/OpenRes/agent/runs/order_total-ac3e0a78f61b/source",
+  "requested_ref": "HEAD",
+  "base_commit": "1d2aba9eac5daf0f7b560e7e12fac1a129e14d18",
+  "issue": "Checkout totals are wrong for orders containing quantities above one. Each item has\nunit_price and quantity. The merchandise subtotal must include every unit; shipping\ncosts 8 unless that subtotal reaches free_shipping_at (default 100). Return the final\namount rounded to two decimals. Preserve the existing API and single-unit behavior.\nFor two units priced 60 each, the total should be 120 with free shipping, not 68.\n",
+  "test_command": [
+    "/Users/yaoyao/Dev/OpenRes/agent/.venv/bin/python3",
+    "-m",
+    "pytest",
+    "-q"
+  ]
+}

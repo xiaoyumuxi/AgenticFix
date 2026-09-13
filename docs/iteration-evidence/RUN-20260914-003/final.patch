@@ -1,0 +1,19 @@
+diff --git a/intervals.py b/intervals.py
+index 67b3acfe96841f116af73b92681db7396d2fa64c..bf40ee29b4924d708a3de3d486fdd7fd84c71a54 100644
+--- a/intervals.py
++++ b/intervals.py
+@@ -1,9 +1,9 @@
+ def merge_intervals(intervals):
+-    intervals.sort()
+-    merged = [list(intervals[0])]
+-    for start, end in intervals[1:]:
+-        if start < merged[-1][1]:
+-            merged[-1][1] = end
++    merged = []
++    for start, end in sorted(list(interval) for interval in intervals):
++        if merged and start <= merged[-1][1]:
++            if end > merged[-1][1]:
++                merged[-1][1] = end
+         else:
+             merged.append([start, end])
+     return merged

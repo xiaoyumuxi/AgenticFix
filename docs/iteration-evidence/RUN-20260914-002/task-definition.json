@@ -1,0 +1,14 @@
+{
+  "task": "order_total",
+  "agent_commit": "66f48ec0e6fbdbf6705a733bbadca87283ee5fa1",
+  "frozen_files": {
+    "examples/order_total/api.py": "d8730df2fff0f8bdec582d05f95ed74511afeaab962eca378d592423bf75a489",
+    "examples/order_total/issue.md": "647bb18758f0d8c5dee4f69b69297510a63009b1772d9e8ff316e8f329a8d9d8",
+    "examples/order_total/pricing.py": "af5f548ecc98f2f5d15899fdafe76d28b5ff27d77c167ec5bc766acb4e3880a6",
+    "examples/order_total/pytest.ini": "07e12af78809b103a9e003b9bf24f9718928fa263046b37bf3ebc9ebbf802ceb",
+    "examples/order_total/shipping.py": "ed10975862d04badc6e115e23d5922d8beb8b4b4db15b82660adf75529f1a377",
+    "examples/order_total/test_checkout.py": "8653cacb225d774897251a51d7b342e6d5e85f6bf940617933f62acc0d0cf89f",
+    "validation/order_total/test_acceptance.py": "fe5a74dfe47d4d9858ed73d1a19e73b0b7f64b26be41675e850a7e50a98c89f1"
+  },
+  "scope": "Trusted authored fixture; checks frozen before model run"
+}

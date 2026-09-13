@@ -1,0 +1,15 @@
+{
+  "sha256": {
+    "before.xml": "13f7f150343af95b82b54dcb1315bb4fbd6341aa11409d0ae3f1279d36247006",
+    "summary.json": "b99f0b1cd1239582df47b50b214b3dfb978da512b2235840d4e6dc6b2478ef53",
+    "after.xml": "e86c3cec9c336d844467100d75e728624e6d4868867f138f640172bcc7fb36f4",
+    "measurements.json": "16cf401f356a7038641ad9fef5aed1a8a1f8c44ae745f02e8fb878a4621b9614",
+    "task.json": "69501d5113fec04c9b05fca357dfe667a53591c51a558edc0ed46926126095a8",
+    "metadata.json": "efa0833ad04dff93aa214af8b169050bffde875e9e73cabcff7db1c223eae2b5",
+    "final.patch": "616b017f89278b3c916376fdbb2685b61d5168b1cf434d9cd68dc50c6dc15047",
+    "task-definition.json": "5e0ed296cc3957879b63032e1fc067f81edecffcf599478a6c630aac571c16cf",
+    "request-breakdown.json": "68cb7a2b2c8e3825101889b32ff8496380fb5494d50228783e0128ad4db81b77",
+    "local-run-manifest.json": "883db9e70038ece9315ee0433c4349fa1ab057b9eb0aed913ec747e4ebc0b6e7"
+  },
+  "scope": "Public reviewed archive files; excludes this manifest. local-run-manifest describes original local artifacts."
+}

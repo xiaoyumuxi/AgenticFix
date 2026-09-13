@@ -1,0 +1,6 @@
+{
+  "agent_commit": "66f48ec0e6fbdbf6705a733bbadca87283ee5fa1",
+  "dirty": false,
+  "command": "uv run python -m docs.iteration-evidence.BUG-20260914-002.reproduce",
+  "note": "Repeated after committing implementation, before creating these archive files. Historical runner comparison uses current shared dependencies."
+}

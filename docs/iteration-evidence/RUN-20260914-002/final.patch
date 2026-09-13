@@ -1,0 +1,10 @@
+diff --git a/pricing.py b/pricing.py
+index 8a0aac9953afa3301e36eaee6d423881c37921c8..f0be835ea392fc4a38ef746ca2f3718d1b3558da 100644
+--- a/pricing.py
++++ b/pricing.py
+@@ -1,2 +1,4 @@
+ def subtotal(items):
+-    return sum(item["unit_price"] for item in items)
++    return sum(
++        item["unit_price"] * item.get("quantity", 1) for item in items
++    )

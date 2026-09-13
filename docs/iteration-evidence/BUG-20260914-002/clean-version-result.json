@@ -1,0 +1,27 @@
+[
+  {
+    "version": "before",
+    "old_commit": "85782f9cbe66099ec4247b8080407108d75b365b",
+    "files": [
+      "model.json"
+    ],
+    "has_failure_record": false,
+    "has_start_snapshot": false,
+    "has_manifest": false
+  },
+  {
+    "version": "after",
+    "old_commit": null,
+    "files": [
+      "agent-diff.json",
+      "manifest.json",
+      "measurements.json",
+      "metadata.json",
+      "model.json",
+      "runner-error.json"
+    ],
+    "has_failure_record": true,
+    "has_start_snapshot": true,
+    "has_manifest": true
+  }
+]

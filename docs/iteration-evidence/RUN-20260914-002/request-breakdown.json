@@ -1,0 +1,150 @@
+{
+  "requests": [
+    {
+      "request": 1,
+      "usage": {
+        "prompt_tokens": 1741,
+        "completion_tokens": 67,
+        "total_tokens": 1808
+      },
+      "model": "deepseek-flash",
+      "duration": 0.9562896249990445,
+      "actions": [
+        "list_files",
+        "read_file"
+      ]
+    },
+    {
+      "request": 2,
+      "usage": {
+        "prompt_tokens": 2158,
+        "completion_tokens": 128,
+        "total_tokens": 2286
+      },
+      "model": "deepseek-flash",
+      "duration": 0.9511960000090767,
+      "actions": [
+        "read_file",
+        "read_file",
+        "read_file",
+        "read_file"
+      ]
+    },
+    {
+      "request": 3,
+      "usage": {
+        "prompt_tokens": 2927,
+        "completion_tokens": 290,
+        "total_tokens": 3217
+      },
+      "model": "deepseek-flash",
+      "duration": 1.6452151660050731,
+      "actions": [
+        "edit_file"
+      ]
+    },
+    {
+      "request": 4,
+      "usage": {
+        "prompt_tokens": 3277,
+        "completion_tokens": 23,
+        "total_tokens": 3300
+      },
+      "model": "deepseek-flash",
+      "duration": 0.6062089999904856,
+      "actions": [
+        "run_tests"
+      ]
+    },
+    {
+      "request": 5,
+      "usage": {
+        "prompt_tokens": 3464,
+        "completion_tokens": 28,
+        "total_tokens": 3492
+      },
+      "model": "deepseek-flash",
+      "duration": 0.8566563750064233,
+      "actions": [
+        "git_diff"
+      ]
+    },
+    {
+      "request": 6,
+      "usage": {
+        "prompt_tokens": 3757,
+        "completion_tokens": 172,
+        "total_tokens": 3929
+      },
+      "model": "deepseek-flash",
+      "duration": 1.4246060000004945,
+      "actions": []
+    }
+  ],
+  "tools": [
+    {
+      "tool": "run_tests",
+      "arguments": {
+        "target": "default"
+      }
+    },
+    {
+      "tool": "list_files",
+      "arguments": {}
+    },
+    {
+      "tool": "read_file",
+      "arguments": {
+        "path": "test_checkout.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "arguments": {
+        "path": "api.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "arguments": {
+        "path": "pricing.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "arguments": {
+        "path": "shipping.py"
+      }
+    },
+    {
+      "tool": "read_file",
+      "arguments": {
+        "path": "issue.md"
+      }
+    },
+    {
+      "tool": "edit_file",
+      "arguments": {
+        "path": "pricing.py"
+      }
+    },
+    {
+      "tool": "run_tests",
+      "arguments": {}
+    },
+    {
+      "tool": "git_diff",
+      "arguments": {}
+    },
+    {
+      "tool": "run_tests",
+      "arguments": {
+        "target": "default"
+      }
+    },
+    {
+      "tool": "git_diff",
+      "arguments": {}
+    }
+  ]
+}

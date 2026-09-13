@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "finished_at": "2026-09-13T17:14:03.677687+00:00",
+  "scope": "Top-level artifacts, excluding manifest. Local; publication needs review.",
+  "artifacts": {
+    "agent-diff.json": {
+      "sha256": "ca3b37b5701a8f06b2f3c8aabcc8d4360a42f4a1f2568d953b0439b9426e94ef",
+      "bytes": 18
+    },
+    "events.jsonl": {
+      "sha256": "3f04fc5bbbf273a3f53317c5f6e577f681673537dc6d9b6d1fb33bc808379a95",
+      "bytes": 20711
+    },
+    "final.patch": {
+      "sha256": "616b017f89278b3c916376fdbb2685b61d5168b1cf434d9cd68dc50c6dc15047",
+      "bytes": 355
+    },
+    "measurements.json": {
+      "sha256": "16cf401f356a7038641ad9fef5aed1a8a1f8c44ae745f02e8fb878a4621b9614",
+      "bytes": 6007
+    },
+    "messages.json": {
+      "sha256": "241c575bc39bbaf47efa920fca27aaf98ea4b85795df96ccb9c8b7afc271c72b",
+      "bytes": 13632
+    },
+    "metadata.json": {
+      "sha256": "efa0833ad04dff93aa214af8b169050bffde875e9e73cabcff7db1c223eae2b5",
+      "bytes": 3398
+    },
+    "model.json": {
+      "sha256": "5cfbac1b84ad175c7376ed8e34302e40d4e8dce6f697698f2ec9deb9182c79cf",
+      "bytes": 135
+    },
+    "result.json": {
+      "sha256": "e9051d6f44392fceda4a90bb271320e2d0f5fa50e72706fe98551c4302450a73",
+      "bytes": 2454
+    },
+    "state.json": {
+      "sha256": "0c1a680c98c7472fd85879c9a9aff490dbaf8a4dffd185d4c38ae639194da0e9",
+      "bytes": 1994
+    },
+    "task.json": {
+      "sha256": "69501d5113fec04c9b05fca357dfe667a53591c51a558edc0ed46926126095a8",
+      "bytes": 764
+    },
+    "test-1.json": {
+      "sha256": "9314a4a2d8dda452b01fd93b659ad53bb8fa411775303921c2e5b25ec13e826a",
+      "bytes": 1464
+    },
+    "test-11.json": {
+      "sha256": "59863014ee3c75ca3a9943085f7559fa31f3007e8d139d3fdae5f7ebd5ce21ff",
+      "bytes": 325
+    },
+    "test-9.json": {
+      "sha256": "9925bde548c1474055c4b3303fe1df3a283e08c47c3435a7a6a65a51362241dd",
+      "bytes": 325
+    }
+  }
+}
