@@ -1,0 +1,102 @@
+{
+  "python": "3.12.13",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "cases": [
+    {
+      "variant": "old",
+      "agent_commit": "ba96c26cb61efff5ba05105e07218b9aaa240940",
+      "implementation_sha256": "106bdbfcf9c8bf6f6d7dd82f354be971b06276e59d0ce7b111973cb88326f1a3",
+      "source_text": "value = 2\n",
+      "source_size": 10,
+      "source_mtime_seconds": 1700000000,
+      "original_cache_header": {
+        "flags": 0,
+        "mtime_seconds": 1700000000,
+        "size": 10
+      },
+      "cache_present_before_execution": true,
+      "stdout": "1",
+      "exit_code": 1
+    },
+    {
+      "variant": "old_no_write",
+      "agent_commit": "ba96c26cb61efff5ba05105e07218b9aaa240940",
+      "implementation_sha256": "106bdbfcf9c8bf6f6d7dd82f354be971b06276e59d0ce7b111973cb88326f1a3",
+      "source_text": "value = 2\n",
+      "source_size": 10,
+      "source_mtime_seconds": 1700000000,
+      "original_cache_header": {
+        "flags": 0,
+        "mtime_seconds": 1700000000,
+        "size": 10
+      },
+      "cache_present_before_execution": true,
+      "stdout": "1",
+      "exit_code": 1
+    },
+    {
+      "variant": "old_remove_cache",
+      "agent_commit": "ba96c26cb61efff5ba05105e07218b9aaa240940",
+      "implementation_sha256": "106bdbfcf9c8bf6f6d7dd82f354be971b06276e59d0ce7b111973cb88326f1a3",
+      "source_text": "value = 2\n",
+      "source_size": 10,
+      "source_mtime_seconds": 1700000000,
+      "original_cache_header": {
+        "flags": 0,
+        "mtime_seconds": 1700000000,
+        "size": 10
+      },
+      "cache_present_before_execution": false,
+      "stdout": "2",
+      "exit_code": 0
+    },
+    {
+      "variant": "old_change_mtime",
+      "agent_commit": "ba96c26cb61efff5ba05105e07218b9aaa240940",
+      "implementation_sha256": "106bdbfcf9c8bf6f6d7dd82f354be971b06276e59d0ce7b111973cb88326f1a3",
+      "source_text": "value = 2\n",
+      "source_size": 10,
+      "source_mtime_seconds": 1700000002,
+      "original_cache_header": {
+        "flags": 0,
+        "mtime_seconds": 1700000000,
+        "size": 10
+      },
+      "cache_present_before_execution": true,
+      "stdout": "2",
+      "exit_code": 0
+    },
+    {
+      "variant": "old_change_size",
+      "agent_commit": "ba96c26cb61efff5ba05105e07218b9aaa240940",
+      "implementation_sha256": "106bdbfcf9c8bf6f6d7dd82f354be971b06276e59d0ce7b111973cb88326f1a3",
+      "source_text": "value = 2 # changed size\n",
+      "source_size": 25,
+      "source_mtime_seconds": 1700000000,
+      "original_cache_header": {
+        "flags": 0,
+        "mtime_seconds": 1700000000,
+        "size": 10
+      },
+      "cache_present_before_execution": true,
+      "stdout": "2",
+      "exit_code": 0
+    },
+    {
+      "variant": "fixed",
+      "agent_commit": "30cfc421c6a7850411ba4fa72bfd3f9df5cabbf6",
+      "implementation_sha256": "b3ba61ad0fb049c916948c9d220dd3f1d704476476aad4e8dcc9b2125da16396",
+      "source_text": "value = 2\n",
+      "source_size": 10,
+      "source_mtime_seconds": 1700000000,
+      "original_cache_header": {
+        "flags": 0,
+        "mtime_seconds": 1700000000,
+        "size": 10
+      },
+      "cache_present_before_execution": true,
+      "stdout": "2",
+      "exit_code": 0
+    }
+  ]
+}
