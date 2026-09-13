@@ -21,9 +21,10 @@ class ToolResult(BaseModel):
 
 
 class ToolError(Exception):
-    def __init__(self, code: str, message: str) -> None:
+    def __init__(self, code: str, message: str, *, fatal: bool = False) -> None:
         super().__init__(message)
         self.code = code
+        self.fatal = fatal
 
 
 class BaseTool(ABC):

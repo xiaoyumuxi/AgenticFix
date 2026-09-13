@@ -15,6 +15,7 @@ class AgentState(BaseModel):
     workspace_revision: int = 0
     tested_revision: int | None = None
     test_status: str | None = None
+    tested_patch_digest: str | None = None
     total_tool_calls: int = 0
     modified_files: list[str] = Field(default_factory=list)
     status: Literal["running", "completed", "failed"] = "running"
@@ -25,6 +26,7 @@ class AgentState(BaseModel):
         self.workspace_revision += 1
         self.tested_revision = None
         self.test_status = None
+        self.tested_patch_digest = None
         if path not in self.modified_files:
             self.modified_files.append(path)
 
