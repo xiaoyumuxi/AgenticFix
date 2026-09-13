@@ -151,6 +151,13 @@ ToolResult 区分 success、结构化 data、error_code、error 和 truncated。
 - 第一轮工具与工作区测试：`uv run pytest -q`，23 passed。
 - 类型检查发现测试退出码的可空类型处理缺口，已补充，待完整复查。
 
+### 2026-09-14 — Worktree 与完整 Patch
+
+- 实现仓库缓存、固定 commit、detached worktree、全局元数据文件锁及清理/保留策略。
+- Patch 使用临时 index，包含未跟踪新增、暂存删除、二进制和可执行权限，不改变原 index。
+- 通过多 worktree 隔离、并发创建、源仓库更新后版本固定、Patch 干净应用等测试。
+- 锁覆盖同一 cache_dir 下的生命周期和导出操作；当前采用串行元数据操作，优先正确性。
+
 ### 后续记录格式
 
 每次完成一项构建工作后追加：
