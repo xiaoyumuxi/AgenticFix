@@ -1,8 +1,8 @@
 # 第一阶段构建记录
 
-> 阶段：Milestone 1 — Foundation + Worktree + Repository Tools  
-> 创建日期：2026-09-14  
-> 当前状态：待实现，已完成架构规划与仓库初始化  
+> 阶段：Milestone 1 — Foundation + Worktree + Repository Tools
+> 创建日期：2026-09-14
+> 当前状态：构建中，基础配置、工作区与工具已实现，正在补全验证
 > 架构依据：[Agent.md](../Agent.md) 第 3、7、8、16、31、43 节
 
 本文记录第一阶段的构建计划、实施进度、验证证据和遗留问题。计划项不代表已实现；每次开发后更新对应状态和实际结果。架构约束以 `Agent.md` 为准，调整范围时同步更新两份文档。
@@ -143,6 +143,13 @@ ToolResult 区分 success、结构化 data、error_code、error 和 truncated。
 - 已推送规划提交：`5e2d8c7`，`docs: define AgenticFix architecture and worktree workflow`。
 - 创建本构建记录，拆分第一阶段任务和验收清单。
 - 当前业务代码、依赖配置、自动化测试均未实现；尚无 pytest 或 ruff 执行结果。
+
+### 2026-09-14 — 基础配置与运行协议
+
+- 采用 uv、Python 3.12、Pydantic、pytest、ruff、mypy，生成 uv.lock。
+- 新增配置、AgentState、工具协议及追加式 Trace；运行状态与完整日志分开保存。
+- 第一轮工具与工作区测试：`uv run pytest -q`，23 passed。
+- 类型检查发现测试退出码的可空类型处理缺口，已补充，待完整复查。
 
 ### 后续记录格式
 
