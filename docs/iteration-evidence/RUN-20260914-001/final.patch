@@ -1,0 +1,12 @@
+diff --git a/calculator.py b/calculator.py
+index 087027c58866a0e9283af1947fcadda021ee28e9..c40f4ac3bd37039faad4401105347c3c6340c6aa 100644
+--- a/calculator.py
++++ b/calculator.py
+@@ -2,6 +2,6 @@
+ 
+ 
+ def add(a: int | float, b: int | float) -> int | float:
+-    if not isinstance(a, int) or not isinstance(b, int):
++    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+         raise TypeError("arguments must be numbers")
+     return a + b

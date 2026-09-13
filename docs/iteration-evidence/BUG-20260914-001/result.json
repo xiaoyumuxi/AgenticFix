@@ -1,0 +1,21 @@
+{
+  "kind": "historical_sandbox_component_reproduction",
+  "python": "3.12.13",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "cases": {
+    "before": {
+      "agent_commit": "ba96c26cb61efff5ba05105e07218b9aaa240940",
+      "expected_stdout": "2",
+      "actual_stdout": "1",
+      "exit_code": 0,
+      "correct": false
+    },
+    "after": {
+      "agent_commit": "30cfc421c6a7850411ba4fa72bfd3f9df5cabbf6",
+      "expected_stdout": "2",
+      "actual_stdout": "2",
+      "exit_code": 0,
+      "correct": true
+    }
+  }
+}

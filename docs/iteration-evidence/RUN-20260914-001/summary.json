@@ -1,0 +1,60 @@
+{
+  "record_id": "RUN-20260914-001",
+  "run_id": "agent-dd31f7965c67",
+  "agent_commit": "b55a30ca0f9dc23860ccee43785bbaefd42e0ee4",
+  "agent_dirty": false,
+  "agent_version_source": "Observed clean Git status before live invocation; not captured by runtime",
+  "model": {
+    "provider": "deepseek",
+    "model": "deepseek-flash",
+    "base_url": "https://api.deepseek.com",
+    "token_parameter": "max_tokens"
+  },
+  "state": {
+    "base_commit": "240437985b8c4b36e5d0a7ab513d136a871f997d",
+    "model_requests": 6,
+    "total_tool_calls": 11,
+    "reported_tokens": 17688,
+    "estimated_tokens": 0,
+    "duration": 7.646353874995839,
+    "modified_files": [
+      "calculator.py"
+    ],
+    "stop_reason": "public_tests_passed"
+  },
+  "limits": {
+    "max_iterations": 30,
+    "max_tool_calls": 60,
+    "max_token_budget": 100000,
+    "max_completion_tokens": 4096,
+    "max_run_duration": 600,
+    "model_timeout": 90
+  },
+  "limits_source": "Contemporaneous effective settings/defaults; no per-run full configuration snapshot existed",
+  "model_extra_body": "not captured in original run metadata; unknown",
+  "baseline": {
+    "failed": 2,
+    "passed": 3
+  },
+  "public_after": {
+    "passed": 5
+  },
+  "independent_before": {
+    "failed": 9,
+    "passed": 20
+  },
+  "independent_after": {
+    "passed": 29
+  },
+  "verification_scope": "post-run additional checks, not a frozen hidden benchmark",
+  "artifacts_sha256": {
+    "final.patch": "399123caa8f56cb4ac235f4135d6712e0d7e2466801f44f2d5546ed8566f6264",
+    "test_additional.py": "d0fe1bce135941379e7b4b1bc7c6185f7201065bb7276f4f21ec83b71ff46024",
+    "fixture-source/pytest.ini": "65e6856a27f9ade23ef94ce5d5dc606836a6b4b61e57dfc9a090731497724996",
+    "fixture-source/test_calculator.py": "839005ceb51083854c638dc6ee2651edbe3b90d6273dad2575cd0bafec000eac",
+    "fixture-source/issue.md": "a2aa1312006b3b42b254d13ad38e8e09723b6c0fd444a01c0c2ba0621f1d17c0",
+    "fixture-source/.gitignore": "a51104264729e7b362ea8c739de0ada29ba6e4f6047580ec3a3fd330ad20fd47",
+    "fixture-source/calculator.py": "ed616dbbcc24582a3efb349533752f6c0c4f07943a265f2f0f6645467b5ad4e2"
+  },
+  "uv_lock_sha256": "8256210a762f06efc6bed4bbb655daeafefc851ffb2ef343cd0b63c269ef24df"
+}
