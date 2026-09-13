@@ -120,7 +120,7 @@ uv run python main.py run --repo /absolute/path/to/repo --issue-file /absolute/p
 
 离线测试使用 HTTP MockTransport 和确定性模型响应，覆盖请求/响应协议、六种配置、扩展字段回传、错误分类、预算、失败后重试、真实工具链和产物。它们不证明真实模型能解决 Issue。
 
-当前开发环境未配置模型密钥，未执行真实 DeepSeek 或其他厂商请求。线上联调和真实 Issue 成功率保持待验证状态，配置密钥后用 `run` 获取实际 Trace 再分析。
+2026-09-14 已完成首次真实 DeepSeek Calculator 修复：公开测试 5 项通过，导出 Patch 在干净 worktree 中通过原始测试及新增检查共 29 项。详见 [实测记录](validation/deepseek-calculator.md)。其他厂商仍只完成离线协议测试；真实 GitHub Issue 成功率尚未评测。
 
 ## 官方接口依据
 

@@ -2,7 +2,7 @@
 
 给定 GitHub 仓库与 Issue，逐步构建能够读取代码、定位问题、修改代码、运行测试、根据反馈继续修复并生成 Patch 的 Agent。
 
-**Milestone 1 已完成；现已新增 DeepSeek 优先的兼容模型适配器与最小 Agent Loop。** `demo` 保留预先编排的工具验证，`run` 使用模型选择动作。模型接入的离线测试不等于真实修复成功率，线上联调待配置密钥。完整架构见 [AGENTS.md](AGENTS.md)，实施记录见 [第一阶段构建记录](docs/milestone-1.md)。
+**Milestone 1 已完成；现已新增 DeepSeek 优先的兼容模型适配器与最小 Agent Loop。** `demo` 保留预先编排的工具验证，`run` 使用模型选择动作。首次真实 DeepSeek 示例修复与干净工作区验证已通过；更多真实任务效果仍待评测。完整架构见 [AGENTS.md](AGENTS.md)，实施记录见 [第一阶段构建记录](docs/milestone-1.md)。
 
 ## 架构
 
@@ -98,7 +98,7 @@ uv run python main.py run
 
 默认使用可信 Calculator，但修复动作由模型决定。支持 DeepSeek、OpenAI、Gemini、Qwen、Claude 的兼容层预设，以及自定义 OpenAI-compatible 地址；切换时修改 provider、model_name、api_key，必要时覆盖 base_url。
 
-详细设置、其他服务的兼容范围和预算说明见 [模型接入说明](docs/models.md)，本轮进度见 [第二阶段构建记录](docs/milestone-2.md)。当前没有真实厂商请求验证，不能宣称全部服务线上可用。
+详细设置、其他服务的兼容范围和预算说明见 [模型接入说明](docs/models.md)，本轮进度见 [第二阶段构建记录](docs/milestone-2.md)。DeepSeek 已完成首次真实示例联调，[实测记录](docs/validation/deepseek-calculator.md)包含具体结果；其他服务尚未线上验证。
 
 ## 配置
 
@@ -148,8 +148,8 @@ uv run python main.py run
 - Patch 包含所有已跟踪文件变更（即使路径匹配缓存目录）；未跟踪文件遵守 Git ignore，并额外排除 `.venv`、`__pycache__`、`.pytest_cache`、`.ruff_cache`、`.mypy_cache`、`node_modules`、`.DS_Store`。
 - 第一版编辑工具不创建、删除文件；Patch 对新增和删除的支持通过独立夹具测试。
 - Trace 遮盖敏感字段及显式传入的已知密钥，但不是通用秘密扫描器；不要把含密钥的仓库作为示例输入。
-- 模型 Loop 和预算已实现；尚无隐藏评测、自动 PR 或 API 服务。线上模型效果待验证，不把确定性测试结果当成真实 Issue 修复率。
+- 模型 Loop 和预算已实现；尚无隐藏评测、自动 PR 或 API 服务。已有一次真实 DeepSeek 示例成功记录，尚无真实 Issue Benchmark 成功率。
 
 ## 下一阶段
 
-接下来配置 DeepSeek 密钥完成真实调用联调，验证简单任务，再准备首批真实历史 Issue 的复现环境和独立验收条件。
+接下来补足不同类型的真实模型简单任务和失败恢复案例，再准备 Docker 隔离及首批真实历史 Issue 的复现环境和独立验收条件。
