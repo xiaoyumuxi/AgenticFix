@@ -1,5 +1,6 @@
 """CLI-facing run setup. External untrusted execution still requires the Docker milestone."""
 
+import asyncio
 import shutil
 import sys
 from pathlib import Path
@@ -12,6 +13,7 @@ from agent.state import AgentState
 from config import Settings
 from tools.context import ToolContext
 from tools.factory import build_registry
+from tracing.evidence import capture_start, finalize_evidence
 from tracing.tracer import Tracer
 from workspace.repository import WorkspaceManager, git
 
@@ -40,6 +42,35 @@ async def run_agent(
             *(v.get_secret_value() for v in model.extra_headers.values()),
         ),
     )
+    try:
+        capture_start(tracer, settings, Path(__file__).resolve().parents[1])
+        return await _run_prepared(settings, tracer, run_id, source, issue, ref, keep_worktrees)
+    except (Exception, asyncio.CancelledError) as exc:
+        tracer.save_json(
+            "runner-error.json",
+            {
+                "run_id": run_id,
+                "status": "failed",
+                "error_type": type(exc).__name__,
+                "message": "Runner aborted; inspect local artifacts. Raw exception omitted.",
+            },
+        )
+        raise
+    finally:
+        finalize_evidence(tracer)
+
+
+async def _run_prepared(
+    settings: Settings,
+    tracer: Tracer,
+    run_id: str,
+    source: Path | None,
+    issue: str | None,
+    ref: str,
+    keep_worktrees: bool,
+) -> dict[str, Any]:
+    model = settings.llm_config()
+    directory = tracer.directory
     tracer.save_json("model.json", model.public_info())
     if source is None:
         source = directory / "fixture-source"
@@ -58,6 +89,17 @@ async def run_agent(
         git(source, "commit", "-m", "Initialize agent fixture")
     manager = WorkspaceManager(settings.cache_dir, settings.worktree_dir)
     repo = manager.prepare_repository(str(source), ref)
+    tracer.save_json(
+        "task.json",
+        {
+            "run_id": run_id,
+            "source": str(source.resolve()),
+            "requested_ref": ref,
+            "base_commit": repo.base_commit,
+            "issue": issue,
+            "test_command": [sys.executable, "-m", "pytest", "-q"],
+        },
+    )
     workspace = manager.create_workspace(repo, run_id)
     context = ToolContext(
         workspace=workspace,

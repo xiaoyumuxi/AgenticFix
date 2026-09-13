@@ -94,6 +94,22 @@ async def test_http_adapter_to_runner_full_chain(tmp_path, monkeypatch):
     assert len(previous_assistants) == 3
     assert all(m["reasoning_content"] == "opaque-state" for m in previous_assistants)
     assert requests[0]["model"] == "deepseek-flash"
+    directory = Path(result["run_directory"])
+    metadata = json.loads((directory / "metadata.json").read_text())
+    assert metadata["agent"]["commit"]
+    assert metadata["config"]["max_iterations"] == settings.max_iterations
+    task = json.loads((directory / "task.json").read_text())
+    assert task["base_commit"] == result["state"]["base_commit"]
+    measurements = json.loads((directory / "measurements.json").read_text())
+    assert len(measurements["requests"]) == 4
+    assert "opaque-state" not in (directory / "measurements.json").read_text()
+    manifest = json.loads((directory / "manifest.json").read_text())
+    from hashlib import sha256
+
+    assert (
+        manifest["artifacts"]["result.json"]["sha256"]
+        == sha256((directory / "result.json").read_bytes()).hexdigest()
+    )
 
 
 async def test_missing_key_and_untrusted_repo_fail_before_worktree(tmp_path):
@@ -135,3 +151,30 @@ async def test_auth_failure_retains_scene_without_leaking_server_body(tmp_path, 
     assert Path(result["retained_workspace"]).is_dir()
     assert "provider-secret-error" not in json.dumps(result)
     assert Path(result["state"]["final_patch_path"]).is_file()
+
+
+async def test_setup_failure_has_start_snapshot_and_manifest(tmp_path, monkeypatch):
+    def fail(*args, **kwargs):
+        raise RuntimeError("secret-server-body")
+
+    monkeypatch.setattr("agent.runner.WorkspaceManager.prepare_repository", fail)
+    settings = Settings(
+        _env_file=None,
+        runs_dir=tmp_path / "runs",
+        cache_dir=tmp_path / "cache",
+        worktree_dir=tmp_path / "worktrees",
+        model_api_key=SecretStr("test-secret"),
+    )
+    with pytest.raises(RuntimeError):
+        await run_agent(settings)
+    directory = next(settings.runs_dir.iterdir())
+    metadata = json.loads((directory / "metadata.json").read_text())
+    assert metadata["agent"]["commit"]
+    assert metadata["lock_sha256"]
+    assert metadata["config"]["resolved_model"]["model"] == "deepseek-flash"
+    error = json.loads((directory / "runner-error.json").read_text())
+    assert error["error_type"] == "RuntimeError"
+    manifest = json.loads((directory / "manifest.json").read_text())
+    assert "runner-error.json" in manifest["artifacts"]
+    assert "metadata.json" in manifest["artifacts"]
+    assert "secret-server-body" not in (directory / "runner-error.json").read_text()

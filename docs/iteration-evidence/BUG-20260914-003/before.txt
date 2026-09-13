@@ -1,0 +1,25 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________________ test_response_model_identifier_is_preserved __________________
+
+    async def test_response_model_identifier_is_preserved():
+        body = response() | {"model": "provider-resolved-revision"}
+        client = OpenAICompatibleClient(
+            ModelConfig(api_key=SecretStr("test")),
+            transport=httpx.MockTransport(lambda request: httpx.Response(200, json=body)),
+        )
+        try:
+            reply = await client.generate([{"role": "user", "content": "test"}], [], 20)
+        finally:
+            await client.aclose()
+>       assert reply.model_dump().get("model") == "provider-resolved-revision"
+E       AssertionError: assert None == 'provider-resolved-revision'
+E        +  where None = <built-in method get of dict object at 0x107f8f380>('model')
+E        +    where <built-in method get of dict object at 0x107f8f380> = {'message': {'role': 'assistant', 'content': 'Finished', 'tool_calls': None}, 'finish_reason': 'stop', 'usage': {'prompt_tokens': 10, 'completion_tokens': 5, 'total_tokens': 15}, 'response_id': 'mock-response'}.get
+E        +      where {'message': {'role': 'assistant', 'content': 'Finished', 'tool_calls': None}, 'finish_reason': 'stop', 'usage': {'prompt_tokens': 10, 'completion_tokens': 5, 'total_tokens': 15}, 'response_id': 'mock-response'} = model_dump()
+E        +        where model_dump = ModelReply(message=AssistantMessage(role='assistant', content='Finished', tool_calls=None), finish_reason='stop', usage=Usage(prompt_tokens=10, completion_tokens=5, total_tokens=15), response_id='mock-response').model_dump
+
+tests/test_llm.py:265: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_llm.py::test_response_model_identifier_is_preserved - Asser...
+1 failed in 0.03s

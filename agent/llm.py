@@ -131,6 +131,7 @@ class ModelReply(BaseModel):
     finish_reason: str
     usage: Usage | None = None
     response_id: str | None = None
+    model: str | None = None
 
 
 class ModelError(Exception):
@@ -225,7 +226,11 @@ class OpenAICompatibleClient(LLMClient):
                 except ValueError:
                     pass  # Explicitly unknown; runtime charges its reservation.
             return ModelReply(
-                message=message, finish_reason=finish, usage=usage, response_id=body.get("id")
+                message=message,
+                finish_reason=finish,
+                usage=usage,
+                response_id=body.get("id"),
+                model=body.get("model"),
             )
         except (KeyError, TypeError, ValueError) as exc:
             raise ModelError("MALFORMED_RESPONSE", retryable=True) from exc

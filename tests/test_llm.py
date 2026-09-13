@@ -250,3 +250,16 @@ async def test_workspace_headers_and_validation_redact_secrets():
     assert "private-secret" not in str(exc.value)
     with pytest.raises(ValidationError):
         ModelConfig(extra_headers={"Authorization": SecretStr("override")})
+
+
+async def test_response_model_identifier_is_preserved():
+    body = response() | {"model": "provider-resolved-revision"}
+    client = OpenAICompatibleClient(
+        ModelConfig(api_key=SecretStr("test")),
+        transport=httpx.MockTransport(lambda request: httpx.Response(200, json=body)),
+    )
+    try:
+        reply = await client.generate([{"role": "user", "content": "test"}], [], 20)
+    finally:
+        await client.aclose()
+    assert reply.model_dump().get("model") == "provider-resolved-revision"
