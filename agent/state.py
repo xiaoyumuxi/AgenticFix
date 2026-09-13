@@ -17,6 +17,14 @@ class AgentState(BaseModel):
     test_status: str | None = None
     tested_patch_digest: str | None = None
     total_tool_calls: int = 0
+    iteration: int = 0
+    model_requests: int = 0
+    total_tokens: int = 0
+    reported_tokens: int = 0
+    estimated_tokens: int = 0
+    unknown_usage_requests: int = 0
+    duration: float = 0
+    final_answer: str | None = None
     modified_files: list[str] = Field(default_factory=list)
     status: Literal["running", "completed", "failed"] = "running"
     stop_reason: str | None = None
