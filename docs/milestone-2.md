@@ -42,7 +42,7 @@
 - [x] `uv build`：sdist 与 wheel 构建成功。
 - [x] 原 `main.py demo` 回归：基线 2 failed / 3 passed，修复后 5 passed，干净应用后 5 passed，无清理错误。
 - [x] 真实 DeepSeek 联调：Calculator 修复通过，干净工作区的 29 项检查通过。
-- [ ] 至少三个真实模型简单任务成功：已完成 1 个，另外 2 个待验证。
+- [x] 至少三个真实模型简单任务成功：Calculator、order_total、intervals 已完成；这是三个可信示例，不是真实 Issue Benchmark。
 - [ ] 首批真实历史 Issue 复现与验收条件：后续准备，不属于此次模型协议接入结果。
 
 ## 开发发现
@@ -67,3 +67,17 @@
 新增 tracing/evidence.py，运行开始自动采集版本/配置/环境，结束保存脱敏测量摘要和产物哈希。修复准备异常无失败记录、服务返回 model 字段丢失两项缺陷，受控前后证据归档到 BUG-20260914-002/003。
 
 新增 order_total 和 intervals 两个可信任务，公开测试与独立验收测试在模型运行前冻结；执行方式与范围见 [任务说明](validation/trusted-tasks.md)。真实运行结果将在固定代码提交之后追加，不把尚未执行的任务写成通过。
+
+
+### 固定版本运行结果
+
+代码 `66f48ec0e6fbdbf6705a733bbadca87283ee5fa1`，两次运行 dirty=false。
+
+| 任务 | run_id | 独立验收前后 | Token | Loop 耗时 |
+| --- | --- | --- | ---: | ---: |
+| order_total | agent-579c61919ecb | 9 failed / 4 passed → 13 passed | 18032 | 8.1497 秒 |
+| intervals | agent-751ccbf64f94 | 11 failed / 4 passed → 15 passed | 15506 | 6.5471 秒 |
+
+两次均一次编辑成功，没有实际模型错误编辑后的恢复轨迹；这一项仍未完成验证。工程验证：81 passed，ruff/格式检查、mypy（29 个源文件）、构建通过。
+
+已发布 Wiki：[两条工程缺陷](https://github.com/xiaoyumuxi/AgenticFix/wiki/Run-Evidence-Bugs)、[两项真实运行及完整数据解释](https://github.com/xiaoyumuxi/AgenticFix/wiki/Trusted-Task-Runs)。下一阶段为 DockerSandbox 与独立 Eval，继续保留恢复能力待验证项。

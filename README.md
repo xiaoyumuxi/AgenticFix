@@ -153,3 +153,10 @@ uv run python main.py run
 ## 下一阶段
 
 接下来补足不同类型的真实模型简单任务和失败恢复案例，再准备 Docker 隔离及首批真实历史 Issue 的复现环境和独立验收条件。
+
+
+### 补充可信任务与运行证据
+
+除 Calculator 外，已完成跨文件订单计价与区间边界处理两次真实 DeepSeek 运行，分别由 9 失败/4 通过变为 13 通过、11 失败/4 通过变为 15 通过。任务与独立测试均在运行前冻结，两次都是一次编辑成功。详见 [任务复现说明](docs/validation/trusted-tasks.md) 和 [Wiki 运行分析](https://github.com/xiaoyumuxi/AgenticFix/wiki/Trusted-Task-Runs)。
+
+运行开始自动保存版本/配置快照，结束保存测量摘要和产物 SHA-256；准备异常也会留存失败记录。已修复的记录缺陷见 [Wiki](https://github.com/xiaoyumuxi/AgenticFix/wiki/Run-Evidence-Bugs)。这些可信示例不能代替真实 Issue Benchmark，也尚未观察到真实模型错误编辑后的恢复。
