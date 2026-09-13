@@ -1,140 +1,198 @@
-# AgenticFix 迭代记录
+# AgenticFix：第一次接入模型时遇到的问题和实测结果
 
-记录日期：2026-09-14（Asia/Singapore，UTC+08:00）。
+记录日期：2026-09-14，UTC+08:00。
 
-本页记录实际错误、历史版本、验证数据和相关证据。失败案例是后续迭代的依据，不覆盖旧结果，不用成功 Demo 代替真实评测。
+这里有两件事，分别记录：一件是测试执行器读到旧代码的错误；另一件是修复这个错误之后，DeepSeek 完成的一次 Calculator 修复。后者不是前者的对照实验。
 
-## BUG-20260914-001：旧字节码导致测试执行旧代码
+## BUG-20260914-001：文件已经改了，测试为什么还在执行旧逻辑？
 
-**状态：已修复，历史版本对照复现通过。**
+### 当时看到的异常
 
-### 现象与影响
+接入 Agent Loop 的离线测试时，第一次完整执行是 **3 failed、70 passed**。其中一个用例把 `calculate(2, 3)` 的实现从减法改成加法，但测试仍然得到 `-1`；另一个把除法改成加法，仍得到 `0.6666666666666666`。期望值都是 `5`。
 
-接入 Agent Loop 时，源码已经修改，但再次运行 pytest 仍表现为旧逻辑。快速连续修改可能因此收到错误的测试反馈，干扰 Agent 的判断，也影响评测可信度。
+```text
+源码要执行：return a + b
+输入：calculate(2, 3)
+期望：5
+实际：-1，或者 0.6666666666666666（分别对应修改前的减法和除法）
+```
 
-根因是 Python 的时间戳式字节码缓存：当源码修改前后的大小相同，且修改时间落在相同的时间戳精度内，已有 `.pyc` 可能仍被判定有效。
+第三个失败出现在 `value = 1 → value = 2 → value = 3` 的连续修复测试里。模拟模型按预定步骤完成后，Runtime 仍收到失败测试，要求它继续工作，最终耗尽模拟响应队列，记录 `runtime_error:IndexError`。
 
-### 历史版本
+这个 IndexError 是后续症状，不能直接当成模型接口错误处理。需要先解释：为什么测试给出的数值仍然是修改前的结果？
 
-| 角色 | AgenticFix commit |
-| --- | --- |
-| 修复前 LocalSandbox | `ba96c26cb61efff5ba05105e07218b9aaa240940` |
-| 修复提交 | `30cfc421c6a7850411ba4fa72bfd3f9df5cabbf6` |
+上面的开发测试当时包含未提交代码，原始完整工作区差异和控制台日志没有归档。它们是发现问题的背景，不能伪称为某个已提交版本的完整测试成绩。下面另做可重复的历史组件对照来确认原因。
 
-[查看修复差异](https://github.com/xiaoyumuxi/AgenticFix/commit/30cfc421c6a7850411ba4fa72bfd3f9df5cabbf6)
+### 先证明文件改成功了，再检查执行器读了什么
 
-### 可复现的对照
+把问题缩到一个模块：先写入 `value = 1`，编译出 `.pyc`，再改成 `value = 2`。明确保留相同文件大小和修改时间，模拟快速连续等长修改。
 
-1. 创建 `value = 1` 的模块并编译字节码。
-2. 改成等长的 `value = 2`，保留原修改时间。
-3. 分别通过历史版本和修复版本的 LocalSandbox 导入模块。
-
-| 检查 | 修复前 | 修复后 |
+| 观测项 | 编译缓存时 | 修改源码后 |
 | --- | --- | --- |
-| 源码期望值 | 2 | 2 |
-| 实际读取值 | **1，错误** | **2，正确** |
-| 子进程退出码 | 0 | 0 |
+| 源码内容 | `value = 1\n` | `value = 2\n` |
+| 源码长度 | 10 字节 | 10 字节 |
+| 文件 mtime，Unix 秒 | 1700000000 | 1700000000 |
+| `.pyc` 头记录的源码长度 | 10 | 10，旧缓存未变 |
+| `.pyc` 头记录的 mtime | 1700000000 | 1700000000，旧缓存未变 |
+| `.pyc` flags | 0，时间戳校验模式 | 0 |
 
-这是历史 LocalSandbox 组件的受控对照，不是对整个历史版本测试套件的重新评测。复现环境为 Python 3.12.13、macOS arm64。
+每次执行前直接读取文件，确认磁盘上的内容已经是 `value = 2`，然后启动新的 Python 子进程：
 
-两次退出码都为 0，说明“进程成功结束”不能证明“执行了当前源码”。
+```python
+import example
+print(example.value)
+assert example.value == 2
+```
 
-### 修复方式
+旧执行器输出 **1**，断言失败，退出码 **1**。这一步排除了“编辑没有写进文件”：磁盘内容是 2，导入得到的却是 1。
 
-每次测试执行使用新的 `PYTHONPYCACHEPREFIX`，并设置 `PYTHONDONTWRITEBYTECODE=1`，避免读取旧缓存，也不产生新的缓存目录。
+### 不是凭猜测归因，分别改一个条件再跑
 
-增加回归测试 `test_same_size_same_timestamp_bytecode_is_not_reused`，明确构造相同大小、相同修改时间的源码，断言执行结果来自新代码。没有通过等待时间或更换任务规避错误。
+以下每行都从相同的旧缓存和相同的新源码重新开始。期望输出始终为 2。
 
-### 证据与复现命令
+| 实验 | 源码大小 | 源码 mtime | 实际输出 | 退出码 |
+| --- | ---: | ---: | ---: | ---: |
+| 旧执行器，保留旧缓存 | 10 | 1700000000 | **1** | **1** |
+| 旧执行器，只加 `-B` 禁止写字节码 | 10 | 1700000000 | **1** | **1** |
+| 旧执行器，删除旧 `.pyc` | 10 | 1700000000 | **2** | **0** |
+| 旧执行器，只把 mtime 增加两秒 | 10 | 1700000002 | **2** | **0** |
+| 旧执行器，只添加注释使源码长度变化 | 25 | 1700000000 | **2** | **0** |
+| 修复后的执行器，仍保留旧缓存 | 10 | 1700000000 | **2** | **0** |
 
-- [最小复现程序](https://github.com/xiaoyumuxi/AgenticFix/blob/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/BUG-20260914-001/reproduce.py)
-- [历史版本对照结果](https://github.com/xiaoyumuxi/AgenticFix/blob/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/BUG-20260914-001/result.json)
+这些结果连起来才能支持判断：
 
-在包含上述证据文件的仓库版本中执行：
+- 删除缓存就恢复正确，说明旧缓存参与了错误结果。
+- 只改时间或大小也恢复正确，与 `.pyc` 头里的时间戳/大小校验对应。
+- 单独 `-B` 仍然输出 1，说明禁止写缓存并不禁止读取已有缓存。
+- 修复后的执行器在缓存、源码大小和时间均保持原条件时输出 2，说明修复覆盖了最初的触发条件。
+
+因此，问题不是加法写错，也不是 pytest 没发现断言失败，而是测试进程导入了旧字节码。它把旧逻辑的结果反馈给 Agent，后续修复自然会被误导。
+
+### 为什么这样修改
+
+LocalSandbox 为每次测试进程设置：
+
+```python
+PYTHONPYCACHEPREFIX = 一个新的、尚不存在的临时路径
+PYTHONDONTWRITEBYTECODE = "1"
+```
+
+换前缀是为了避开已有字节码的查找位置；禁止写入是为了不再生成新的缓存目录。只做第二项不够，上面的 `-B` 对照已经验证了这一点。
+
+没有通过让 Agent 等一秒来解决，因为那只是让时间戳变化，依赖执行时序；也没有改变业务代码的长度来让测试碰巧通过。修复放在统一执行器中，所有通过它运行的 Python 测试都使用同样的处理。
+
+这样会放弃部分字节码缓存收益，但目前没有做性能对照，不能给出开销数字。当前优先保证测试执行的是本次代码。
+
+### 对应版本和证据
+
+| 角色 | 完整 commit |
+| --- | --- |
+| 对照使用的旧 LocalSandbox | `ba96c26cb61efff5ba05105e07218b9aaa240940` |
+| LocalSandbox 修复提交 | `30cfc421c6a7850411ba4fa72bfd3f9df5cabbf6` |
+| 六组诊断实验和数据归档 | `bf995b0b31dd1db6d5c33fa5258b88d053a24232` |
+
+[修复差异](https://github.com/xiaoyumuxi/AgenticFix/commit/30cfc421c6a7850411ba4fa72bfd3f9df5cabbf6) · [诊断程序](https://github.com/xiaoyumuxi/AgenticFix/blob/bf995b0b31dd1db6d5c33fa5258b88d053a24232/docs/iteration-evidence/BUG-20260914-001/diagnose.py) · [六组原始结果](https://github.com/xiaoyumuxi/AgenticFix/blob/bf995b0b31dd1db6d5c33fa5258b88d053a24232/docs/iteration-evidence/BUG-20260914-001/diagnosis-v2.json)
+
+复现环境为 Python 3.12.13、macOS arm64。程序读取历史提交中的 `sandbox/local.py`，在同一当前环境里做组件对照，不代表整个历史仓库的测试成绩。
 
 ```bash
 uv sync --locked
-uv run python docs/iteration-evidence/BUG-20260914-001/reproduce.py
+uv run python docs/iteration-evidence/BUG-20260914-001/diagnose.py
 ```
 
-程序从 Git 历史读取两个版本的 LocalSandbox，不修改当前源码，也不调用模型。
+回归测试是 `test_same_size_same_timestamp_bytecode_is_not_reused`。早期 `reproduce.py/result.json` 只有打印、没有断言，因此两边退出码都为 0；本次 `diagnose.py/diagnosis-v2.json` 加入断言，输出旧值时退出码为 1。两份记录都保留，不能混用它们的退出码。
 
-### 迭代结论
-
-测试执行环境是 Agent 正确性的一部分。以后任何缓存、依赖和工作区变化，都要检查它是否使测试反馈与当前代码脱节。LocalSandbox 仍只用于可信代码，本修复不提供宿主机安全隔离。
+后续测试数量有所增加，所以也不能把开发中的“3 failed、70 passed”和最终“78 passed”直接当成这次修复的同一测试集对照。修复的直接依据是上面的六组实验。
 
 ---
 
-## RUN-20260914-001：首次真实 DeepSeek 自主修复
+## RUN-20260914-001：DeepSeek 实际修了什么，花费在哪里？
 
-**状态：单个可信示例通过，不能据此推导真实 Issue 成功率。**
+### 运行的版本和任务
 
-### 版本与任务
-
-| 项目 | 记录 |
+| 项目 | 值 |
 | --- | --- |
 | run_id | `agent-dd31f7965c67` |
-| Agent 运行版本 | `b55a30ca0f9dc23860ccee43785bbaefd42e0ee4` |
-| Agent 工作区 | 运行前检查为干净；当时 Runtime 尚未自动采集此字段 |
-| 目标项目 | 本项目生成的可信 Calculator fixture |
+| Agent 代码版本 | `b55a30ca0f9dc23860ccee43785bbaefd42e0ee4` |
+| Agent 工作区 | 开始前检查为干净；当时未由 Runtime 自动采集 |
+| 目标仓库 | 本项目生成的 Calculator fixture |
 | 目标 base_commit | `240437985b8c4b36e5d0a7ab513d136a871f997d` |
-| 服务与配置模型 | DeepSeek / `deepseek-flash` |
-| 目标问题 | add() 支持整数、浮点数及混合输入，继续拒绝非数值输入 |
+| 配置模型 | DeepSeek / `deepseek-flash` |
 
-Agent 运行版本与目标仓库 base_commit 是两套不同的版本标识。目标 commit 属于本地生成的 fixture 仓库；其源文件已另外归档，不能当作 AgenticFix 主仓库中的 commit。
+Agent commit 和目标 base_commit 不是同一个东西。后者属于临时生成的目标 Git 仓库；其源文件已归档，不是 AgenticFix 主仓库里可直接检出的提交。
 
-### 实际数据
+目标函数本来就用 `a + b` 返回结果，问题出在前面的检查只接受 `int`。公开测试中：
 
-| 指标 | 结果 |
-| --- | --- |
-| 模型请求 | 6 |
-| 工具调用，含 Runtime 验证 | 11 |
-| 服务报告 Token | 17,688 |
-| 估算 Token | 0 |
-| 主运行耗时 | 7.65 秒 |
-| 修改文件 | 仅 calculator.py |
-| 修改前公开测试 | 2 failed，3 passed |
-| 修改后公开测试 | 5 passed |
-| 独立检查应用 Patch 前 | 9 failed，20 passed |
-| 独立检查应用 Patch 后 | **29 passed** |
+- `add(1.5, 2.25)` 应返回 `3.75`，实际抛出 TypeError。
+- `add(1, 2.5)` 应返回 `3.5`，实际抛出 TypeError。
+- 两个整数用例和一个拒绝字符串的用例原本通过。
 
-耗时不包含后续人工组织的独立验证。本次未计算金额费用。
+因此基线是 **2 failed、3 passed**。这组数据指出需要放宽数值类型检查，同时保留对非数值的拒绝；并不需要重写加法算法。
 
-### 模型生成的修改
+### 六次模型请求的实际轨迹
+
+以下数据来自原始 Trace，Token 是服务报告值。
+
+| 请求 | 模型选择的动作 | 输入 Token | 输出 Token | 合计 |
+| --- | --- | ---: | ---: | ---: |
+| 1 | 列目录，读取 calculator.py | 1823 | 57 | 1880 |
+| 2 | 读取 test_calculator.py、issue.md | 2147 | 71 | 2218 |
+| 3 | 精确编辑 calculator.py 的类型检查 | 2730 | 290 | 3020 |
+| 4 | 重新读取 calculator.py，运行测试 | 3079 | 52 | 3131 |
+| 5 | 获取 git_diff | 3495 | 22 | 3517 |
+| 6 | 返回完成说明 | 3801 | 121 | 3922 |
+| 总计 | | **17075** | **613** | **17688** |
+
+模型发起了 8 次工具调用；Runtime 另外执行了开始时的测试，以及结束时的测试和 Diff，共 **11 次工具调用**。不能把这 11 次都算成模型主动选择的动作。
+
+模型实际只做了一次编辑：
 
 ```diff
 - if not isinstance(a, int) or not isinstance(b, int):
 + if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
 ```
 
-模型读取实现和测试后修改代码，没有修改测试。本次一次编辑就通过，未验证真实模型在失败修改后的恢复能力。
+这让两种参数位置都能接受浮点数，同时保留 TypeError 分支。测试文件没有修改。模型运行测试得到 5 passed 后，Runtime 在结束检查中再次得到 5 passed，随后交付非空 Patch。
 
-### 独立检查范围
+### 为什么又做了 29 项检查
 
-模型运行结束后，在相同基准的干净 worktree 中追加 24 个检查，与原始 5 个测试一起运行：
+5 个公开测试通过，只说明这 5 个用例通过。为了检查更多组合，模型结束后，在干净 worktree 里加入了 24 个检查，并在应用 Patch 前后执行同一组测试。
 
-- `[0, 2, -3, 1.25]` 的 16 种两两输入组合。
-- `None`、字符串、列表、字典在左右参数位置的 8 种拒绝检查。
+| 测试组 | 用例数 | 应用前 | 应用后 |
+| --- | ---: | --- | --- |
+| 原始公开测试 | 5 | 2 失败、3 通过 | 5 通过 |
+| `[0, 2, -3, 1.25]` 两两组合 | 16 | 7 失败、9 通过 | 16 通过 |
+| None、字符串、列表、字典分别放左右参数 | 8 | 8 通过 | 8 通过 |
+| 总计 | **29** | **9 失败、20 通过** | **29 通过** |
 
-这些新增检查没有进入此次模型上下文，但它们是事后追加验证，不是预先冻结的隐藏 Benchmark。
+16 个数值组合里，有 7 个至少包含一个浮点数；修复前正好这 7 个被旧类型检查拒绝。剩下 9 个整数组合本来通过，修复后继续通过。8 个非法参数检查也继续通过。
 
-### 证据与元数据限制
+因此本次结果支持：Patch 修复了这些浮点数组合，且没有破坏这些整数和非法输入行为。没有检查的行为，不能从这张表推出结论。
 
-- [脱敏指标、配置来源和证据 SHA-256](https://github.com/xiaoyumuxi/AgenticFix/blob/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/RUN-20260914-001/summary.json)
+这 24 项是模型结束后追加的，没有发给模型，但也没有在运行前冻结，所以是事后独立检查，不称为正式隐藏 Benchmark。
+
+### 7.65 秒和 17,688 Token 应该怎么理解
+
+主运行耗时 **7.65 秒**，其中六次模型请求的客户端耗时相加为 **5.82 秒**。主运行耗时不含后来做的 29 项独立验证。
+
+输入 Token 是 **17,075，占总数约 96.5%**；输出只有 **613**。虽然最终只改了一行，接口会在多轮请求里重复接收工具定义、Issue 和累积上下文，所以不能按 Patch 行数估计调用量。最后一次请求的输入从第一次的 1,823 增长到了 3,801。
+
+这给后续实验一个可检查的方向：是否需要每轮都携带相同内容，工具结果是否可以更短。但当前没有压缩前后的对照，不能把输入 Token 全叫作浪费，也不能宣称已经能降低多少费用。原始记录没有完整的缓存计费信息，本次没有计算金额成本。
+
+本次一次修改即成功，没有测试真实模型在错误修改后的恢复能力；一个 Calculator 示例也不能代表真实 GitHub Issue 的成功率。
+
+### 数据和可追溯范围
+
+- [六次请求的原始用量与工具动作摘要](https://github.com/xiaoyumuxi/AgenticFix/blob/bf995b0b31dd1db6d5c33fa5258b88d053a24232/docs/iteration-evidence/RUN-20260914-001/request-breakdown.json)
+- [运行摘要、配置来源和证据哈希](https://github.com/xiaoyumuxi/AgenticFix/blob/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/RUN-20260914-001/summary.json)
 - [完整 Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/RUN-20260914-001/final.patch)
-- [目标仓库源文件快照](https://github.com/xiaoyumuxi/AgenticFix/tree/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/RUN-20260914-001/fixture-source)
-- [新增独立检查](https://github.com/xiaoyumuxi/AgenticFix/blob/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/RUN-20260914-001/test_additional.py)
+- [目标源文件](https://github.com/xiaoyumuxi/AgenticFix/tree/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/RUN-20260914-001/fixture-source)
+- [新增的 24 项检查](https://github.com/xiaoyumuxi/AgenticFix/blob/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/docs/iteration-evidence/RUN-20260914-001/test_additional.py)
 
-原始运行没有完整的配置快照；摘要区分了原始数据和补录来源。未采集的额外模型参数保持 unknown，不能事后补造。原始 Trace 和对话留在本地受控产物目录，未将密钥或未经审查的原始推理上传。
+原始运行未自动保存完整配置和 Agent commit 快照，补录字段已注明来源，未采集的额外参数保持 unknown。这是记录机制的缺口，后续应在开始运行时自动采集，不能每次靠事后整理。
 
-### 下一步
+## 本页修订说明
 
-补足其他类型的真实模型任务与失败恢复案例，并在开始运行时自动保存 Agent commit、工作区差异、脱敏配置和环境快照。真实 GitHub Issue 执行前完成 Docker 隔离及独立验收流程。
+本版补充了旧字节码问题的发现过程、六组因果对照、为什么选择当前修复、DeepSeek 的逐轮用量和测试组成。之前的简版和证据保留在 Git 历史中。
 
----
-
-## 后续记录规范
-
-规范已写入 [AGENTS.md：Wiki 与版本化证据要求](https://github.com/xiaoyumuxi/AgenticFix/blob/1ad3fda9a588dfe181a119f3b7f9247de2f07d87/AGENTS.md)。
-
-后续每次关键错误、真实运行或对照实验均需记录唯一 ID、Agent 与目标版本、实际数据、根因、修复提交、复现方式及证据校验值。历史结果追加保留，未知字段明确标记；不得只把证据留在聊天或临时 runs 目录。
+后续 Wiki 记录按 AGENTS.md 执行：关键数据写进正文，并解释这些数据如何支持判断。链接用于复核，不能代替分析。未发布前保持“Wiki 待发布”状态。
