@@ -13,3 +13,6 @@ __pycache__/
 runs/
 .cache/
 .worktrees/
+dist/
+build/
+*.egg-info/

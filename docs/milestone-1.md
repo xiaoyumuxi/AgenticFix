@@ -2,7 +2,7 @@
 
 > 阶段：Milestone 1 — Foundation + Worktree + Repository Tools
 > 创建日期：2026-09-14
-> 当前状态：构建中，基础配置、工作区与工具已实现，正在补全验证
+> 当前状态：已完成，工具链、集成验证与交付文档通过验收
 > 架构依据：[Agent.md](../Agent.md) 第 3、7、8、16、31、43 节
 
 本文记录第一阶段的构建计划、实施进度、验证证据和遗留问题。计划项不代表已实现；每次开发后更新对应状态和实际结果。架构约束以 `Agent.md` 为准，调整范围时同步更新两份文档。
@@ -66,19 +66,19 @@ Patch 导出的新增、删除及二进制能力由独立测试夹具验证，�
 | 步骤 | 工作内容 | 主要计划文件 | 状态 |
 | --- | --- | --- | --- |
 | 0 | 架构规划、Git 初始化、创建并推送 GitHub 仓库 | Agent.md、.gitignore | 已完成 |
-| 1 | 项目配置、开发命令、配置模型与最小入口 | pyproject.toml、config.py、.env.example、main.py | 待实现 |
-| 2 | 状态、工具协议、参数校验、注册与错误分发 | agent/state.py、tools/base.py、tools/registry.py | 待实现 |
-| 3 | 最小事件 Trace 与运行产物目录 | tracing/models.py、tracing/tracer.py | 待实现 |
-| 4 | 仓库准备、worktree 生命周期、Patch 导出 | workspace/repository.py | 待实现 |
-| 5 | 列目录、按行读取、搜索与精确编辑 | tools/file_tools.py、tools/search_tools.py | 待实现 |
-| 6 | LocalSandbox、测试工具、Diff 工具 | sandbox/base.py、sandbox/local.py、tools/test_tools.py、tools/git_tools.py | 待实现 |
-| 7 | Calculator、完整链路验证和使用说明 | examples/calculator/、tests/、scripts/、README.md | 待实现 |
+| 1 | 项目配置、开发命令、配置模型与最小入口 | pyproject.toml、config.py、.env.example、main.py | 已完成 |
+| 2 | 状态、工具协议、参数校验、注册与错误分发 | agent/state.py、tools/base.py、tools/registry.py | 已完成 |
+| 3 | 最小事件 Trace 与运行产物目录 | tracing/models.py、tracing/tracer.py | 已完成 |
+| 4 | 仓库准备、worktree 生命周期、Patch 导出 | workspace/repository.py | 已完成 |
+| 5 | 列目录、按行读取、搜索与精确编辑 | tools/file_tools.py、tools/search_tools.py | 已完成 |
+| 6 | LocalSandbox、测试工具、Diff 工具 | sandbox/base.py、sandbox/local.py、tools/test_tools.py、tools/git_tools.py | 已完成 |
+| 7 | Calculator、完整链路验证和使用说明 | examples/calculator/、tests/、scripts/、README.md | 已完成 |
 
 文件清单是实施计划，具体新增文件在每次开发前说明；保持 Agent.md 中的模块边界。
 
 ## 5. 接口落实清单
 
-以下是待实现的接口约定，不是现有 API 文档。实现后补充准确类型、默认值、错误码和调用示例。
+以下接口已实现。准确参数、默认值及结果语义见 [README 工具接口](../README.md#工具接口)；`ToolRegistry.schemas()` 可导出实际 JSON Schema。
 
 | 接口 | 输入要点 | 输出与行为 |
 | --- | --- | --- |
@@ -101,38 +101,38 @@ ToolResult 区分 success、结构化 data、error_code、error 和 truncated。
 
 ### 工程基础
 
-- [ ] 按说明可以安装依赖并执行最小入口。
-- [ ] 重要接口有类型定义，配置错误有明确提示。
-- [ ] 完整 pytest 通过，ruff 通过。
-- [ ] .env、缓存、worktree、日志等不进入 Git 提交。
+- [x] 按说明可以安装依赖并执行最小入口。
+- [x] 重要接口有类型定义，配置错误有明确提示。
+- [x] 完整 pytest 通过，ruff 通过。
+- [x] .env、缓存、worktree、日志等不进入 Git 提交。
 
 ### 工作区与 Patch
 
-- [ ] 从固定 commit 创建 detached worktree，不改变源仓库的工作文件。
-- [ ] 两个 worktree 对同一路径的修改互不影响。
-- [ ] 创建失败、重复 run_id、清理失败有明确结果。
-- [ ] 共享缓存和 worktree 元数据操作有协调机制及相应验证。
-- [ ] Patch 覆盖新增、修改、删除和必要的二进制变更。
-- [ ] Patch 可应用到同一基准的干净 worktree，应用后的内容符合预期。
-- [ ] 清理不删除其他任务工作区；保留现场时产物可定位。
+- [x] 从固定 commit 创建 detached worktree，不改变源仓库的工作文件。
+- [x] 两个 worktree 对同一路径的修改互不影响。
+- [x] 创建失败、重复 run_id、清理失败有明确结果。
+- [x] 共享缓存和 worktree 元数据操作有协调机制及相应验证。
+- [x] Patch 覆盖新增、修改、删除和必要的二进制变更。
+- [x] Patch 可应用到同一基准的干净 worktree，应用后的内容符合预期。
+- [x] 清理不删除其他任务工作区；保留现场时产物可定位。
 
 ### 文件与测试工具
 
-- [ ] 拒绝目录穿越、工作区外绝对路径和符号链接逃逸，保护 Git 元数据。
-- [ ] 读取、目录遍历、搜索输出均有边界，正确标记截断。
-- [ ] 精确编辑在零匹配、多匹配和文件版本过期时拒绝写入。
-- [ ] 无效参数、文件不存在、编码或文件类型不支持等情况有明确错误结果。
-- [ ] 测试成功、断言失败、无测试收集、进程启动失败和超时能区分。
-- [ ] 测试超时终止本次执行及其子进程，保留已获取的输出。
-- [ ] 测试后再次编辑会使旧验证结论失效。
+- [x] 拒绝目录穿越、工作区外绝对路径和符号链接逃逸，保护 Git 元数据。
+- [x] 读取、目录遍历、搜索输出均有边界，正确标记截断。
+- [x] 精确编辑在零匹配、多匹配和文件版本过期时拒绝写入。
+- [x] 无效参数、文件不存在、编码或文件类型不支持等情况有明确错误结果。
+- [x] 测试成功、断言失败、无测试收集、进程启动失败和超时能区分。
+- [x] 测试超时终止本次执行及其子进程，保留已获取的输出。
+- [x] 测试后再次编辑会使旧验证结论失效。
 
 ### Trace 与完整链路
 
-- [ ] 工具调用记录 run_id、时间、参数、结果、耗时和错误，敏感配置不进入日志。
-- [ ] Trace 追加落盘，中途失败仍可查看已完成步骤。
-- [ ] Calculator 的目标问题在修改前失败，通过工具修改后测试通过。
-- [ ] 将导出的 Patch 应用到干净 worktree 后，相同测试仍然通过。
-- [ ] 最终保存结果、实际测试证据、Patch 和已知限制。
+- [x] 工具调用记录 run_id、时间、参数、结果、耗时和错误，敏感配置不进入日志。
+- [x] Trace 追加落盘，中途失败仍可查看已完成步骤。
+- [x] Calculator 的目标问题在修改前失败，通过工具修改后测试通过。
+- [x] 将导出的 Patch 应用到干净 worktree 后，相同测试仍然通过。
+- [x] 最终保存结果、实际测试证据、Patch 和已知限制。
 
 ## 7. 构建记录
 
@@ -166,6 +166,16 @@ ToolResult 区分 success、结构化 data、error_code、error 和 truncated。
 - 公开测试记录代码版本及 Patch 摘要，编辑、测试副作用或导出前外部变更使旧验证失效。
 - 增加内部异常、Trace 写入失败、可恢复 IO 错误验证。当前 `uv run pytest -q`：31 passed；`uv run mypy`：23 个源文件通过。
 
+### 2026-09-14 — Calculator 集成验证与阶段验收
+
+- 新增 `main.py demo`、Calculator 可信夹具、独立 pytest 配置及完整链路测试。
+- 原始 fixture 保留 Bug；示例按预先编排的工具步骤执行，不使用模型、不模拟真实 Issue 成功率。
+- 实际演示运行：`calculator-81a669ea1c19`。
+- 修改前：2 failed, 3 passed；修改后：5 passed；Patch 应用到干净 worktree 后：5 passed。
+- 成功工作区全部清理，cleanup_errors 为空；Trace、结果与 Patch 保留在 `runs/calculator-81a669ea1c19/`。
+- 最终验证：`uv run pytest -q` → **31 passed**；ruff check → **通过**；ruff format --check → **32 files already formatted**；`uv run mypy` → **23 个源文件通过**；`uv build` → **sdist 与 wheel 构建成功**。
+- Git 按功能提交：`b52b46b` 基础协议与 Trace、`4d563d3` worktree 与 Patch、`1a293c0` 工具及测试执行；演示和最终文档在后续独立提交中交付。
+
 ### 后续记录格式
 
 每次完成一项构建工作后追加：
@@ -180,18 +190,22 @@ ToolResult 区分 success、结构化 data、error_code、error 和 truncated。
 已知问题与下一步：
 ```
 
-## 8. 实施时需要落实的细节
+## 8. 已落实细节与已知限制
 
-- 固定包管理和类型检查工具，补充准确开发命令；沿用 Python、Pydantic、pytest、ruff 技术路线。
-- 明确缓存、worktree、运行产物的默认目录和保留期限。
-- 明确并发元数据操作的锁范围及故障恢复行为。
-- 明确 Patch 排除规则、二进制处理和文件模式变更行为。
-- 定义读取版本凭据及测试配置格式，避免用自由文本结果驱动状态更新。
-
-上述事项属于本阶段实现细节，开发时记录选择与原因；涉及核心架构或范围改变时先讨论。
+- 工具链固定为 uv + Python 3.12 + Pydantic + pytest + ruff + mypy；uv.lock 纳入 Git。
+- 默认目录：`.cache/repositories`、`.worktrees`、`runs`，可通过环境配置覆盖。
+- 成功运行默认清理 worktree；失败或 `--keep-worktrees` 时保留。缓存和产物人工清理，无后台 TTL。
+- 同一 cache_dir 使用全局文件锁，协调创建、更新、导出和清理，超时 60 秒；先以串行元数据操作保证正确性。
+- Patch 导出使用临时 index 和 Git binary diff，保留真实 index；明确的未跟踪产物排除规则见 README，已跟踪变更不按目录静默丢弃。
+- 读取版本使用文件内容 SHA-256；测试前后及导出前检查 Patch 摘要，拒绝过期验证结论。
+- LocalSandbox 只支持可信代码和 POSIX 系统，不能隔离宿主机访问，也不抵御恶意进程逃逸或并发文件替换。
+- 当前文件工具拒绝符号链接、硬链接和非 UTF-8 文本；edit_file 不负责新建或删除文件。
+- 暂不支持子模块、Git LFS、复杂 Git filter 或容器内 Git 元数据映射。
+- 测试日志超过上限会截断；Trace 的已知密钥脱敏不代替通用秘密扫描。
+- 当前只有公开夹具验证，没有 LLM、自主修复、Docker 或独立隐藏评测。
 
 ## 9. 阶段完成与交接
 
-全部必要验收项通过后，将当前状态改为“已完成”，补充实际目录、工具接口、测试命令及结果、已知限制和交付提交。
+第一阶段必要验收项已通过。实际目录和接口见 README，验证结果见第 7 节，限制见第 8 节。
 
 完成 Milestone 1 后停止扩展功能，等待确认再进入 Milestone 2。下一阶段在这些工具之上接入模型适配器和自主 Loop，不提前实现后续集成。
