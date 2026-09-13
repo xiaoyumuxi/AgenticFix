@@ -1,8 +1,10 @@
 import asyncio
 import os
 import signal
+import tempfile
 import time
 from pathlib import Path
+from uuid import uuid4
 
 from sandbox.base import ExecutionResult, Sandbox
 
@@ -23,7 +25,18 @@ class LocalSandbox(Sandbox):
             for k in ("PATH", "LANG", "LC_ALL", "TMPDIR", "SYSTEMROOT")
             if k in os.environ
         }
-        env.update({"PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1", "PYTHONIOENCODING": "utf-8"})
+        env.update(
+            {
+                "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+                "PYTHONIOENCODING": "utf-8",
+                # A fresh unused prefix avoids stale same-second, same-size source bytecode.
+                # Disable writes so no cache directory needs to be created or cleaned.
+                "PYTHONDONTWRITEBYTECODE": "1",
+                "PYTHONPYCACHEPREFIX": str(
+                    Path(tempfile.gettempdir()) / f"agenticfix-{uuid4().hex}"
+                ),
+            }
+        )
         try:
             process = await asyncio.create_subprocess_exec(
                 *argv,

@@ -98,3 +98,21 @@ async def test_external_edit_before_export_invalidates_tests(registry, context):
     (context.workspace.path / "sample.py").write_text("modified = True\n")
     assert (await registry.call("git_diff", {})).success
     assert not context.state.current_tests_passed
+
+
+async def test_same_size_same_timestamp_bytecode_is_not_reused(tmp_path):
+    import os
+    import py_compile
+
+    source = tmp_path / "module.py"
+    source.write_text("value = 1\n")
+    timestamp = source.stat().st_mtime
+    py_compile.compile(str(source), doraise=True)
+    source.write_text("value = 2\n")
+    os.utime(source, (timestamp, timestamp))
+    result = await LocalSandbox(trusted=True, max_output_bytes=1000).run(
+        (sys.executable, "-c", "import module; print(module.value)"),
+        tmp_path,
+        10,
+    )
+    assert result.stdout.strip() == "2"
