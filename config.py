@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     runs_dir: Path = Path("runs")
     max_file_bytes: int = Field(default=1_048_576, ge=1)
     max_read_lines: int = Field(default=400, ge=1)
+    max_build_timeout: float = Field(default=300, gt=0, le=900)
+    environment_prompt_version: str = "environment-v1"
     max_test_timeout: float = Field(default=60, gt=0)
     max_output_bytes: int = Field(default=1_048_576, ge=1)
     max_entries: int = Field(default=2000, ge=1)

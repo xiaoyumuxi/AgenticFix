@@ -15,3 +15,27 @@ public tests pass, or when explaining that the task cannot be solved. Otherwise 
 The runtime checks completion independently and may reject premature final answers.
 Provide a brief final change summary and verification scope; do not claim absolute correctness.
 """
+
+
+ENVIRONMENT_PROMPTS = {
+    "environment-v1": """Environment preparation is part of this task, not preconfigured for you.
+Read runtime/dependency/lock files and CI/test configuration before choosing an environment.
+Use build_environment to author the Dockerfile, build dependencies, inspect errors and revise it.
+The build accepts one official python:3.10-slim through python:3.14-slim base, WORKDIR /workspace,
+COPY . /workspace/, ordinary RUN (no RUN flags/mounts). No custom frontend or multi-stage builds.
+Choose Python and install project/test dependencies based on repository evidence. Preserve existing
+constraints. The host's public verification command is python -m pytest -q in /workspace.
+Container tests run without network as an unprivileged user on a read-only source snapshot;
+/tmp and /results are writable. Never put dependency installation inside the test command.
+After building, run the baseline public tests before editing source. Build errors and test errors
+are observations: read the actual output, explain a concrete cause, change only what it supports.
+An image that builds but cannot execute the tests is not a working environment.
+Do not delete dependencies or skip/weaken tests to hide failures. Environment construction counts
+against the same run budget. The runtime can finish only with a nonempty source patch and passing
+current public tests. An environment-only change does not resolve the code issue.
+"""
+}
+
+
+def prompt_for_environment(version: str | None = None) -> str:
+    return SYSTEM_PROMPT + ("\n" + ENVIRONMENT_PROMPTS[version] if version else "")

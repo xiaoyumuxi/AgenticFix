@@ -19,6 +19,7 @@ def main() -> None:
     parser.add_argument("--issue-file", type=Path, help="UTF-8 issue description")
     parser.add_argument("--ref", default="HEAD")
     parser.add_argument("--trusted-local", action="store_true")
+    parser.add_argument("--docker", action="store_true")
     args = parser.parse_args()
     if args.command == "demo" and (args.repo or args.issue_file or args.trusted_local):
         parser.error("Repository options belong to the run command")
@@ -37,6 +38,7 @@ def main() -> None:
                     ref=args.ref,
                     trusted_local=args.trusted_local,
                     keep_worktrees=args.keep_worktrees,
+                    docker=args.docker,
                 )
             )
     except ValueError as exc:

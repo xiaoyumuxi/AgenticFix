@@ -12,19 +12,23 @@ class RunTestsArgs(ToolArgs):
 
 class RunTests(BaseTool):
     name = "run_tests"
-    description = "Run a host-configured pytest target in an explicitly trusted fixture."
+    description = (
+        "Run a host-configured pytest target in Docker, or an explicitly trusted local fixture."
+    )
     args_schema = RunTestsArgs
 
     async def execute(self, args: ToolArgs, context: ToolContext) -> ToolResult:
         assert isinstance(args, RunTestsArgs)
-        if not context.trusted_local:
+        if not context.trusted_local and context.docker is None:
             raise ToolError("UNTRUSTED_EXECUTION", "Docker required for external repositories")
         if args.target not in context.test_targets:
             raise ToolError("UNKNOWN_TARGET", "Test target is not configured")
         before_digest = context.patch_digest()
         context.invalidate_external_changes(before_digest)
         tested_revision = context.state.workspace_revision
-        sandbox = LocalSandbox(trusted=True, max_output_bytes=context.settings.max_output_bytes)
+        sandbox = context.docker or LocalSandbox(
+            trusted=True, max_output_bytes=context.settings.max_output_bytes
+        )
         result = await sandbox.run(
             context.test_targets[args.target],
             context.workspace.path,
@@ -55,6 +59,8 @@ class RunTests(BaseTool):
             "tested_revision": context.state.tested_revision,
             "target": args.target,
         }
+        if context.docker is not None:
+            data.update(context.docker.last_run)
         artifact = context.tracer.save_json(f"test-{context.state.total_tool_calls}.json", data)
         data["artifact"] = str(artifact)
         return ToolResult(

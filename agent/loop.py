@@ -9,7 +9,7 @@ from typing import Any
 from uuid import uuid4
 
 from agent.llm import LLMClient, ModelError, ModelReply
-from agent.prompts import SYSTEM_PROMPT
+from agent.prompts import prompt_for_environment
 from tools.base import ToolResult
 from tools.registry import ToolRegistry
 from tracing.models import TraceEvent
@@ -27,7 +27,12 @@ class AgentLoop:
         self.settings = self.context.settings
         self.state = self.context.state
         self.messages: list[dict[str, Any]] = [
-            {"role": "system", "content": SYSTEM_PROMPT},
+            {
+                "role": "system",
+                "content": prompt_for_environment(
+                    self.settings.environment_prompt_version if self.context.docker else None
+                ),
+            },
             {"role": "user", "content": self.state.issue},
         ]
         self.actions: Counter[str] = Counter()
@@ -149,8 +154,13 @@ class AgentLoop:
         self.context.tracer.save_json("state.json", self.state.model_dump())
 
     async def drive(self) -> None:
-        baseline = await self.call_tool("run_tests", {"target": "default"})
-        self.feedback("Initial public test baseline: " + self.tool_message(baseline))
+        if self.context.docker is None:
+            baseline = await self.call_tool("run_tests", {"target": "default"})
+            self.feedback("Initial public test baseline: " + self.tool_message(baseline))
+        else:
+            self.feedback(
+                "Environment is not built. Inspect project requirements, build, then test."
+            )
         while True:
             reply = await self.request()
             message = reply.message.model_dump(exclude_none=True)

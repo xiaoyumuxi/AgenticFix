@@ -19,7 +19,9 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def capture_start(tracer: Tracer, settings: Settings, root: Path) -> None:
+def capture_start(
+    tracer: Tracer, settings: Settings, root: Path, system_prompt: str = SYSTEM_PROMPT
+) -> None:
     version: dict[str, Any] = {"commit": None, "dirty": None}
     try:
         version["commit"] = git(root, "rev-parse", "HEAD").decode().strip()
@@ -73,8 +75,8 @@ def capture_start(tracer: Tracer, settings: Settings, root: Path) -> None:
                 "packages": packages,
             },
             "lock_sha256": digest(lock.read_bytes()) if lock.exists() else None,
-            "system_prompt": SYSTEM_PROMPT,
-            "system_prompt_sha256": digest(SYSTEM_PROMPT.encode()),
+            "system_prompt": system_prompt,
+            "system_prompt_sha256": digest(system_prompt.encode()),
         },
     )
 
@@ -114,8 +116,11 @@ def finalize_evidence(tracer: Tracer) -> None:
                     tests.append(result.get("data", {}))
     tracer.save_json("measurements.json", {"requests": requests, "tools": tools, "tests": tests})
     artifacts = {
-        path.name: {"sha256": digest(path.read_bytes()), "bytes": path.stat().st_size}
-        for path in sorted(tracer.directory.iterdir())
+        path.relative_to(tracer.directory).as_posix(): {
+            "sha256": digest(path.read_bytes()),
+            "bytes": path.stat().st_size,
+        }
+        for path in sorted(tracer.directory.rglob("*"))
         if path.is_file()
         and not path.name.startswith(".")
         and path.name != "manifest.json"
@@ -126,7 +131,7 @@ def finalize_evidence(tracer: Tracer) -> None:
         {
             "schema_version": 1,
             "finished_at": datetime.now(UTC).isoformat(),
-            "scope": "Top-level artifacts, excluding manifest. Local; publication needs review.",
+            "scope": "Recursive artifacts; excludes manifest and hidden files. Local evidence.",
             "artifacts": artifacts,
         },
     )

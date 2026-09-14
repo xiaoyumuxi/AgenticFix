@@ -6,6 +6,7 @@ from pathlib import Path
 
 from agent.state import AgentState
 from config import Settings
+from sandbox.docker import DockerSandbox
 from tools.base import ToolError
 from tracing.tracer import Tracer
 from workspace.repository import Workspace, WorkspaceManager
@@ -23,6 +24,7 @@ class ToolContext:
     tracer: Tracer
     test_targets: dict[str, tuple[str, ...]] = field(default_factory=dict)
     trusted_local: bool = False
+    docker: DockerSandbox | None = None
     read_versions: dict[str, str] = field(default_factory=dict)
     lock: asyncio.Lock = field(default_factory=asyncio.Lock)
 

@@ -1,4 +1,5 @@
 from tools.context import ToolContext
+from tools.environment_tools import BuildEnvironment
 from tools.file_tools import EditFile, ListFiles, ReadFile
 from tools.git_tools import GitDiff
 from tools.registry import ToolRegistry
@@ -10,4 +11,6 @@ def build_registry(context: ToolContext) -> ToolRegistry:
     registry = ToolRegistry(context)
     for tool in (ListFiles(), ReadFile(), SearchCode(), EditFile(), RunTests(), GitDiff()):
         registry.register(tool)
+    if context.docker is not None:
+        registry.register(BuildEnvironment())
     return registry

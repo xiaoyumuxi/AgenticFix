@@ -9,8 +9,10 @@ from uuid import uuid4
 
 from agent.llm import OpenAICompatibleClient
 from agent.loop import AgentLoop
+from agent.prompts import prompt_for_environment
 from agent.state import AgentState
 from config import Settings
+from sandbox.docker import DockerSandbox
 from tools.context import ToolContext
 from tools.factory import build_registry
 from tracing.evidence import capture_start, finalize_evidence
@@ -26,10 +28,11 @@ async def run_agent(
     ref: str = "HEAD",
     trusted_local: bool = False,
     keep_worktrees: bool = False,
+    docker: bool = False,
 ) -> dict[str, Any]:
     model = settings.llm_config()
     model.require_key()  # Fail before creating workspaces or sending repository data.
-    if source is not None and not trusted_local:
+    if source is not None and not trusted_local and not docker:
         raise ValueError("Custom local repositories require --trusted-local; Docker is not ready")
     if source is not None and (not source.is_dir() or not issue or not issue.strip()):
         raise ValueError("Provide an existing local repository and nonempty issue")
@@ -43,8 +46,24 @@ async def run_agent(
         ),
     )
     try:
-        capture_start(tracer, settings, Path(__file__).resolve().parents[1])
-        return await _run_prepared(settings, tracer, run_id, source, issue, ref, keep_worktrees)
+        capture_start(
+            tracer,
+            settings,
+            Path(__file__).resolve().parents[1],
+            prompt_for_environment(settings.environment_prompt_version if docker else None),
+        )
+        tracer.save_json(
+            "prompt.json",
+            {
+                "version": settings.environment_prompt_version if docker else "repair-v1",
+                "text": prompt_for_environment(
+                    settings.environment_prompt_version if docker else None
+                ),
+            },
+        )
+        return await _run_prepared(
+            settings, tracer, run_id, source, issue, ref, keep_worktrees, docker
+        )
     except (Exception, asyncio.CancelledError) as exc:
         tracer.save_json(
             "runner-error.json",
@@ -68,6 +87,7 @@ async def _run_prepared(
     issue: str | None,
     ref: str,
     keep_worktrees: bool,
+    docker: bool,
 ) -> dict[str, Any]:
     model = settings.llm_config()
     directory = tracer.directory
@@ -97,7 +117,8 @@ async def _run_prepared(
             "requested_ref": ref,
             "base_commit": repo.base_commit,
             "issue": issue,
-            "test_command": [sys.executable, "-m", "pytest", "-q"],
+            "test_command": ["python" if docker else sys.executable, "-m", "pytest", "-q"],
+            "execution": "docker" if docker else "trusted-local",
         },
     )
     workspace = manager.create_workspace(repo, run_id)
@@ -113,9 +134,17 @@ async def _run_prepared(
             issue=issue or "",
         ),
         tracer=tracer,
-        trusted_local=True,
-        test_targets={"default": (sys.executable, "-m", "pytest", "-q")},
+        trusted_local=not docker,
+        docker=DockerSandbox(directory / "environment", max_output_bytes=settings.max_output_bytes)
+        if docker
+        else None,
+        test_targets={"default": ("python" if docker else sys.executable, "-m", "pytest", "-q")},
     )
+    if context.docker:
+        probe = await context.docker.cli("version", "--format", "{{json .}}")
+        tracer.save_json("docker-version.json", probe.model_dump())
+        if probe.exit_code != 0:
+            raise ValueError("Docker daemon unavailable; inspect docker-version.json")
     client = OpenAICompatibleClient(model)
     try:
         result = await AgentLoop(client, build_registry(context)).run()
@@ -134,6 +163,7 @@ async def _run_prepared(
             "run_directory": str(directory),
             "retained_workspace": str(workspace.path) if workspace.path.exists() else None,
             "cleanup_errors": cleanup_errors,
+            "environment": context.docker.last_build if context.docker else None,
         }
     )
     tracer.save_json("result.json", result)
