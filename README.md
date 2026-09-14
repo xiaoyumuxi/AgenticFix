@@ -4,7 +4,7 @@
 
 **已实现 worktree、模型 Loop、模型编写 Dockerfile 与首个真实历史 Issue 的独立验收。** `demo` 保留预先编排的工具验证，`run` 使用模型选择动作。首次真实 DeepSeek 示例修复与干净工作区验证已通过；更多真实任务效果仍待评测。完整架构见 [AGENTS.md](AGENTS.md)，实施记录见 [第一阶段构建记录](docs/milestone-1.md)。
 
-最新真实Issue结果：**more-itertools #1152 已端到端完成**，修复前7失败/722通过，修复后729全通过。15次请求、110534 Token、164.78秒（含独立验收）。[完整迭代记录](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)；历史失败数据保留在下文。
+最新真实Issue结果：more-itertools #1152在固定v3配置下三次运行，**2次完整成功、1次失败**。三次源码候选均通过729项独立检查，但失败轮新增了错误测试，不能当作完整成功。[逐次数据及失败原因](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)。
 
 ## 架构
 
@@ -202,3 +202,10 @@ RUN-20260914-009在相同more-itertools #1152 base与固定729项验收上完成
 提示词提交`c1dc3cdb69d6d07532b9c6e96f3fbdd2aca9dd40`；证据提交`cca439b44c1292b3b2bee7face13ce7dd975f99f`。累计同一Issue6次尝试，端到端1/6、候选验收5/6，不代表6个独立任务。工程测试99 passed、1 skipped（28.62秒），ruff/mypy通过。
 
 [完整Wiki前后比较与逐次用量](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F) · [已验证Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/cca439b44c1292b3b2bee7face13ce7dd975f99f/docs/iteration-evidence/RUN-20260914-009/candidate.patch) · [独立验收结果](https://github.com/xiaoyumuxi/AgenticFix/blob/cca439b44c1292b3b2bee7face13ce7dd975f99f/docs/iteration-evidence/RUN-20260914-009/summary.json)。
+
+
+## 2026-09-14：v3重复验证与提示词记录
+
+保持environment-v3原文及009配置，新增010/011两轮：010完成（13次请求、111770 Token、150.36秒含验收）；011未完成（13次请求、107270 Token、162.29秒含验收）。两轮源码候选均通过729项独立测试，但011把非空范围的测试预期误写为[]，纠正编辑因未重新读取被拒绝，随后token_budget停止。事后定点验证错误测试1失败，只修正输入后1通过，不计为模型成功。
+
+v3累计2/3端到端成功；一个Issue全部历史尝试2/8，不能当作多任务Benchmark。提示词本轮未改，历史版本、修改原因、原文差异和哈希见[提示词记录](docs/prompt-history.md)。[Wiki前后比较](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F) · [错误测试诊断](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%9011%EF%BC%9A%E5%AE%9E%E7%8E%B0%E6%94%B9%E5%AF%B9%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%A8%A1%E5%9E%8B%E6%96%B0%E5%A2%9E%E7%9A%84%E6%B5%8B%E8%AF%95%E5%8F%8D%E8%80%8C%E9%94%99%E4%BA%86%EF%BC%9F)。当前优先验证测试预期/编辑恢复和预算反馈，再扩展第二个真实任务及环境失败恢复。

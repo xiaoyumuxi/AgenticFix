@@ -1,4 +1,4 @@
-> 最新进展（2026-09-14）：第六次尝试 RUN-20260914-009 已端到端完成，独立验收729项全通过。前五次失败记录完整保留，具体比较见文末新增记录。
+> 最新进展（2026-09-14）：v3固定配置共3次运行，2次端到端成功、1次失败。新增010/011重复验证及错误测试诊断见文末；历史失败完整保留。
 
 # AgenticFix‐8：Patch通过729项验证，为什么三轮仍然没有完成任务？
 
@@ -585,3 +585,192 @@ AGENTICFIX_ENVIRONMENT_PROMPT_VERSION=environment-v3 AGENTICFIX_MAX_READ_LINES=8
 工程回归 **99 passed、1 skipped，28.62秒**，ruff通过，mypy33个源文件通过。跳过项是显式Docker集成测试，本次真实Issue另行实际构建并运行Docker；没有宣称重跑了该集成用例。[工程测试日志](https://github.com/xiaoyumuxi/AgenticFix/blob/cca439b44c1292b3b2bee7face13ce7dd975f99f/docs/iteration-evidence/RUN-20260914-009/engineering-tests.txt)。
 
 这个Issue目前累计6次尝试：端到端成功1/6，候选验收通过5/6。它们是同一个Issue在不同迭代配置下的尝试，不能作为6个Issue的Benchmark成功率。此次可以交付已验证的Patch，但729项检查不能证明所有可能输入都没有新问题。
+
+
+## 2026-09-14 追加：固定v3再跑两次，检查成功能否复现
+
+这次先决定做两次重复运行，再开始测试，编号RUN-20260914-010、011。不根据第一轮结果换提示词，不把不理想的运行丢掉。两次都是同一个Issue #1152，从原始未修复base重新建立worktree，模型自行构建环境并修复。没有复用009的Patch作为模型输入。
+
+009只有一次成功，无法区分稳定行为与偶然的动作顺序。此次继续使用v3全文、80行读取上限、成功构建摘要、保留全部读取正文、150000 Token预算、30次请求和60次工具调用上限，复核实际运行快照而不是只看启动命令。
+
+两轮Agent提交均为 `deb74899647f5ab363548fc680487ee82318d524`，开始时dirty=false。与009的 `c1dc3cdb69d6d07532b9c6e96f3fbdd2aca9dd40` 相比只有文档和历史证据变更，agent/tools/sandbox/config/scripts没有代码差异。没有再修改提示词。三轮完整system prompt SHA-256均为 `8ae2568bf76dad69693752f5583c15e719c1e7346a5c78ce6c4e6dcab8db89a7`。
+
+### 这两轮实际怎样
+
+| 指标 | 009：首次成功 | 010：重复1 | 011：重复2 |
+| --- | ---: | ---: | ---: |
+| 模型请求数 | 15 | 13 | 13 |
+| 工具调用数（含Runtime） | 20 | 19 | 19 |
+| 服务报告Token | 110534 | 111770 | 107270 |
+| 估算入账Token | 0 | 0 | 0 |
+| Loop秒 | 89.59 | 83.61 | 81.06 |
+| 含独立验收总秒 | 164.78 | 150.36 | 162.29 |
+| 独立测试结果 | 729通过 / 0未通过 | 729通过 / 0未通过 | 729通过 / 0未通过 |
+| Agent停止原因 | public_tests_passed | public_tests_passed | token_budget |
+| 端到端solved | true | true | false |
+
+每轮独立评测都先执行base、再执行官方修复、最后应用模型Patch。原始715项测试恢复为base版本，另加14项运行前已冻结的验收，不使用模型改过的测试作为独立结论。预算和验收没有放宽。Python和安装依赖仍由模型决定，因此这验证的是相同Agent配置下的完整过程，不是固定同一个Docker镜像的实验。金额成本未测量。
+
+### 提示词确实改过：上轮v2→v3，本轮没有v4
+
+v1要求模型自行准备环境并解释失败；v2是在004构建前读取15次文件后增加“最多3次环境读取，再构建和跑基线”；v3是在007改对并测试却预算中止、008删旧正文仍未修改之后增加完成顺序约束。v3修改提交 `c1dc3cdb69d6d07532b9c6e96f3fbdd2aca9dd40`。上轮新增原文：
+
+```text
+Complete the repair within the run budget. Once you have read the relevant implementation and
+public tests and can explain the failing behavior from the issue, make the smallest supported
+edit. Do not keep surveying neighboring code without a specific unresolved question.
+After editing implementation and any regression tests, prioritize run_tests over further reading.
+If tests fail, investigate the concrete failure and revise. If the current default tests pass
+and your patch addresses the issue, return your final summary immediately; the runtime will run
+its own final verification and export the patch. Do not restart discovery or add unrelated changes.
+```
+
+读取上限、日志摘要和删除旧读取正文都是Runtime配置，不属于这段提示词差异。各版本的原文、SHA-256、引入提交、对应运行另集中记入仓库 `docs/prompt-history.md`；每次运行自己的prompt.json仍保存完整文本。
+
+### RUN-20260914-010逐次数据
+
+run_id `agent-ba72a49c0ec8`；UTC开始 `2026-09-14T04:51:09.723149+00:00`，本地时区Asia/Singapore（UTC+08）。目标base `247e15b3a489d5805375c95dfa79486c9bd0eb1b`，官方修复 `1806a75b836b9eff4a7885a96ece6183f5fb6409`。
+
+| 请求 | 动作 | 输入预留 | 服务输入 | 服务输出 | 服务总数 | 客户端秒 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | list_files | 7827 | 1921 | 68 | 1989 | 0.865 |
+| 2 | read_file, read_file, read_file | 9428 | 2325 | 135 | 2460 | 1.481 |
+| 3 | build_environment | 13488 | 3505 | 357 | 3862 | 1.974 |
+| 4 | run_tests | 15830 | 4121 | 63 | 4184 | 0.895 |
+| 5 | search_code, search_code | 18407 | 4716 | 128 | 4844 | 0.778 |
+| 6 | read_file, read_file | 25770 | 6854 | 172 | 7026 | 1.067 |
+| 7 | read_file, read_file | 32878 | 9109 | 183 | 9292 | 0.834 |
+| 8 | read_file | 40322 | 11491 | 268 | 11759 | 1.662 |
+| 9 | edit_file | 42583 | 12128 | 230 | 12358 | 1.110 |
+| 10 | edit_file | 43662 | 12421 | 491 | 12912 | 2.004 |
+| 11 | run_tests | 45260 | 12974 | 56 | 13030 | 0.833 |
+| 12 | git_diff | 47810 | 13560 | 48 | 13608 | 0.935 |
+| 13 | 完成答复 | 49638 | 14205 | 241 | 14446 | 1.599 |
+
+最后一次已发请求：剩余预算52676，输入预留49638，输出上限3038；服务实际输入14205、输出241。最终剩余38230，停止原因`public_tests_passed`。最终上下文字节数50280是结束后的诊断快照，不是额外发出的模型请求。
+
+请求和返回模型均为deepseek-flash，endpoint为https://api.deepseek.com，extra_body={}，temperature未显式设置。宿主macOS arm64/Python3.12.13，uv.lock SHA-256 `8256210a762f06efc6bed4bbb655daeafefc851ffb2ef343cd0b63c269ef24df`。Loop900秒、构建300秒、测试120秒，隔离规则沿用前文。
+
+模型Dockerfile：
+
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /workspace
+COPY . /workspace/
+RUN pip install --no-cache-dir pytest
+```
+
+运行镜像 `sha256:ab3fad47dd1804f1f5b1b9d5d1738937adf1e1f61a99393d74a21555bde7f26b`；独立冷重建镜像 `sha256:4b9687bf41a943e79a462c5c721bd66cacfaf931cd5e5c0c8963180183720461`。导入与依赖实际输出：
+
+```text
+3.11.16 (main, Aug 31 2026, 23:54:33) [GCC 14.2.0]
+/workspace/more_itertools/__init__.py
+iniconfig==2.3.0
+packaging==26.3
+pip==24.0
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==9.1.1
+setuptools==79.0.1
+wheel==0.46.3
+```
+
+Python标签和依赖未锁定，因此跨时间重跑不能保证相同环境。仅验证源码测试，不包含目标项目wheel打包安装。
+
+Patch SHA-256 `b8503ce43e40796ef7246ddc7c6c12365b9046a54359b498d090ea0a1ac21242`；冻结验收SHA-256 `ecadfe23ce03881e81814e5c20bb880637494a80a991da196abb856c134398fc`。
+
+[三方原始结果](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-010/summary.json) · [Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-010/candidate.patch) · [开始时快照](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-010/metadata.json) · [完整提示词](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-010/prompt.json) · [请求用量](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-010/request-breakdown.json) · [输入预留](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-010/request-reservations.json) · [公开文件哈希](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-010/archive-manifest.json)。
+
+### RUN-20260914-011逐次数据
+
+run_id `agent-38f2d2d08252`；UTC开始 `2026-09-14T04:53:57.600637+00:00`，本地时区Asia/Singapore（UTC+08）。目标base `247e15b3a489d5805375c95dfa79486c9bd0eb1b`，官方修复 `1806a75b836b9eff4a7885a96ece6183f5fb6409`。
+
+| 请求 | 动作 | 输入预留 | 服务输入 | 服务输出 | 服务总数 | 客户端秒 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | list_files, search_code | 7827 | 1921 | 132 | 2053 | 1.476 |
+| 2 | read_file, read_file, read_file | 10700 | 2661 | 224 | 2885 | 1.055 |
+| 3 | build_environment | 15156 | 3930 | 236 | 4166 | 1.845 |
+| 4 | run_tests | 17010 | 4423 | 28 | 4451 | 0.889 |
+| 5 | read_file, read_file | 19535 | 4983 | 167 | 5150 | 1.008 |
+| 6 | search_code, search_code | 25285 | 6809 | 148 | 6957 | 0.973 |
+| 7 | search_code, read_file | 26494 | 7095 | 145 | 7240 | 0.814 |
+| 8 | read_file | 33793 | 9529 | 94 | 9623 | 1.171 |
+| 9 | read_file | 36866 | 10623 | 116 | 10739 | 0.611 |
+| 10 | read_file | 40895 | 11785 | 161 | 11946 | 0.822 |
+| 11 | edit_file | 42976 | 12469 | 1135 | 13604 | 4.588 |
+| 12 | edit_file | 46715 | 13667 | 301 | 13968 | 1.500 |
+| 13 | edit_file | 47756 | 14030 | 458 | 14488 | 1.954 |
+
+最后一次已发请求：剩余预算57218，输入预留47756，输出上限4096；服务实际输入14030、输出458。最终剩余42730，停止原因`token_budget`。最终上下文字节数48883是结束后的诊断快照，不是额外发出的模型请求。
+
+请求和返回模型均为deepseek-flash，endpoint为https://api.deepseek.com，extra_body={}，temperature未显式设置。宿主macOS arm64/Python3.12.13，uv.lock SHA-256 `8256210a762f06efc6bed4bbb655daeafefc851ffb2ef343cd0b63c269ef24df`。Loop900秒、构建300秒、测试120秒，隔离规则沿用前文。
+
+模型Dockerfile：
+
+```dockerfile
+FROM python:3.10-slim
+WORKDIR /workspace
+COPY . /workspace/
+RUN pip install --no-cache-dir pytest
+```
+
+运行镜像 `sha256:7f452ecfe1a00e70a2c1417c8487d5f4e162868b8f2c088de2ee2eb75bbf2f30`；独立冷重建镜像 `sha256:1eae238b4ba67a8880bf05fe80f8c6a137f3f5f54932801faff2e01297ca68cb`。导入与依赖实际输出：
+
+```text
+3.10.21 (main, Aug 31 2026, 23:56:10) [GCC 14.2.0]
+/workspace/more_itertools/__init__.py
+exceptiongroup==1.3.1
+iniconfig==2.3.0
+packaging==26.3
+pip==23.0.1
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==9.1.1
+setuptools==79.0.1
+tomli==2.4.1
+typing_extensions==4.16.0
+wheel==0.46.3
+```
+
+Python标签和依赖未锁定，因此跨时间重跑不能保证相同环境。仅验证源码测试，不包含目标项目wheel打包安装。
+
+Patch SHA-256 `e9e039758a714e740b80772fb79b6613a81628cc08e1e56bfa8d6ffdbcf53056`；冻结验收SHA-256 `ecadfe23ce03881e81814e5c20bb880637494a80a991da196abb856c134398fc`。
+
+[三方原始结果](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-011/summary.json) · [Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-011/candidate.patch) · [开始时快照](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-011/metadata.json) · [完整提示词](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-011/prompt.json) · [请求用量](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-011/request-breakdown.json) · [输入预留](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-011/request-reservations.json) · [公开文件哈希](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/RUN-20260914-011/archive-manifest.json)。
+
+### 14组输入的前后实际值
+
+以下是独立pytest结束后的Docker值探针补采，010和011各使用本轮独立验收镜像，对base/官方/候选分别执行。原始JUnit与事后补采区分保存。
+
+| numeric_range输入 | 预期 | base实际（两轮） | 官方实际（两轮） | 010实际 | 011实际 |
+| --- | --- | --- | --- | --- | --- |
+| `(0,)` | `[]` | `IndexError` | `[]` | `[]` | `[]` |
+| `(3, 3)` | `[]` | `IndexError` | `[]` | `[]` | `[]` |
+| `(2, 1)` | `[]` | `IndexError` | `[]` | `[]` | `[]` |
+| `(1, 2, -1)` | `[]` | `IndexError` | `[]` | `[]` | `[]` |
+| `(0.0,)` | `[]` | `IndexError` | `[]` | `[]` | `[]` |
+| `(Decimal('0'),)` | `[]` | `IndexError` | `[]` | `[]` | `[]` |
+| `(Fraction(0, 1),)` | `[]` | `IndexError` | `[]` | `[]` | `[]` |
+| `(5,)` | `[4, 3, 2, 1, 0]` | `[4, 3, 2, 1, 0]` | `[4, 3, 2, 1, 0]` | `[4, 3, 2, 1, 0]` | `[4, 3, 2, 1, 0]` |
+| `(1, 6, 2)` | `[5, 3, 1]` | `[5, 3, 1]` | `[5, 3, 1]` | `[5, 3, 1]` | `[5, 3, 1]` |
+| `(5, 0, -2)` | `[1, 3, 5]` | `[1, 3, 5]` | `[1, 3, 5]` | `[1, 3, 5]` | `[1, 3, 5]` |
+| `(0, 1, 0.25)` | `[0.75, 0.5, 0.25, 0.0]` | `[0.75, 0.5, 0.25, 0.0]` | `[0.75, 0.5, 0.25, 0.0]` | `[0.75, 0.5, 0.25, 0.0]` | `[0.75, 0.5, 0.25, 0.0]` |
+| `(Decimal('0'), Decimal('1'), Decimal('0.25'))` | `[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]` | `[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]` | `[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]` | `[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]` | `[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]` |
+| `(Fraction(0, 1), Fraction(1, 1), Fraction(1, 4))` | `[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]` | `[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]` | `[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]` | `[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]` | `[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]` |
+| `(4,)` | `[3, 2, 1, 0]` | `[3, 2, 1, 0]` | `[3, 2, 1, 0]` | `[3, 2, 1, 0]` | `[3, 2, 1, 0]` |
+
+通过/失败情况由实际值与预期比对：base前7组失败、后7组通过；官方及010/011全部14组通过。`(4,)`在两轮的base、官方、候选六组探针中，反转后正向均为`[0, 1, 2, 3]`，再次反转均为`[3, 2, 1, 0]`；其他输入没有额外补采副作用。
+
+补采：[010程序](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/REAL-ISSUE-1152-PROBE/reproduce-v7.py) · [010实际值](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/REAL-ISSUE-1152-PROBE/results-v7.json) · [011程序](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/REAL-ISSUE-1152-PROBE/reproduce-v8.py) · [011实际值](https://github.com/xiaoyumuxi/AgenticFix/blob/71b58df66f79af9e4e02115d2ee686e13c640580/docs/iteration-evidence/REAL-ISSUE-1152-PROBE/results-v8.json)。
+
+### 结果与下一轮方向
+
+同配置v3的009、010、011三次中，2次端到端成功、1次失败；三份源码候选均通过729项独立测试。但011新增了错误的公开测试，且尝试修正时未重新读取，工具拒绝后预算耗尽。不能把011称为完整正确Patch。当前总共8次历史尝试，端到端2/8、恢复原始测试后的候选验收7/8；这是一个Issue的迭代数据，不是8个Issue的Benchmark。
+
+010新增3组正确的空范围输入，实际公开基线、修改后、Runtime收尾均715通过。011新增4组输入，其中非空下降范围误写预期为空；模型只跑过715项基线，修改后的测试事后定点补跑失败。这给出比“再加一句快点完成”更具体的下一步：核对测试预期、修改后尽早测试、让编辑错误反馈指明重新读取，并在剩余预算还能采取动作时提醒模型。
+
+预算预留仍按字节数+256保守估算；011剩42730却需要49139的输入预留，未发下一请求。优化需要记录实际usage误差，保留未知用量与硬上限机制，不能直接除以经验常数后宣称严格安全。当前v3没有升级成默认值，没有引入v4。
+
+两次构建和独立冷重建均成功，没有观察到模型根据Docker构建失败恢复。本轮公开测试的只读缓存警告复现，仍为已记录ENV-20260914-002，exit_code=0；后续应补固定的缺依赖恢复场景和第二个有测试依赖的真实Issue。此次仅调整文档、证据和事后复现脚本，Runtime和提示词源码不变，未重复运行上轮99通过/1跳过的工程套件；已实际执行两次完整Docker评测、14组值补采与错误测试的前后定点对照。
+
+[错误测试及编辑拒绝的具体数据](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%9011%EF%BC%9A%E5%AE%9E%E7%8E%B0%E6%94%B9%E5%AF%B9%E4%BA%86%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%A8%A1%E5%9E%8B%E6%96%B0%E5%A2%9E%E7%9A%84%E6%B5%8B%E8%AF%95%E5%8F%8D%E8%80%8C%E9%94%99%E4%BA%86%EF%BC%9F) · [补采挂载路径错误](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%9012%EF%BC%9A%E8%A1%A5%E9%87%87%E5%91%BD%E4%BB%A4%E6%B2%A1%E6%9C%89%E5%90%AF%E5%8A%A8%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E7%AE%97%E6%B5%8B%E8%AF%95%E5%A4%B1%E8%B4%A5%EF%BC%9F)。local-manifest.json引用原始本地运行产物，archive-manifest.json校验公开文件；原始模型推理不公开。
