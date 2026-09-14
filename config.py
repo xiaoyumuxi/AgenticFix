@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     max_context_bytes: int = Field(default=150000, ge=100)
     max_tool_message_chars: int = Field(default=12000, ge=200)
     compact_successful_build: bool = False
+    retained_read_results: int | None = Field(default=None, ge=1)
     max_repeated_actions: int = Field(default=3, ge=1)
 
     def llm_config(self) -> ModelConfig:

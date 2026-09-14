@@ -265,3 +265,34 @@ def test_build_context_projection_preserves_failures_and_original(
         assert projected == original
     context.settings.compact_successful_build = False
     assert json.loads(loop.tool_message(result, "build_environment")) == original
+
+
+async def test_read_retention_projects_requests_without_losing_audit_history(context):
+    context.settings.retained_read_results = 1
+    client = QueueClient([reply_final()])
+    loop = AgentLoop(client, build_registry(context))
+    for number, success in [(0, True), (1, False), (2, True)]:
+        call = reply_call("read_file", {"path": f"{number}.py"}, str(number))
+        loop.messages.append(call.message.model_dump(exclude_none=True))
+        loop.messages.append(
+            {
+                "role": "tool",
+                "tool_call_id": str(number),
+                "content": json.dumps(
+                    {
+                        "success": success,
+                        "data": {"content": f"source-{number}", "version": str(number)},
+                    }
+                ),
+            }
+        )
+    original = json.loads(json.dumps(loop.messages))
+    await loop.request()
+    sent = client.requests[0]
+    assert loop.messages == original
+    assert len(sent) == len(original)
+    assert "content" not in json.loads(sent[3]["content"])["data"]
+    assert json.loads(sent[3]["content"])["data"]["version"] == "0"
+    assert sent[5] == original[5]  # Failed read is never hidden.
+    assert sent[7] == original[7]  # Most recent successful read remains complete.
+    assert loop.request_messages() == sent

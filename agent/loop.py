@@ -103,12 +103,53 @@ class AgentLoop:
             self.stop(result.error_code or "fatal_tool_error")
         return result
 
+    def request_messages(self) -> list[dict[str, Any]]:
+        keep = self.settings.retained_read_results
+        if keep is None:
+            return self.messages
+        # Do not mutate the audit history or break assistant/tool-call pairing.
+        names = {
+            call["id"]: call["function"]["name"]
+            for message in self.messages
+            for call in message.get("tool_calls", [])
+        }
+        projected = list(self.messages)
+        seen = 0
+        for index in range(len(projected) - 1, -1, -1):
+            message = projected[index]
+            if (
+                message.get("role") != "tool"
+                or names.get(message.get("tool_call_id")) != "read_file"
+            ):
+                continue
+            result = json.loads(message["content"])
+            data = result.get("data", {})
+            if not result.get("success") or "content" not in data:
+                continue
+            seen += 1
+            if seen <= keep:
+                continue
+            projected[index] = message | {
+                "content": json.dumps(
+                    result
+                    | {
+                        "data": {key: value for key, value in data.items() if key != "content"},
+                        "truncated": True,
+                        "context_note": "Older read body omitted from request context. "
+                        "Original result remains in the run trace. Re-read if needed.",
+                    },
+                    ensure_ascii=False,
+                )
+            }
+        return projected
+
     async def request(self) -> ModelReply:
         for attempt in range(self.settings.max_model_retries + 1):
             if self.state.iteration >= self.settings.max_iterations:
                 self.stop("iteration_budget")
+            request_messages = self.request_messages()
             encoded = json.dumps(
-                {"messages": self.messages, "tools": self.registry.schemas()}, ensure_ascii=False
+                {"messages": request_messages, "tools": self.registry.schemas()}, ensure_ascii=False
             ).encode("utf-8")
             if len(encoded) > self.settings.max_context_bytes:
                 self.stop("context_budget")
@@ -146,7 +187,7 @@ class AgentLoop:
             self.persist()
             try:
                 reply = await self.client.generate(
-                    self.messages,
+                    request_messages,
                     self.registry.schemas(),
                     completion_limit,
                 )
