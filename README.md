@@ -2,7 +2,7 @@
 
 给定 GitHub 仓库与 Issue，逐步构建能够读取代码、定位问题、修改代码、运行测试、根据反馈继续修复并生成 Patch 的 Agent。
 
-**Milestone 1 已完成；现已新增 DeepSeek 优先的兼容模型适配器与最小 Agent Loop。** `demo` 保留预先编排的工具验证，`run` 使用模型选择动作。首次真实 DeepSeek 示例修复与干净工作区验证已通过；更多真实任务效果仍待评测。完整架构见 [AGENTS.md](AGENTS.md)，实施记录见 [第一阶段构建记录](docs/milestone-1.md)。
+**已实现 worktree、模型 Loop、模型编写 Dockerfile 与首个真实历史 Issue 的独立验收。** `demo` 保留预先编排的工具验证，`run` 使用模型选择动作。首次真实 DeepSeek 示例修复与干净工作区验证已通过；更多真实任务效果仍待评测。完整架构见 [AGENTS.md](AGENTS.md)，实施记录见 [第一阶段构建记录](docs/milestone-1.md)。
 
 ## 架构
 
@@ -11,7 +11,8 @@
     ├── AgentState：代码版本、测试状态、停止原因
     ├── ToolRegistry：参数校验、串行执行、错误处理、Trace
     │     ├── list_files / read_file / search_code / edit_file
-    │     ├── run_tests → LocalSandbox（只运行可信示例）
+    │     ├── build_environment → DockerSandbox（模型编写 Dockerfile）
+    │     ├── run_tests → DockerSandbox / LocalSandbox（后者只运行可信示例）
     │     └── git_diff → WorkspaceManager
     └── WorkspaceManager
           仓库缓存 → 每次运行的 detached worktree → 候选 Patch
@@ -30,6 +31,27 @@ Calculator 包含五个公开测试：原始实现有两个失败，工具修改
 这只验证工具链路。后续真实 Issue 的成功标准是：独立 Issue 验证测试通过，并且选定的原始回归测试没有新增失败。有限测试不能证明绝对没有新问题。
 
 每次工具调用追加记录开始、结束、参数、结果、耗时和错误。预期错误返回结构化结果；内部错误、隔离失效或 Trace 无法保存会停止运行。演示失败时保留工作区和尽可能导出的 Patch，记录 `result.json`。
+
+## 首个真实 Issue：环境也由模型构建
+
+任务为 [more-itertools #1152](https://github.com/more-itertools/more-itertools/issues/1152)，固定修复前 commit，模型读取声明并编写 Dockerfile、安装 pytest、构建、修改源码。独立评测恢复原测试，加上运行前冻结的 14 项验收，验证 base、官方源码修复与候选 Patch。
+
+| 运行 | 提示词 / 读取上限 | 服务报告 Token | 独立验证：base → 候选 | Agent 结果 |
+| --- | --- | ---: | --- | --- |
+| RUN-20260914-004 | v1 / 400 行 | 98,264 | 7失败/722通过 → 729通过 | token_budget，失败 |
+| RUN-20260914-005 | v2 / 400 行 | 98,113 | 7失败/722通过 → 729通过 | token_budget，失败 |
+| RUN-20260914-006 | v2 / 80 行 | 119,879 | 7失败/722通过 → 729通过 | token_budget，失败 |
+
+三次 Patch 均修好独立验收覆盖的行为，原 715 项回归没有新增失败；Runtime 均未正常完成，端到端结果仍计失败。这是同一个 Issue 的三次实验，不是三个任务的成功率。三轮模型环境都构建成功，尚未测试复杂依赖安装与构建失败后的真实模型恢复。
+
+启动 Docker 并配置 DeepSeek 后，在干净工作区运行：
+
+```bash
+gh repo clone more-itertools/more-itertools .cache/m3-upstream -- --no-checkout
+AGENTICFIX_ENVIRONMENT_PROMPT_VERSION=environment-v1 uv run python -m scripts.run_real_issue
+```
+
+脚本固定任务与 150,000 Token 等预算；失败仍保存 Patch 和独立报告。提示词 v2 与 80 行上限可通过环境变量选择，尚未设为默认，因为这次没有改善完成结果。实现与范围见 [第三阶段记录](docs/milestone-3.md)。详细逐轮数据、14 项实际值、版本和失败原因见 [AgenticFix‐7：Docker没有启动时如何留证，环境构建如何验收？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%907%EF%BC%9ADocker%E6%B2%A1%E6%9C%89%E5%90%AF%E5%8A%A8%E6%97%B6%E5%A6%82%E4%BD%95%E7%95%99%E8%AF%81%EF%BC%8C%E7%8E%AF%E5%A2%83%E6%9E%84%E5%BB%BA%E5%A6%82%E4%BD%95%E9%AA%8C%E6%94%B6%EF%BC%9F)、[AgenticFix‐8：Patch通过729项验证，为什么三轮仍然没有完成任务？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)。
 
 ## 快速开始
 
@@ -120,7 +142,7 @@ uv run python main.py run
 
 ## 工具接口
 
-工具通过 `ToolRegistry.call(name, arguments)` 调用。参数使用 Pydantic 严格校验，拒绝未知字段；`registry.schemas()` 返回六个工具的 JSON Schema。
+工具通过 `ToolRegistry.call(name, arguments)` 调用。参数使用 Pydantic 严格校验，拒绝未知字段；`registry.schemas()` 返回工具的 JSON Schema；Docker 模式额外注册 build_environment。
 
 所有结果统一包含 `success`、`data`、`error_code`、`error`、`truncated`、`fatal`。工作区、执行器与权限由宿主机提供的 `ToolContext` 持有，不能通过工具参数替换。
 
@@ -132,6 +154,7 @@ uv run python main.py run
 | edit_file | path、old_text、new_text、version | path、workspace_revision |
 | run_tests | target="default"、timeout=60 | stdout、stderr、exit_code、duration、status、tested_revision、artifact |
 | git_diff | 无参数 | base_commit、patch_path、有界 preview |
+| build_environment（Docker 模式） | dockerfile | 构建日志、退出码、镜像 ID、依赖环境 |
 
 编辑前必须读取对应文件，并传回该次读取的 `version`。只支持 UTF-8 已有文件的唯一精确替换；保持文件权限和原有换行。缺失匹配、多处匹配、过期读取、无变化替换和超限修改均拒绝。
 
@@ -141,18 +164,18 @@ uv run python main.py run
 
 ## 边界与限制
 
-- **LocalSandbox 不是安全隔离环境。** 仅限可信测试代码；worktree 也不能阻止进程访问宿主机。真实项目执行等待 Docker 阶段。
+- **LocalSandbox 不是安全隔离环境。** 仅限可信测试代码；worktree 也不能阻止进程访问宿主机。真实项目必须通过 DockerSandbox 执行。
 - 测试子进程仅继承少量运行环境变量，不继承模型密钥；输出超过上限会截断，日志不保证包含完整超大输出。
 - 文件工具拒绝越界、符号链接、硬链接、Git 元数据和环境文件。运行假设任务目录由 Runtime 独占；不提供抵御恶意并发文件替换的内核级保证。
 - 仓库工具尚不支持子模块、LFS 内容处理、复杂 Git filter 和容器内 Git 元数据映射。避免把它用于这些仓库。
 - Patch 包含所有已跟踪文件变更（即使路径匹配缓存目录）；未跟踪文件遵守 Git ignore，并额外排除 `.venv`、`__pycache__`、`.pytest_cache`、`.ruff_cache`、`.mypy_cache`、`node_modules`、`.DS_Store`。
 - 第一版编辑工具不创建、删除文件；Patch 对新增和删除的支持通过独立夹具测试。
 - Trace 遮盖敏感字段及显式传入的已知密钥，但不是通用秘密扫描器；不要把含密钥的仓库作为示例输入。
-- 模型 Loop 和预算已实现；尚无隐藏评测、自动 PR 或 API 服务。已有一次真实 DeepSeek 示例成功记录，尚无真实 Issue Benchmark 成功率。
+- 模型 Loop、预算和首个真实任务独立验收已实现；尚无自动 PR 或 API 服务。尚未建立多任务真实 Issue Benchmark。
 
 ## 下一阶段
 
-接下来补足不同类型的真实模型简单任务和失败恢复案例，再准备 Docker 隔离及首批真实历史 Issue 的复现环境和独立验收条件。
+接下来针对首个真实任务暴露的上下文累积和预算预留问题做单因素对照，再扩展带依赖安装的真实任务及构建失败恢复验证。
 
 
 ### 补充可信任务与运行证据

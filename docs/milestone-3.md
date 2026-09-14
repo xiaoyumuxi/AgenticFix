@@ -22,10 +22,26 @@ Docker 实测：1 passed，27.84 秒。验证非 root、没有 .git/.env、源�
 
 这是第一个真实任务，单阶段 Python 镜像且不支持仓库符号链接、系统服务、多容器项目。网络在构建期间允许下载依赖，测试阶段关闭；不是网络完全隔离。模型不能设置 privileged、宿主挂载、Docker socket、secret mount 或自定义 frontend。镜像保留供复核，尚无镜像 TTL；磁盘额度尚未独立限制，构建受超时及 builder 内存/CPU 限制。
 
-依赖和基础镜像可能使用可变版本；本轮记录实际解析值并干净重建验证，不宣称跨日期完全可复现。提示词需要根据实际失败再改，初轮还没有消融实验。
+依赖和基础镜像可能使用可变版本；本轮记录实际解析值并干净重建验证，不宣称跨日期完全可复现。提示词需要根据实际失败再改，三轮不同条件尝试已完成，但每个条件只有一次；详见下面追加数据。
 
-## 开发反馈待归档到 Wiki
+## 开发反馈（已整理至 Wiki）
 
 初始 docker version 退出 1：OrbStack daemon 未启动、socket 不存在。启动本机 OrbStack 后版本查询成功，Docker Engine 29.4.0；该故障发生在模型运行前，属于宿主准备问题。
 
 代码编辑初期 ruff 报长行和分号格式问题，经格式化及缩短行解决；不计作模型失败。验收逻辑检查时补上“原本失败的 Issue 用例必须变成 passed”，避免仅检查退出码和原有通过项、而把 skip 当成修复。本轮正式模型运行前已补齐。
+
+## 2026-09-14 三轮真实结果
+
+| 记录 | Prompt / 单次读取行数 | 请求 / 工具 | 服务报告 Token | 原始715项 + 独立14项，base → 候选 | Runtime |
+| --- | --- | --- | ---: | --- | --- |
+| 004 | v1 / 400 | 9 / 22 | 98,264 | 7失败/722通过 → 729通过 | token_budget |
+| 005 | v2 / 400 | 10 / 19 | 98,113 | 7失败/722通过 → 729通过 | token_budget |
+| 006 | v2 / 80 | 13 / 17 | 119,879 | 7失败/722通过 → 729通过 | token_budget |
+
+每轮模型自行成功构建一次环境，评测端再独立冷构建一次。三个 Patch 均通过，但三次端到端任务都失败；不把验收端额外完成的测试算作模型闭环完成。单次读取收紧后，上下文字节数下降、累计请求与 Token 反而上升，暂不改变默认值。直接停止条件为剩余预算小于 UTF-8 字节数加256的输入预留；下一轮需要测量和改进上下文与预算策略。
+
+最终工程测试 91 passed、1 skipped，29.10 秒，真实 Docker 集成测试另外 1 passed，27.84 秒。ruff、mypy 和包构建通过。前文 90 项是较早开发检查，不能与最终测试集当成同条件修复对照。
+
+三轮运行提交依次为 `1d43d4ce68f181b570d1f823058a2b3f8c8759e9`、`9b50dcc3ae599df18630955528116b7d18beccb0`、`90ca7cc8c8ede5db0d5442763d1f1efec7b5ede7`，均干净；证据归档到 `a5bf74ea5a52c7575088584183ba4e873553ec68`。第三阶段还未完成五任务 Mini Benchmark。
+
+Wiki：[AgenticFix‐7：Docker没有启动时如何留证，环境构建如何验收？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%907%EF%BC%9ADocker%E6%B2%A1%E6%9C%89%E5%90%AF%E5%8A%A8%E6%97%B6%E5%A6%82%E4%BD%95%E7%95%99%E8%AF%81%EF%BC%8C%E7%8E%AF%E5%A2%83%E6%9E%84%E5%BB%BA%E5%A6%82%E4%BD%95%E9%AA%8C%E6%94%B6%EF%BC%9F)、[AgenticFix‐8：Patch通过729项验证，为什么三轮仍然没有完成任务？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)。本地镜像位于 docs/wiki，同步记录 daemon 未启动、缓存写入警告、开发格式与归档脚本错误，以及验收状态检查缺口。
