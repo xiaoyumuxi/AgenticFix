@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+from agent.feedback import execution_failure_message
 from agent.llm import LLMClient, ModelError, ModelReply
 from agent.prompts import prompt_for_environment
 from tools.base import ToolResult
@@ -84,6 +85,13 @@ class AgentLoop:
         limit = self.settings.max_tool_message_chars
         if len(text) <= limit:
             return text
+        if tool_name in {"build_environment", "run_tests"} and (
+            not result.success
+            or result.data.get("exit_code") not in {None, 0}
+            or result.data.get("timed_out")
+            or result.data.get("launch_error")
+        ):
+            return execution_failure_message(result, limit)
         return json.dumps(
             {
                 "success": result.success,

@@ -8,6 +8,7 @@ import re
 import shutil
 import tempfile
 import time
+from collections import deque
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -123,18 +124,52 @@ class DockerSandbox(Sandbox):
             )
         buffers = [bytearray(), bytearray()]
         truncated = False
+        stream_truncated = [False, False]
+        candidates: deque[str] = deque(maxlen=16)
+        pattern = re.compile(rb"error|exception|traceback|failed|not found|no module named", re.I)
+        marker = b"\n...[middle omitted]...\n"
 
-        async def drain(stream: asyncio.StreamReader | None, buffer: bytearray) -> None:
+        async def drain(stream: asyncio.StreamReader | None, index: int) -> None:
             nonlocal truncated
             assert stream is not None
+            buffer = buffers[index]
+            pending = b""
+
+            def inspect(line: bytes) -> None:
+                match = pattern.search(line)
+                if match:
+                    start = max(0, match.start() - 80)
+                    text = (
+                        ("stdout" if index == 0 else "stderr")
+                        + ": "
+                        + line[start : start + 512].decode(errors="replace")
+                    )
+                    if text not in candidates:
+                        candidates.append(text)
+
             while chunk := await stream.read(65536):
-                remaining = max(0, self.max_output_bytes - len(buffer))
-                buffer.extend(chunk[:remaining])
-                truncated |= len(chunk) > remaining
+                lines = (pending + chunk).split(b"\n")
+                for line in lines[:-1]:
+                    inspect(line)
+                # Bound an unterminated long line as well as the retained output.
+                pending = lines[-1]
+                if len(pending) > 2048:
+                    inspect(pending)
+                    pending = pending[-2048:]
+                buffer.extend(chunk)
+                if stream_truncated[index] or len(buffer) > self.max_output_bytes:
+                    truncated = True
+                    stream_truncated[index] = True
+                    # Keep the first quarter and a rolling tail, within the byte cap.
+                    retained = max(0, self.max_output_bytes - len(marker))
+                    head = retained // 4
+                    tail = retained - head
+                    buffer[:] = buffer[:head] + (buffer[-tail:] if tail else b"")
+            inspect(pending)
 
         tasks = [
-            asyncio.create_task(drain(process.stdout, buffers[0])),
-            asyncio.create_task(drain(process.stderr, buffers[1])),
+            asyncio.create_task(drain(process.stdout, 0)),
+            asyncio.create_task(drain(process.stderr, 1)),
         ]
         timed_out = False
         cancelled = False
@@ -153,6 +188,10 @@ class DockerSandbox(Sandbox):
             await asyncio.gather(*tasks)
             cancelled = isinstance(exc, asyncio.CancelledError)
             timed_out = not cancelled
+        for index, was_truncated in enumerate(stream_truncated):
+            if was_truncated:
+                head = max(0, self.max_output_bytes - len(marker)) // 4
+                buffers[index][head:head] = marker[: self.max_output_bytes]
         result = ExecutionResult(
             stdout=buffers[0].decode(errors="replace"),
             stderr=buffers[1].decode(errors="replace"),
@@ -160,6 +199,7 @@ class DockerSandbox(Sandbox):
             duration=time.monotonic() - start,
             timed_out=timed_out,
             truncated=truncated,
+            diagnostic_lines=list(candidates),
         )
 
         (self.directory / f"cli-{cli_number}.json").write_text(
@@ -168,6 +208,7 @@ class DockerSandbox(Sandbox):
                     "argv": list(args),
                     "result": result.model_dump(),
                     "cancelled": cancelled,
+                    "output_retention": "head quarter and rolling tail when truncated",
                 },
                 ensure_ascii=False,
                 indent=2,

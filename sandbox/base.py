@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ExecutionResult(BaseModel):
@@ -12,6 +12,7 @@ class ExecutionResult(BaseModel):
     timed_out: bool = False
     truncated: bool = False
     launch_error: str | None = None
+    diagnostic_lines: list[str] = Field(default_factory=list)
 
 
 class Sandbox(ABC):
