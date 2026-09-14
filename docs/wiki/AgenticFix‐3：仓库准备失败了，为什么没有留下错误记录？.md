@@ -1,4 +1,4 @@
-# 运行记录补全：两个可复现缺陷
+# AgenticFix-3：仓库准备失败了，为什么没有留下错误记录？
 
 日期：2026-09-14，UTC+08:00。历史对照版本：`85782f9cbe66099ec4247b8080407108d75b365b`。
 
@@ -24,21 +24,6 @@
 
 这是受控准备异常测试，不是实际 GitHub 服务故障，也不证明模型能从代码修改失败中恢复。未跟踪源码仅保存哈希，磁盘不可写或 SIGKILL 的归档完整性也不在本次保证范围。
 
-## BUG-20260914-003：服务返回的实际模型名称被丢弃
-
-采集模型版本时发现，ModelReply 只有消息、结束原因、用量和响应 ID，HTTP 适配器也没有传递响应顶层的 model。即使服务返回具体版本，Trace 里也找不到它。
-
-固定输入响应：`model = "provider-resolved-revision"`；固定断言：`reply.model_dump().get("model") == "provider-resolved-revision"`。
-
-| 同一回归测试 | 实际字段 | 结果 |
-| --- | --- | --- |
-| 修改前 | None | 1 failed，AssertionError |
-| 修改后 | provider-resolved-revision | 1 passed |
-
-修复为 ModelReply 增加可空 model 字段，解析响应时透传 body.model。字段允许为空，因为兼容服务可能不返回它，不能用请求模型名伪装成服务实际返回名。measurements.json 保留这个字段；配置的模型名仍单独记录。
-
-本实验使用 HTTP Mock，验证信息是否被保留，不证明服务返回的别名本身就是不可变的模型权重版本。后面的真实任务会记录服务实际返回的字符串。
-
 ## 开发反馈
 
 初次检查出现两处新代码长行 E501，格式化/缩短行后消除；全目录格式化同时触及旧证据和 Markdown 代码块，已撤回这些无关格式改动，历史证据没有重新格式化覆盖。这些属于开发检查反馈，不计作模型任务失败。
@@ -58,3 +43,9 @@
 uv run python -m docs.iteration-evidence.BUG-20260914-002.reproduce
 uv run pytest -q tests/test_llm.py::test_response_model_identifier_is_preserved
 ```
+
+## 相关记录
+
+[AgenticFix-4：服务返回了模型名称，为什么运行记录里没有？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%904%EF%BC%9A%E6%9C%8D%E5%8A%A1%E8%BF%94%E5%9B%9E%E4%BA%86%E6%A8%A1%E5%9E%8B%E5%90%8D%E7%A7%B0%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%90%E8%A1%8C%E8%AE%B0%E5%BD%95%E9%87%8C%E6%B2%A1%E6%9C%89%EF%BC%9F)
+
+本页从原合并记录拆分，原始数据与历史提交保持不变；同一问题的后续复发、修复和实验继续按日期追加到本页。
