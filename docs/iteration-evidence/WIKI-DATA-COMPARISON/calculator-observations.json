@@ -1,0 +1,835 @@
+{
+  "archive_commit": "1ad3fda9a588dfe181a119f3b7f9247de2f07d87",
+  "source": "docs/iteration-evidence/RUN-20260914-001",
+  "kind": "Supplemental replay, not original model-run telemetry. Original additional tests were post-run checks.",
+  "results": {
+    "before": {
+      "exit_code": 1,
+      "calls": [
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[0-0]",
+          "args": [
+            0,
+            0
+          ],
+          "kwargs": {},
+          "return": 0,
+          "args_after": [
+            0,
+            0
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[0-2]",
+          "args": [
+            2,
+            0
+          ],
+          "kwargs": {},
+          "return": 2,
+          "args_after": [
+            2,
+            0
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[0--3]",
+          "args": [
+            -3,
+            0
+          ],
+          "kwargs": {},
+          "return": -3,
+          "args_after": [
+            -3,
+            0
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[0-1.25]",
+          "args": [
+            1.25,
+            0
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1.25,
+            0
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[2-0]",
+          "args": [
+            0,
+            2
+          ],
+          "kwargs": {},
+          "return": 2,
+          "args_after": [
+            0,
+            2
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[2-2]",
+          "args": [
+            2,
+            2
+          ],
+          "kwargs": {},
+          "return": 4,
+          "args_after": [
+            2,
+            2
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[2--3]",
+          "args": [
+            -3,
+            2
+          ],
+          "kwargs": {},
+          "return": -1,
+          "args_after": [
+            -3,
+            2
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[2-1.25]",
+          "args": [
+            1.25,
+            2
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1.25,
+            2
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[-3-0]",
+          "args": [
+            0,
+            -3
+          ],
+          "kwargs": {},
+          "return": -3,
+          "args_after": [
+            0,
+            -3
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[-3-2]",
+          "args": [
+            2,
+            -3
+          ],
+          "kwargs": {},
+          "return": -1,
+          "args_after": [
+            2,
+            -3
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[-3--3]",
+          "args": [
+            -3,
+            -3
+          ],
+          "kwargs": {},
+          "return": -6,
+          "args_after": [
+            -3,
+            -3
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[-3-1.25]",
+          "args": [
+            1.25,
+            -3
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1.25,
+            -3
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[1.25-0]",
+          "args": [
+            0,
+            1.25
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            0,
+            1.25
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[1.25-2]",
+          "args": [
+            2,
+            1.25
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            2,
+            1.25
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[1.25--3]",
+          "args": [
+            -3,
+            1.25
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            -3,
+            1.25
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[1.25-1.25]",
+          "args": [
+            1.25,
+            1.25
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1.25,
+            1.25
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[False-None]",
+          "args": [
+            1,
+            null
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            null
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[False-2]",
+          "args": [
+            1,
+            "2"
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            "2"
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[False-bad2]",
+          "args": [
+            1,
+            []
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            []
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[False-bad3]",
+          "args": [
+            1,
+            {}
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            {}
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[True-None]",
+          "args": [
+            null,
+            1
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            null,
+            1
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[True-2]",
+          "args": [
+            "2",
+            1
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            "2",
+            1
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[True-bad2]",
+          "args": [
+            [],
+            1
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            [],
+            1
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[True-bad3]",
+          "args": [
+            {},
+            1
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            {},
+            1
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_integers",
+          "args": [
+            2,
+            3
+          ],
+          "kwargs": {},
+          "return": 5,
+          "args_after": [
+            2,
+            3
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_negative_integers",
+          "args": [
+            -2,
+            1
+          ],
+          "kwargs": {},
+          "return": -1,
+          "args_after": [
+            -2,
+            1
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_float_inputs",
+          "args": [
+            1.5,
+            2.25
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1.5,
+            2.25
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_mixed_inputs",
+          "args": [
+            1,
+            2.5
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            2.5
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_rejects_text",
+          "args": [
+            "1",
+            2
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            "1",
+            2
+          ]
+        }
+      ],
+      "cases": {
+        "test_additional::test_numeric_combinations[0-0]": "passed",
+        "test_additional::test_numeric_combinations[0-2]": "passed",
+        "test_additional::test_numeric_combinations[0--3]": "passed",
+        "test_additional::test_numeric_combinations[0-1.25]": "failed",
+        "test_additional::test_numeric_combinations[2-0]": "passed",
+        "test_additional::test_numeric_combinations[2-2]": "passed",
+        "test_additional::test_numeric_combinations[2--3]": "passed",
+        "test_additional::test_numeric_combinations[2-1.25]": "failed",
+        "test_additional::test_numeric_combinations[-3-0]": "passed",
+        "test_additional::test_numeric_combinations[-3-2]": "passed",
+        "test_additional::test_numeric_combinations[-3--3]": "passed",
+        "test_additional::test_numeric_combinations[-3-1.25]": "failed",
+        "test_additional::test_numeric_combinations[1.25-0]": "failed",
+        "test_additional::test_numeric_combinations[1.25-2]": "failed",
+        "test_additional::test_numeric_combinations[1.25--3]": "failed",
+        "test_additional::test_numeric_combinations[1.25-1.25]": "failed",
+        "test_additional::test_reject_non_numeric[False-None]": "passed",
+        "test_additional::test_reject_non_numeric[False-2]": "passed",
+        "test_additional::test_reject_non_numeric[False-bad2]": "passed",
+        "test_additional::test_reject_non_numeric[False-bad3]": "passed",
+        "test_additional::test_reject_non_numeric[True-None]": "passed",
+        "test_additional::test_reject_non_numeric[True-2]": "passed",
+        "test_additional::test_reject_non_numeric[True-bad2]": "passed",
+        "test_additional::test_reject_non_numeric[True-bad3]": "passed",
+        "test_calculator::test_integers": "passed",
+        "test_calculator::test_negative_integers": "passed",
+        "test_calculator::test_float_inputs": "failed",
+        "test_calculator::test_mixed_inputs": "failed",
+        "test_calculator::test_rejects_text": "passed"
+      },
+      "pytest_output": "...F...F...FFFFF..........FF.                                            [100%]\n=================================== FAILURES ===================================\n______________________ test_numeric_combinations[0-1.25] _______________________\n\na = 1.25, b = 0\n\n    @pytest.mark.parametrize(\"a\", [0, 2, -3, 1.25])\n    @pytest.mark.parametrize(\"b\", [0, 2, -3, 1.25])\n    def test_numeric_combinations(a, b):\n>       assert add(a, b) == a + b\n               ^^^^^^^^^\n\ntest_additional.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = 1.25, b = 0\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n______________________ test_numeric_combinations[2-1.25] _______________________\n\na = 1.25, b = 2\n\n    @pytest.mark.parametrize(\"a\", [0, 2, -3, 1.25])\n    @pytest.mark.parametrize(\"b\", [0, 2, -3, 1.25])\n    def test_numeric_combinations(a, b):\n>       assert add(a, b) == a + b\n               ^^^^^^^^^\n\ntest_additional.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = 1.25, b = 2\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n______________________ test_numeric_combinations[-3-1.25] ______________________\n\na = 1.25, b = -3\n\n    @pytest.mark.parametrize(\"a\", [0, 2, -3, 1.25])\n    @pytest.mark.parametrize(\"b\", [0, 2, -3, 1.25])\n    def test_numeric_combinations(a, b):\n>       assert add(a, b) == a + b\n               ^^^^^^^^^\n\ntest_additional.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = 1.25, b = -3\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n______________________ test_numeric_combinations[1.25-0] _______________________\n\na = 0, b = 1.25\n\n    @pytest.mark.parametrize(\"a\", [0, 2, -3, 1.25])\n    @pytest.mark.parametrize(\"b\", [0, 2, -3, 1.25])\n    def test_numeric_combinations(a, b):\n>       assert add(a, b) == a + b\n               ^^^^^^^^^\n\ntest_additional.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = 0, b = 1.25\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n______________________ test_numeric_combinations[1.25-2] _______________________\n\na = 2, b = 1.25\n\n    @pytest.mark.parametrize(\"a\", [0, 2, -3, 1.25])\n    @pytest.mark.parametrize(\"b\", [0, 2, -3, 1.25])\n    def test_numeric_combinations(a, b):\n>       assert add(a, b) == a + b\n               ^^^^^^^^^\n\ntest_additional.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = 2, b = 1.25\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n______________________ test_numeric_combinations[1.25--3] ______________________\n\na = -3, b = 1.25\n\n    @pytest.mark.parametrize(\"a\", [0, 2, -3, 1.25])\n    @pytest.mark.parametrize(\"b\", [0, 2, -3, 1.25])\n    def test_numeric_combinations(a, b):\n>       assert add(a, b) == a + b\n               ^^^^^^^^^\n\ntest_additional.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = -3, b = 1.25\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n_____________________ test_numeric_combinations[1.25-1.25] _____________________\n\na = 1.25, b = 1.25\n\n    @pytest.mark.parametrize(\"a\", [0, 2, -3, 1.25])\n    @pytest.mark.parametrize(\"b\", [0, 2, -3, 1.25])\n    def test_numeric_combinations(a, b):\n>       assert add(a, b) == a + b\n               ^^^^^^^^^\n\ntest_additional.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = 1.25, b = 1.25\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n______________________________ test_float_inputs _______________________________\n\n    def test_float_inputs():\n>       assert add(1.5, 2.25) == 3.75\n               ^^^^^^^^^^^^^^\n\ntest_calculator.py:14: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = 1.5, b = 2.25\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n______________________________ test_mixed_inputs _______________________________\n\n    def test_mixed_inputs():\n>       assert add(1, 2.5) == 3.5\n               ^^^^^^^^^^^\n\ntest_calculator.py:18: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\na = 1, b = 2.5\n\n    def add(a: int | float, b: int | float) -> int | float:\n        if not isinstance(a, int) or not isinstance(b, int):\n>           raise TypeError(\"arguments must be numbers\")\nE           TypeError: arguments must be numbers\n\ncalculator.py:6: TypeError\n=========================== short test summary info ============================\nFAILED test_additional.py::test_numeric_combinations[0-1.25] - TypeError: arg...\nFAILED test_additional.py::test_numeric_combinations[2-1.25] - TypeError: arg...\nFAILED test_additional.py::test_numeric_combinations[-3-1.25] - TypeError: ar...\nFAILED test_additional.py::test_numeric_combinations[1.25-0] - TypeError: arg...\nFAILED test_additional.py::test_numeric_combinations[1.25-2] - TypeError: arg...\nFAILED test_additional.py::test_numeric_combinations[1.25--3] - TypeError: ar...\nFAILED test_additional.py::test_numeric_combinations[1.25-1.25] - TypeError: ...\nFAILED test_calculator.py::test_float_inputs - TypeError: arguments must be n...\nFAILED test_calculator.py::test_mixed_inputs - TypeError: arguments must be n...\n9 failed, 20 passed in 0.03s\n"
+    },
+    "after": {
+      "exit_code": 0,
+      "calls": [
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[0-0]",
+          "args": [
+            0,
+            0
+          ],
+          "kwargs": {},
+          "return": 0,
+          "args_after": [
+            0,
+            0
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[0-2]",
+          "args": [
+            2,
+            0
+          ],
+          "kwargs": {},
+          "return": 2,
+          "args_after": [
+            2,
+            0
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[0--3]",
+          "args": [
+            -3,
+            0
+          ],
+          "kwargs": {},
+          "return": -3,
+          "args_after": [
+            -3,
+            0
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[0-1.25]",
+          "args": [
+            1.25,
+            0
+          ],
+          "kwargs": {},
+          "return": 1.25,
+          "args_after": [
+            1.25,
+            0
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[2-0]",
+          "args": [
+            0,
+            2
+          ],
+          "kwargs": {},
+          "return": 2,
+          "args_after": [
+            0,
+            2
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[2-2]",
+          "args": [
+            2,
+            2
+          ],
+          "kwargs": {},
+          "return": 4,
+          "args_after": [
+            2,
+            2
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[2--3]",
+          "args": [
+            -3,
+            2
+          ],
+          "kwargs": {},
+          "return": -1,
+          "args_after": [
+            -3,
+            2
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[2-1.25]",
+          "args": [
+            1.25,
+            2
+          ],
+          "kwargs": {},
+          "return": 3.25,
+          "args_after": [
+            1.25,
+            2
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[-3-0]",
+          "args": [
+            0,
+            -3
+          ],
+          "kwargs": {},
+          "return": -3,
+          "args_after": [
+            0,
+            -3
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[-3-2]",
+          "args": [
+            2,
+            -3
+          ],
+          "kwargs": {},
+          "return": -1,
+          "args_after": [
+            2,
+            -3
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[-3--3]",
+          "args": [
+            -3,
+            -3
+          ],
+          "kwargs": {},
+          "return": -6,
+          "args_after": [
+            -3,
+            -3
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[-3-1.25]",
+          "args": [
+            1.25,
+            -3
+          ],
+          "kwargs": {},
+          "return": -1.75,
+          "args_after": [
+            1.25,
+            -3
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[1.25-0]",
+          "args": [
+            0,
+            1.25
+          ],
+          "kwargs": {},
+          "return": 1.25,
+          "args_after": [
+            0,
+            1.25
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[1.25-2]",
+          "args": [
+            2,
+            1.25
+          ],
+          "kwargs": {},
+          "return": 3.25,
+          "args_after": [
+            2,
+            1.25
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[1.25--3]",
+          "args": [
+            -3,
+            1.25
+          ],
+          "kwargs": {},
+          "return": -1.75,
+          "args_after": [
+            -3,
+            1.25
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_numeric_combinations[1.25-1.25]",
+          "args": [
+            1.25,
+            1.25
+          ],
+          "kwargs": {},
+          "return": 2.5,
+          "args_after": [
+            1.25,
+            1.25
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[False-None]",
+          "args": [
+            1,
+            null
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            null
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[False-2]",
+          "args": [
+            1,
+            "2"
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            "2"
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[False-bad2]",
+          "args": [
+            1,
+            []
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            []
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[False-bad3]",
+          "args": [
+            1,
+            {}
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            1,
+            {}
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[True-None]",
+          "args": [
+            null,
+            1
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            null,
+            1
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[True-2]",
+          "args": [
+            "2",
+            1
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            "2",
+            1
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[True-bad2]",
+          "args": [
+            [],
+            1
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            [],
+            1
+          ]
+        },
+        {
+          "nodeid": "test_additional.py::test_reject_non_numeric[True-bad3]",
+          "args": [
+            {},
+            1
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            {},
+            1
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_integers",
+          "args": [
+            2,
+            3
+          ],
+          "kwargs": {},
+          "return": 5,
+          "args_after": [
+            2,
+            3
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_negative_integers",
+          "args": [
+            -2,
+            1
+          ],
+          "kwargs": {},
+          "return": -1,
+          "args_after": [
+            -2,
+            1
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_float_inputs",
+          "args": [
+            1.5,
+            2.25
+          ],
+          "kwargs": {},
+          "return": 3.75,
+          "args_after": [
+            1.5,
+            2.25
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_mixed_inputs",
+          "args": [
+            1,
+            2.5
+          ],
+          "kwargs": {},
+          "return": 3.5,
+          "args_after": [
+            1,
+            2.5
+          ]
+        },
+        {
+          "nodeid": "test_calculator.py::test_rejects_text",
+          "args": [
+            "1",
+            2
+          ],
+          "kwargs": {},
+          "exception": "TypeError",
+          "args_after": [
+            "1",
+            2
+          ]
+        }
+      ],
+      "cases": {
+        "test_additional::test_numeric_combinations[0-0]": "passed",
+        "test_additional::test_numeric_combinations[0-2]": "passed",
+        "test_additional::test_numeric_combinations[0--3]": "passed",
+        "test_additional::test_numeric_combinations[0-1.25]": "passed",
+        "test_additional::test_numeric_combinations[2-0]": "passed",
+        "test_additional::test_numeric_combinations[2-2]": "passed",
+        "test_additional::test_numeric_combinations[2--3]": "passed",
+        "test_additional::test_numeric_combinations[2-1.25]": "passed",
+        "test_additional::test_numeric_combinations[-3-0]": "passed",
+        "test_additional::test_numeric_combinations[-3-2]": "passed",
+        "test_additional::test_numeric_combinations[-3--3]": "passed",
+        "test_additional::test_numeric_combinations[-3-1.25]": "passed",
+        "test_additional::test_numeric_combinations[1.25-0]": "passed",
+        "test_additional::test_numeric_combinations[1.25-2]": "passed",
+        "test_additional::test_numeric_combinations[1.25--3]": "passed",
+        "test_additional::test_numeric_combinations[1.25-1.25]": "passed",
+        "test_additional::test_reject_non_numeric[False-None]": "passed",
+        "test_additional::test_reject_non_numeric[False-2]": "passed",
+        "test_additional::test_reject_non_numeric[False-bad2]": "passed",
+        "test_additional::test_reject_non_numeric[False-bad3]": "passed",
+        "test_additional::test_reject_non_numeric[True-None]": "passed",
+        "test_additional::test_reject_non_numeric[True-2]": "passed",
+        "test_additional::test_reject_non_numeric[True-bad2]": "passed",
+        "test_additional::test_reject_non_numeric[True-bad3]": "passed",
+        "test_calculator::test_integers": "passed",
+        "test_calculator::test_negative_integers": "passed",
+        "test_calculator::test_float_inputs": "passed",
+        "test_calculator::test_mixed_inputs": "passed",
+        "test_calculator::test_rejects_text": "passed"
+      },
+      "pytest_output": ".............................                                            [100%]\n29 passed in 0.02s\n"
+    }
+  }
+}
