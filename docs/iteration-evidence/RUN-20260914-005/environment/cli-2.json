@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "buildx",
+    "create",
+    "--name",
+    "agenticfix-ef68ebb1a0a2",
+    "--driver",
+    "docker-container",
+    "--driver-opt",
+    "memory=2g,memory-swap=2g,cpu-period=100000,cpu-quota=200000"
+  ],
+  "result": {
+    "stdout": "agenticfix-ef68ebb1a0a2\n",
+    "stderr": "",
+    "exit_code": 0,
+    "duration": 0.15965699999651406,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null
+  },
+  "cancelled": false
+}

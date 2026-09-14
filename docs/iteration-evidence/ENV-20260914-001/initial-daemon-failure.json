@@ -1,0 +1,9 @@
+{
+  "source": "Recorded tool observation at start of this development session; not a model run",
+  "docker_client": "29.4.0",
+  "context": "orbstack",
+  "exit_code": 1,
+  "error": "failed to connect to Docker API; .orbstack/run/docker.sock: no such file or directory",
+  "action": "open -a OrbStack",
+  "after": "Docker Engine 29.4.0 reachable"
+}

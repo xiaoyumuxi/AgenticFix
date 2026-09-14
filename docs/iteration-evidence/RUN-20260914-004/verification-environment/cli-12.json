@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "rm",
+    "-f",
+    "agenticfix-test-6b94fbbc9080"
+  ],
+  "result": {
+    "stdout": "",
+    "stderr": "Error response from daemon: No such container: agenticfix-test-6b94fbbc9080\n",
+    "exit_code": 0,
+    "duration": 0.05057308299001306,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null
+  },
+  "cancelled": false
+}

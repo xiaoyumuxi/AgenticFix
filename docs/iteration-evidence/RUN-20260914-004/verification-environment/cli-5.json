@@ -1,0 +1,42 @@
+{
+  "argv": [
+    "run",
+    "--rm",
+    "--name",
+    "agenticfix-test-df1e00665b7a",
+    "--network=none",
+    "--memory=1g",
+    "--memory-swap=1g",
+    "--cpus=2",
+    "--pids-limit=128",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--read-only",
+    "--user=65534:65534",
+    "--tmpfs=/tmp:rw,nosuid,size=128m",
+    "--mount",
+    "type=bind,src=/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/agenticfix-test-0jvkttrp/source,dst=/workspace,readonly",
+    "--mount",
+    "type=bind,src=/Users/yaoyao/Dev/OpenRes/agent/runs/real-1152-caf155d5da5e/verification-environment/agenticfix-test-df1e00665b7a,dst=/results",
+    "--workdir=/workspace",
+    "--env=PYTHONDONTWRITEBYTECODE=1",
+    "--env=PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+    "--env=PYTHONPATH=/workspace",
+    "--env=HOME=/tmp",
+    "--entrypoint",
+    "python",
+    "sha256:605200789036ef0e77d0fae5185888534bd89edca24509066fdae36ad66e645c",
+    "-c",
+    "import more_itertools,sys; print(sys.version); print(more_itertools.__file__); assert more_itertools.__file__.startswith('/workspace/')"
+  ],
+  "result": {
+    "stdout": "3.10.21 (main, Aug 31 2026, 23:56:10) [GCC 14.2.0]\n/workspace/more_itertools/__init__.py\n",
+    "stderr": "",
+    "exit_code": 0,
+    "duration": 0.1918264999985695,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null
+  },
+  "cancelled": false
+}

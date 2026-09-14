@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "buildx",
+    "rm",
+    "--force",
+    "agenticfix-ef68ebb1a0a2"
+  ],
+  "result": {
+    "stdout": "",
+    "stderr": "agenticfix-ef68ebb1a0a2 removed\n",
+    "exit_code": 0,
+    "duration": 0.3062611659988761,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null
+  },
+  "cancelled": false
+}

@@ -37,7 +37,9 @@ current public tests. An environment-only change does not resolve the code issue
 }
 
 
-ENVIRONMENT_PROMPTS["environment-v2"] = ENVIRONMENT_PROMPTS["environment-v1"] + """
+ENVIRONMENT_PROMPTS["environment-v2"] = (
+    ENVIRONMENT_PROMPTS["environment-v1"]
+    + """
 Keep environment discovery separate from source investigation. Before the first build, read the
 package manifest and test-dependency declaration; inspect CI only if these leave a concrete gap.
 Limit this phase to at most three file reads, then attempt a minimal environment build and run
@@ -46,6 +48,7 @@ After the baseline, search for the relevant symbol and read narrow ranges (norma
 around matches. Broaden only for a specific unanswered question. Avoid reading development,
 typing, documentation and packaging tool requirements unless a build/test error requires them.
 """
+)
 
 
 def prompt_for_environment(version: str | None = None) -> str:

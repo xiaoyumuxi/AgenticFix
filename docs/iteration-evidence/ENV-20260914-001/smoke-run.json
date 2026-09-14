@@ -1,0 +1,9 @@
+{
+  "stdout": "uid=65534; metadata absent; source readonly; output writable\n",
+  "stderr": "",
+  "exit_code": 0,
+  "duration": 0.3344897079950897,
+  "timed_out": false,
+  "truncated": false,
+  "launch_error": null
+}

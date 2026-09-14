@@ -1,0 +1,55 @@
+{
+  "buildx.build.provenance": {
+    "builder": {
+      "id": ""
+    },
+    "buildType": "https://mobyproject.org/buildkit@v1",
+    "materials": [
+      {
+        "uri": "pkg:docker/python@3.12-slim?platform=linux%2Farm64",
+        "digest": {
+          "sha256": "78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea"
+        }
+      }
+    ],
+    "invocation": {
+      "configSource": {
+        "entryPoint": "AgenticFix.Dockerfile"
+      },
+      "parameters": {
+        "frontend": "dockerfile.v0",
+        "args": {
+          "no-cache": ""
+        },
+        "locals": [
+          {
+            "name": "context"
+          },
+          {
+            "name": "dockerfile"
+          }
+        ]
+      },
+      "environment": {
+        "dockerfileVersion": "1.26.0",
+        "platform": "linux/arm64"
+      }
+    }
+  },
+  "buildx.build.ref": "agenticfix-28b6f89ce6d4/agenticfix-28b6f89ce6d40/f1re91mq2iuwjcd4xnxtnzlue",
+  "containerimage.config.digest": "sha256:edad5944068aa7be45add22b3ad75e39eec0f589ae5c25b66b8bddb367d23665",
+  "containerimage.descriptor": {
+    "mediaType": "application/vnd.oci.image.manifest.v1+json",
+    "digest": "sha256:a9b2c23c71c6d483439dd97eb8fb956155204f640dae9e2b4e12d0273d44e211",
+    "size": 1625,
+    "annotations": {
+      "org.opencontainers.image.created": "2026-09-14T01:20:38Z"
+    },
+    "platform": {
+      "architecture": "arm64",
+      "os": "linux"
+    }
+  },
+  "containerimage.digest": "sha256:a9b2c23c71c6d483439dd97eb8fb956155204f640dae9e2b4e12d0273d44e211",
+  "image.name": "docker.io/library/agenticfix:c9730ae20135"
+}

@@ -1,0 +1,15 @@
+{
+  "task_id": "more-itertools-1152",
+  "repository": "https://github.com/more-itertools/more-itertools.git",
+  "issue_url": "https://github.com/more-itertools/more-itertools/issues/1152",
+  "base_commit": "247e15b3a489d5805375c95dfa79486c9bd0eb1b",
+  "official_fix_commit": "1806a75b836b9eff4a7885a96ece6183f5fb6409",
+  "official_pr": "https://github.com/more-itertools/more-itertools/pull/1153",
+  "execution": "Docker only; model authors Dockerfile and dependencies",
+  "acceptance": "14 fixed cases plus frozen original tests; official patch excluded from model context",
+  "agent_commit": "1d43d4ce68f181b570d1f823058a2b3f8c8759e9",
+  "agent_dirty": false,
+  "issue_sha256": "c788f11d95794e4c542c8c9a31b16ff3512bcf27c89cbfeb5d2fae78da80083a",
+  "acceptance_sha256": "ecadfe23ce03881e81814e5c20bb880637494a80a991da196abb856c134398fc",
+  "prompt_version": "environment-v1"
+}
