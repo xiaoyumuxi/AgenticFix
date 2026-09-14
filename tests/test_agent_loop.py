@@ -222,3 +222,46 @@ async def test_tools_return_bounded_model_context(context):
     clipped = json.loads(loop.tool_message(ToolResult(success=True, data={"output": "x" * 10000})))
     assert clipped["truncated"]
     assert len(clipped["preview"]) == 200
+
+
+@pytest.mark.parametrize(
+    "success,exit_code,image,timed_out",
+    [
+        (True, 0, "sha256:built", False),
+        (False, 1, None, False),
+        (False, 0, "sha256:old", True),
+    ],
+)
+def test_build_context_projection_preserves_failures_and_original(
+    context, success, exit_code, image, timed_out
+):
+    from tools.base import ToolResult
+
+    context.settings.compact_successful_build = True
+    loop = AgentLoop(QueueClient([]), build_registry(context))
+    result = ToolResult(
+        success=success,
+        data={
+            "stdout": "download progress " * 100,
+            "stderr": "dependency resolution details",
+            "exit_code": exit_code,
+            "timed_out": timed_out,
+            "image_id": image,
+            "dockerfile_sha256": "source-hash",
+            "artifact": "environment-1.json",
+        },
+    )
+    original = result.model_dump()
+    projected = json.loads(loop.tool_message(result, "build_environment"))
+    assert result.model_dump() == original
+    assert json.loads(loop.tool_message(result, "read_file")) == original
+    if success:
+        assert projected["data"]["image_id"] == image
+        assert projected["data"]["artifact"] == "environment-1.json"
+        assert projected["data"]["dockerfile_sha256"] == "source-hash"
+        assert "stdout" not in projected["data"]
+        assert projected["truncated"] is True
+    else:
+        assert projected == original
+    context.settings.compact_successful_build = False
+    assert json.loads(loop.tool_message(result, "build_environment")) == original

@@ -46,7 +46,40 @@ class AgentLoop:
     def feedback(self, text: str) -> None:
         self.messages.append({"role": "user", "content": f"Runtime observation: {text}"})
 
-    def tool_message(self, result: ToolResult) -> str:
+    def tool_message(self, result: ToolResult, tool_name: str | None = None) -> str:
+        if (
+            self.settings.compact_successful_build
+            and tool_name == "build_environment"
+            and result.success
+            and not result.fatal
+            and result.data.get("exit_code") == 0
+            and not result.data.get("timed_out")
+            and result.data.get("image_id")
+        ):
+            # Project only the model message; the registry and artifact retain the full result.
+            result = result.model_copy(
+                update={
+                    "data": {
+                        key: result.data[key]
+                        for key in (
+                            "exit_code",
+                            "timed_out",
+                            "image_id",
+                            "dockerfile_sha256",
+                            "duration",
+                            "total_duration",
+                            "cache",
+                            "artifact",
+                        )
+                        if key in result.data
+                    }
+                    | {
+                        "context_note": "Build succeeded. Build logs omitted from model context; "
+                        "full result retained in the artifact. Run public tests to validate it."
+                    },
+                    "truncated": True,
+                }
+            )
         text = json.dumps(result.model_dump(), ensure_ascii=False)
         limit = self.settings.max_tool_message_chars
         if len(text) <= limit:
@@ -99,6 +132,9 @@ class AgentLoop:
                     arguments={
                         "iteration": self.state.iteration,
                         "reserved_tokens": reservation,
+                        "context_bytes": len(encoded),
+                        "input_reserve": input_reserve,
+                        "remaining_budget": remaining,
                         "max_completion_tokens": completion_limit,
                     },
                 )
@@ -207,7 +243,7 @@ class AgentLoop:
                         {
                             "role": "tool",
                             "tool_call_id": call.id,
-                            "content": self.tool_message(result),
+                            "content": self.tool_message(result, call.function.name),
                         }
                     )
                 self.persist()

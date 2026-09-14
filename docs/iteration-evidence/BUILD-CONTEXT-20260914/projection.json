@@ -1,0 +1,50 @@
+[
+  {
+    "run_id": "agent-a9ca172e28e7",
+    "kind": "Offline projection of historical result, no new model request",
+    "before_content_utf8_bytes": 9041,
+    "after_content_utf8_bytes": 651,
+    "projected_result": {
+      "success": true,
+      "data": {
+        "exit_code": 0,
+        "timed_out": false,
+        "image_id": "sha256:b1c2fed49ce8792846cc3d151d7abd48e8eb86f57660371a9a4d996b13ff327d",
+        "dockerfile_sha256": "66c82513e8d4c62c264679fef1f64f3f52bd1a5d4821a34d77d06be97d01c9f7",
+        "duration": 21.7724200419907,
+        "total_duration": 22.317766791995382,
+        "cache": "fresh builder; --no-cache",
+        "artifact": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-a9ca172e28e7/environment-1.json",
+        "context_note": "Build succeeded. Build logs omitted from model context; full result retained in the artifact. Run public tests to validate it."
+      },
+      "error_code": null,
+      "error": null,
+      "truncated": true,
+      "fatal": false
+    }
+  },
+  {
+    "run_id": "agent-b9cb8fc8c544",
+    "kind": "Offline projection of historical result, no new model request",
+    "before_content_utf8_bytes": 8827,
+    "after_content_utf8_bytes": 653,
+    "projected_result": {
+      "success": true,
+      "data": {
+        "exit_code": 0,
+        "timed_out": false,
+        "image_id": "sha256:53927079c83392486716269e8cc67ec9a46a06febfbab770f9ebe218b78f585b",
+        "dockerfile_sha256": "ac1819be357a902c993e2066669468097b5ff3b0e5fcfcc21e3b9a694e339df2",
+        "duration": 19.377375208001467,
+        "total_duration": 20.013842917003785,
+        "cache": "fresh builder; --no-cache",
+        "artifact": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-b9cb8fc8c544/environment-1.json",
+        "context_note": "Build succeeded. Build logs omitted from model context; full result retained in the artifact. Run public tests to validate it."
+      },
+      "error_code": null,
+      "error": null,
+      "truncated": true,
+      "fatal": false
+    }
+  }
+]

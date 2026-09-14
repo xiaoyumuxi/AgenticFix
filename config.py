@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     retry_delay: float = Field(default=1, ge=0, le=10)
     max_context_bytes: int = Field(default=150000, ge=100)
     max_tool_message_chars: int = Field(default=12000, ge=200)
+    compact_successful_build: bool = False
     max_repeated_actions: int = Field(default=3, ge=1)
 
     def llm_config(self) -> ModelConfig:
