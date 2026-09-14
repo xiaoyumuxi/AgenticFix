@@ -227,3 +227,196 @@ AGENTICFIX_ENVIRONMENT_PROMPT_VERSION=environment-v2 AGENTICFIX_MAX_READ_LINES=8
 ```
 
 脚本固定 base 和验收条件；每次会产生新 run，不保证模型返回同样的 Patch。这是同一真实历史 Issue 的三个不同条件尝试，端到端完成 0/3、候选通过 3/3；不是三个独立 Issue，也不是 Benchmark 成功率。第三阶段尚未完成五任务 Mini Benchmark。
+
+
+---
+
+## 2026-09-14 追加：压缩成功构建日志、限制旧读取正文，都没有完成闭环
+
+本次继续 BUG-20260914-005，新增 RUN-20260914-007/008。上面三轮原始记录保留。本次两个条件各跑一次，仍未得到正常完成的任务。默认配置不启用这两项策略。
+
+先对 005/006 的历史构建返回做离线投影：只保留成功状态、退出码、镜像、Dockerfile 哈希、耗时与原始产物位置。005 的消息 content 从 **9,041 字节缩到 651 字节**，006 从 **8,827 缩到 653**。这是同一份历史数据的变换，没有调用模型；不把字节减少当成实测 Token 节省。
+
+007 保留 006 的 v2 提示词、80 行读取、150,000 Token 预算，仅启用 compact_successful_build。失败构建仍使用原有反馈（仍受既有消息长度上限约束），原始完整工具结果保留在 Trace/产物中。运行器增加每次请求的 context_bytes/input_reserve/remaining_budget 观测字段，没有改变预算算法。
+
+007 又未完成，因此 008 保留 007 配置，只增加 retained_read_results=3：生成请求时省略更早成功 read_file 的正文，保留路径、版本等元数据和显式省略标记；最近三次正文和失败结果保留。完整本地消息不改，助手工具调用和 tool_call_id 配对也不改。这是按时间保留的试验，不是语义摘要或智能检索。
+
+| 指标 | 006：原对照 | 007：成功构建摘要 | 008：再保留最近3次读取 |
+| --- | ---: | ---: | ---: |
+| 模型请求 | 13 | 16 | 15 |
+| 工具调用 | 17 | 20 | 20 |
+| 服务报告 Token | 119879 | 110356 | 118525 |
+| 模型编辑次数 | 2 | 2 | 0 |
+| 非空 Patch | 是 | 是 | 否 |
+| 编辑后公开测试 | 未执行 | 715 passed，exit 0 | 未编辑 |
+| 独立 base | 7失败/722通过，exit 1 | 7失败/722通过，exit 1 | 7失败/722通过，exit 1 |
+| 独立官方 | 729通过，exit 0 | 729通过，exit 0 | 729通过，exit 0 |
+| 独立候选 | 729通过，exit 0 | 729通过，exit 0 | 7失败/722通过，exit 1 |
+| 新增回归 / 缺失 | 0 / 0 | 0 / 0 | 0 / 0 |
+| issue_fixed | true | true | false |
+| solved | false | false | false |
+| Loop 秒数 | 54.16 | 100.86 | 65.26 |
+| 模型构建总秒数 | 20.01 | 56.83 | 30.83 |
+| 独立重建总秒数 | 20.59 | 45.18 | 31.51 |
+| 实验总秒数 | 112.16 | 184.55 | 138.18 |
+
+007 少用了 9,523 Token（相对 006 约 7.94%），但请求从 13 增到 16。它完成两次编辑并跑过公开测试，随后未能发出最终请求。008 则始终在调查，0 次编辑，导出的是 0 字节 Patch；未修好的 7 项仍失败。008 新增回归为 0 的含义只是没有破坏原先通过项，绝不代表 Issue 已解决。
+
+008 的具体过程包括：读取 more.py 2235～2410（受80行限制），继续读2314～2410，再搜索 __reversed__ 并读2393～2410；之后查 _get_by_index，翻阅测试2580～2760，再搜索 reversed 才读到2997～3030，最后又查 __len__/__bool__ 并重读2314～2392。出现了重复定位和较远范围的阅读。被省略的旧正文可能增加重读需要，但没有单独的反事实运行，不能确认全部额外调查都由省略策略导致。
+
+本次每个配置只有一次，模型输出和基础镜像选择也有随机变化。数据只能说明这两次运行没有带来端到端收益，不能宣称这两个策略对所有任务都无效。
+
+### 预算停止的直接证据
+
+| 数值 | 007 | 008 |
+| --- | ---: | ---: |
+| 服务已报告用量 | 110356 | 118525 |
+| 剩余预算 | 39644 | 31475 |
+| 下一轮请求字节数 | 45098 | 42778 |
+| 下一轮输入预留 | 45354 | 43034 |
+
+两轮都是 token_budget，下一轮请求没有发出，均没有估算用量入账。008 的字节数是经过“保留3次”投影后的请求，不能与完整 messages.json 字节数混淆。全程没有扩大预算，也没有让 Runtime 跳过收尾检查。
+
+接下来应先处理预算估算的可验证性：本轮已记录每次请求的字节预留和服务实际输入用量，能够逐次检查差距。再选择有独立依据的估算器或上下文方案做单因素实验；此处没有实现按字节简单除以常数或扩大预算。只按新旧顺序删除正文不保留关键符号及结论，当前不作为默认方案。
+
+### 两轮逐次用量与预留
+
+预留是请求发出前的估计，输入/输出是返回后的服务报告；不能把预留加到已消耗用量里。耗时是客户端请求秒数。
+
+**RUN-20260914-007**
+
+| 请求 | 动作 | 输入预留 | 实际输入 | 实际输出 | 实际总数 | 秒 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | list_files | 7157 | 1803 | 75 | 1878 | 1.000 |
+| 2 | read_file, read_file | 8792 | 2214 | 94 | 2308 | 1.021 |
+| 3 | read_file | 12152 | 3193 | 197 | 3390 | 1.286 |
+| 4 | build_environment | 13544 | 3531 | 153 | 3684 | 1.267 |
+| 5 | run_tests | 15040 | 3932 | 136 | 4068 | 1.260 |
+| 6 | search_code, search_code | 17968 | 4576 | 129 | 4705 | 1.167 |
+| 7 | read_file | 19321 | 4913 | 79 | 4992 | 0.843 |
+| 8 | read_file | 23474 | 6249 | 90 | 6339 | 1.018 |
+| 9 | read_file | 26169 | 7064 | 131 | 7195 | 1.212 |
+| 10 | search_code, search_code | 27959 | 7625 | 207 | 7832 | 1.363 |
+| 11 | read_file | 29423 | 7970 | 78 | 8048 | 1.307 |
+| 12 | search_code, search_code | 33692 | 9511 | 137 | 9648 | 0.701 |
+| 13 | read_file | 34958 | 9817 | 78 | 9895 | 1.016 |
+| 14 | edit_file | 39254 | 11313 | 320 | 11633 | 1.647 |
+| 15 | edit_file | 40702 | 11696 | 561 | 12257 | 2.601 |
+| 16 | run_tests | 42484 | 12319 | 165 | 12484 | 1.346 |
+| 合计 | — | — | 107726 | 2630 | 110356 | — |
+
+**RUN-20260914-008**
+
+| 请求 | 动作 | 输入预留 | 实际输入 | 实际输出 | 实际总数 | 秒 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | list_files, search_code | 7157 | 1803 | 114 | 1917 | 1.109 |
+| 2 | read_file, read_file, read_file | 13257 | 3493 | 161 | 3654 | 1.232 |
+| 3 | build_environment | 17440 | 4699 | 259 | 4958 | 1.881 |
+| 4 | run_tests | 19362 | 5206 | 67 | 5273 | 1.422 |
+| 5 | read_file | 21945 | 5785 | 117 | 5902 | 1.295 |
+| 6 | read_file | 24249 | 6513 | 79 | 6592 | 1.346 |
+| 7 | search_code, read_file | 28227 | 7661 | 185 | 7846 | 1.358 |
+| 8 | search_code | 30328 | 8262 | 127 | 8389 | 1.082 |
+| 9 | read_file | 31747 | 8644 | 79 | 8723 | 0.962 |
+| 10 | read_file | 32087 | 8717 | 270 | 8987 | 1.893 |
+| 11 | read_file | 33972 | 9477 | 78 | 9555 | 0.734 |
+| 12 | search_code | 37665 | 10752 | 94 | 10846 | 1.559 |
+| 13 | read_file | 40843 | 11676 | 78 | 11754 | 1.779 |
+| 14 | search_code, search_code | 40018 | 11484 | 395 | 11879 | 2.472 |
+| 15 | read_file | 42634 | 12171 | 79 | 12250 | 0.982 |
+| 合计 | — | — | 116343 | 2182 | 118525 | — |
+
+### 14 项实际值补采
+
+两轮之后另在 Docker 中应用 007 Patch、或保留 008 的未修改源码，运行同一值探针。以下是事后补采实际输出，与原始 JUnit 分开。原始 base/official 的详细值见上文，补采也再次验证。
+
+| 参数 | 预期 | 007 实际 | 008 实际 | 通过情况 |
+| --- | --- | --- | --- | --- |
+| `(0,)` | `[]` | `[]` | `IndexError` | 007通过；008失败 |
+| `(3, 3)` | `[]` | `[]` | `IndexError` | 007通过；008失败 |
+| `(2, 1)` | `[]` | `[]` | `IndexError` | 007通过；008失败 |
+| `(1, 2, -1)` | `[]` | `[]` | `IndexError` | 007通过；008失败 |
+| `(0.0,)` | `[]` | `[]` | `IndexError` | 007通过；008失败 |
+| `(Decimal('0'),)` | `[]` | `[]` | `IndexError` | 007通过；008失败 |
+| `(Fraction(0, 1),)` | `[]` | `[]` | `IndexError` | 007通过；008失败 |
+| `(5,)` | `[4, 3, 2, 1, 0]` | `[4, 3, 2, 1, 0]` | `[4, 3, 2, 1, 0]` | 均通过 |
+| `(1, 6, 2)` | `[5, 3, 1]` | `[5, 3, 1]` | `[5, 3, 1]` | 均通过 |
+| `(5, 0, -2)` | `[1, 3, 5]` | `[1, 3, 5]` | `[1, 3, 5]` | 均通过 |
+| `(0, 1, 0.25)` | `[0.75, 0.5, 0.25, 0.0]` | `[0.75, 0.5, 0.25, 0.0]` | `[0.75, 0.5, 0.25, 0.0]` | 均通过 |
+| `(Decimal('0'), Decimal('1'), Decimal('0.25'))` | `[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]` | `[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]` | `[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]` | 均通过 |
+| `(Fraction(0, 1), Fraction(1, 1), Fraction(1, 4))` | `[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]` | `[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]` | `[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]` | 均通过 |
+| `(4,)` | `[3, 2, 1, 0]` | `[3, 2, 1, 0]` | `[3, 2, 1, 0]` | 均通过 |
+
+最后一项 `(4,)` 的输入副作用：两轮反转后正向遍历都为 `[0, 1, 2, 3]`，再次反转都为 `[3, 2, 1, 0]`。其他项目未追加测量输入副作用。
+
+### 版本与复现
+
+两轮目标 base、官方修复、独立验收 SHA-256、Prompt全文 SHA-256、模型、总预算与上文006相同。两轮请求和返回模型均为 deepseek-flash，extra_body={}；估算入账0，金额未测量。pytest 开发导入路径修复只影响本项目工程测试，实际模型启动一直使用 `python -m scripts.run_real_issue`，其容器测试和目标仓库未因此改变。
+
+**007**：`agent-6fc5120cab68`，UTC 开始 `2026-09-14T01:54:23.247339+00:00`，Agent commit `d110e86e06b93ef0d5c63f682633d53d60f08a12`，dirty=false。uv.lock SHA-256 `8256210a762f06efc6bed4bbb655daeafefc851ffb2ef343cd0b63c269ef24df`。
+
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /workspace
+COPY . /workspace/
+RUN pip install --no-cache-dir pytest coverage ruff
+```
+
+运行镜像 `sha256:44ced898653d12adbe99ef608d41f0563eb5cd0cc691809569e558143df41abd`；独立镜像 `sha256:749f44c1c8ef11d40055d9ceeafe89fc3c290d38eb6979a91944177f1723cc61`。验证 Python `3.11.16 (main, Aug 31 2026, 23:54:33) [GCC 14.2.0]`，导入 `/workspace/more_itertools/__init__.py`。实际依赖：
+
+```text
+coverage==7.16.1
+iniconfig==2.3.0
+packaging==26.3
+pip==24.0
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==9.1.1
+ruff==0.16.7
+setuptools==79.0.1
+wheel==0.46.3
+```
+
+Patch SHA-256 `6d05ef33c0c0fb8f7e5a63e0ff660a7cb1f69d764fc8c7bb9b7c5b7d56f6a326`。[完整验证结果](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-007/summary.json) · [逐次用量](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-007/request-breakdown.json) · [预留对照](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-007/request-reservations.json) · [Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-007/candidate.patch) · [配置](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-007/metadata.json) · [提示词](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-007/prompt.json) · [归档SHA-256](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-007/archive-manifest.json)。
+
+**008**：`agent-38801e977fa7`，UTC 开始 `2026-09-14T01:58:41.398849+00:00`，Agent commit `ee2dcd05b8209b6763aa455326ba3454a905f5a9`，dirty=false。uv.lock SHA-256 `8256210a762f06efc6bed4bbb655daeafefc851ffb2ef343cd0b63c269ef24df`。
+
+```dockerfile
+FROM python:3.10-slim
+WORKDIR /workspace
+COPY . /workspace/
+RUN pip install --no-cache-dir pytest
+```
+
+运行镜像 `sha256:dbd08be8a659b2517afb37afafdc178d8fe54f5fff62a37e28fc5612aea13522`；独立镜像 `sha256:2c83bfe5cc76f52a9f9342a7e23a070a2e79d216c2a930d18eed34d188c3b4bf`。验证 Python `3.10.21 (main, Aug 31 2026, 23:56:10) [GCC 14.2.0]`，导入 `/workspace/more_itertools/__init__.py`。实际依赖：
+
+```text
+exceptiongroup==1.3.1
+iniconfig==2.3.0
+packaging==26.3
+pip==23.0.1
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==9.1.1
+setuptools==79.0.1
+tomli==2.4.1
+typing_extensions==4.16.0
+wheel==0.46.3
+```
+
+Patch SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`。[完整验证结果](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-008/summary.json) · [逐次用量](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-008/request-breakdown.json) · [预留对照](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-008/request-reservations.json) · [Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-008/candidate.patch) · [配置](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-008/metadata.json) · [提示词](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-008/prompt.json) · [归档SHA-256](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/RUN-20260914-008/archive-manifest.json)。
+
+在相应提交的干净 checkout、启动 Docker 并配置 DeepSeek 后，运行：
+
+```bash
+# 007
+AGENTICFIX_COMPACT_SUCCESSFUL_BUILD=true AGENTICFIX_ENVIRONMENT_PROMPT_VERSION=environment-v2 AGENTICFIX_MAX_READ_LINES=80 uv run python -m scripts.run_real_issue
+# 008：只新增保留读取次数
+AGENTICFIX_RETAINED_READ_RESULTS=3 AGENTICFIX_COMPACT_SUCCESSFUL_BUILD=true AGENTICFIX_ENVIRONMENT_PROMPT_VERSION=environment-v2 AGENTICFIX_MAX_READ_LINES=80 uv run python -m scripts.run_real_issue
+```
+
+默认 compact_successful_build=false、retained_read_results=null，因此已有流程不会自动使用这些未证明有效的策略。它们保留为可复现实验选项。构建与依赖仍然可变，不能保证跨日期重跑相同。这个任务至今5次尝试：端到端0/5，候选验收通过4/5；不能当作5个独立Issue的成功率。
+
+工程验证：19项 Loop 测试通过，完整 **96 passed、1 skipped，28.08秒**，mypy32源文件与工程源码ruff通过。跳过的是先前独立实测过的Docker集成测试，本轮没有改Docker执行器，也没有重新运行该集成测试。新增导入错误另见 AgenticFix-9。
+
+[离线消息投影](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/BUILD-CONTEXT-20260914/projection.json) · [补采程序](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/REAL-ISSUE-1152-PROBE/reproduce-v5.py) · [补采实际值](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/REAL-ISSUE-1152-PROBE/results-v5.json) · [最终工程测试](https://github.com/xiaoyumuxi/AgenticFix/blob/02330578a8ca935c8a091f09ad58ea24a1e3f464/docs/iteration-evidence/BUILD-CONTEXT-20260914/retention-full-tests.txt)。历史数据未覆盖。

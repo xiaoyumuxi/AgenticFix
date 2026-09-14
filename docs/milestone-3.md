@@ -45,3 +45,11 @@ Docker 实测：1 passed，27.84 秒。验证非 root、没有 .git/.env、源�
 三轮运行提交依次为 `1d43d4ce68f181b570d1f823058a2b3f8c8759e9`、`9b50dcc3ae599df18630955528116b7d18beccb0`、`90ca7cc8c8ede5db0d5442763d1f1efec7b5ede7`，均干净；证据归档到 `a5bf74ea5a52c7575088584183ba4e873553ec68`。第三阶段还未完成五任务 Mini Benchmark。
 
 Wiki：[AgenticFix‐7：Docker没有启动时如何留证，环境构建如何验收？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%907%EF%BC%9ADocker%E6%B2%A1%E6%9C%89%E5%90%AF%E5%8A%A8%E6%97%B6%E5%A6%82%E4%BD%95%E7%95%99%E8%AF%81%EF%BC%8C%E7%8E%AF%E5%A2%83%E6%9E%84%E5%BB%BA%E5%A6%82%E4%BD%95%E9%AA%8C%E6%94%B6%EF%BC%9F)、[AgenticFix‐8：Patch通过729项验证，为什么三轮仍然没有完成任务？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)。本地镜像位于 docs/wiki，同步记录 daemon 未启动、缓存写入警告、开发格式与归档脚本错误，以及验收状态检查缺口。
+
+## 同日追加：两次上下文对照与测试入口修复
+
+新增007成功构建消息摘要：16次请求、110,356 Token，候选729通过，Runtime预算停止。新增008再保留最近3次读取正文：15次请求、118,525 Token，没有编辑，候选仍7失败/722通过。预算150,000、目标版本和验收未变；两项策略默认关闭，尚未获得端到端成功。逐请求预留和服务实际输入量已归档。
+
+另外发现开发pytest混用当前包与旧的安装副本config.py。通过显式pythonpath及来源断言修复，修复提交bf523a4e978fb4c0e1d0b8ec7d61ca2add289f3c；临时脚本也需显式项目导入路径，修复范围不能泛化为所有启动入口。最终工程测试96 passed、1 skipped，28.08秒，mypy与ruff通过。
+
+完整数据追加至 [AgenticFix‐8：Patch通过729项验证，为什么三轮仍然没有完成任务？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)，独立工程问题见 [AgenticFix‐9：源码新增了配置，为什么pytest仍然说字段不存在？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%909%EF%BC%9A%E6%BA%90%E7%A0%81%E6%96%B0%E5%A2%9E%E4%BA%86%E9%85%8D%E7%BD%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88pytest%E4%BB%8D%E7%84%B6%E8%AF%B4%E5%AD%97%E6%AE%B5%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%9F)。下一步优先验证请求预算估算，不继续无依据叠加正文删除规则。
