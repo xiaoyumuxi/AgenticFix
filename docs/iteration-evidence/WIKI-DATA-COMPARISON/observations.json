@@ -1,0 +1,1616 @@
+{
+  "source_commit": "66f48ec0e6fbdbf6705a733bbadca87283ee5fa1",
+  "kind": "Supplemental replay of frozen tests and archived patches; not original live-run return-value telemetry",
+  "results": {
+    "order_total": {
+      "before": {
+        "exit_code": 1,
+        "calls": [
+          {
+            "nodeid": "test_acceptance.py::test_totals[20-1-100-28]",
+            "args": [
+              [
+                {
+                  "unit_price": 20,
+                  "quantity": 1
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 28,
+            "args_after": [
+              [
+                {
+                  "unit_price": 20,
+                  "quantity": 1
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[60-2-100-120]",
+            "args": [
+              [
+                {
+                  "unit_price": 60,
+                  "quantity": 2
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 68,
+            "args_after": [
+              [
+                {
+                  "unit_price": 60,
+                  "quantity": 2
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[25-4-100-100]",
+            "args": [
+              [
+                {
+                  "unit_price": 25,
+                  "quantity": 4
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 33,
+            "args_after": [
+              [
+                {
+                  "unit_price": 25,
+                  "quantity": 4
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[10-0-100-8]",
+            "args": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 0
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 18,
+            "args_after": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 0
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[12.5-3-100-45.5]",
+            "args": [
+              [
+                {
+                  "unit_price": 12.5,
+                  "quantity": 3
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 20.5,
+            "args_after": [
+              [
+                {
+                  "unit_price": 12.5,
+                  "quantity": 3
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[10-3-30-30]",
+            "args": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 3
+                }
+              ],
+              30
+            ],
+            "kwargs": {},
+            "return": 18,
+            "args_after": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 3
+                }
+              ],
+              30
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[10-2-30-28]",
+            "args": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 2
+                }
+              ],
+              30
+            ],
+            "kwargs": {},
+            "return": 18,
+            "args_after": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 2
+                }
+              ],
+              30
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[0-5-100-8]",
+            "args": [
+              [
+                {
+                  "unit_price": 0,
+                  "quantity": 5
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 8,
+            "args_after": [
+              [
+                {
+                  "unit_price": 0,
+                  "quantity": 5
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_empty",
+            "args": [
+              []
+            ],
+            "kwargs": {},
+            "return": 8,
+            "args_after": [
+              []
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_no_mutation",
+            "args": [
+              [
+                {
+                  "unit_price": 9,
+                  "quantity": 3
+                }
+              ]
+            ],
+            "kwargs": {},
+            "return": 17,
+            "args_after": [
+              [
+                {
+                  "unit_price": 9,
+                  "quantity": 3
+                }
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_checkout.py::test_single_unit",
+            "args": [
+              [
+                {
+                  "unit_price": 20,
+                  "quantity": 1
+                }
+              ]
+            ],
+            "kwargs": {},
+            "return": 28,
+            "args_after": [
+              [
+                {
+                  "unit_price": 20,
+                  "quantity": 1
+                }
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_checkout.py::test_quantity_changes_shipping",
+            "args": [
+              [
+                {
+                  "unit_price": 60,
+                  "quantity": 2
+                }
+              ]
+            ],
+            "kwargs": {},
+            "return": 68,
+            "args_after": [
+              [
+                {
+                  "unit_price": 60,
+                  "quantity": 2
+                }
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_checkout.py::test_mixed_order",
+            "args": [
+              [
+                {
+                  "unit_price": 12,
+                  "quantity": 3
+                },
+                {
+                  "unit_price": 7,
+                  "quantity": 2
+                }
+              ]
+            ],
+            "kwargs": {},
+            "return": 27,
+            "args_after": [
+              [
+                {
+                  "unit_price": 12,
+                  "quantity": 3
+                },
+                {
+                  "unit_price": 7,
+                  "quantity": 2
+                }
+              ]
+            ]
+          }
+        ],
+        "pytest_output": ".FFFFFF..F.FF                                                            [100%]\n=================================== FAILURES ===================================\n__________________________ test_totals[60-2-100-120] ___________________________\n\nprice = 60, quantity = 2, threshold = 100, expected = 120\n\n    @pytest.mark.parametrize(\n        \"price,quantity,threshold,expected\",\n        [\n            (20, 1, 100, 28),\n            (60, 2, 100, 120),\n            (25, 4, 100, 100),\n            (10, 0, 100, 8),\n            (12.5, 3, 100, 45.5),\n            (10, 3, 30, 30),\n            (10, 2, 30, 28),\n            (0, 5, 100, 8),\n        ],\n    )\n    def test_totals(price, quantity, threshold, expected):\n>       assert checkout_total([{\"unit_price\": price, \"quantity\": quantity}], threshold) == expected\nE       AssertionError: assert 68 == 120\nE        +  where 68 = checkout_total([{'unit_price': 60, 'quantity': 2}], 100)\n\ntest_acceptance.py:19: AssertionError\n__________________________ test_totals[25-4-100-100] ___________________________\n\nprice = 25, quantity = 4, threshold = 100, expected = 100\n\n    @pytest.mark.parametrize(\n        \"price,quantity,threshold,expected\",\n        [\n            (20, 1, 100, 28),\n            (60, 2, 100, 120),\n            (25, 4, 100, 100),\n            (10, 0, 100, 8),\n            (12.5, 3, 100, 45.5),\n            (10, 3, 30, 30),\n            (10, 2, 30, 28),\n            (0, 5, 100, 8),\n        ],\n    )\n    def test_totals(price, quantity, threshold, expected):\n>       assert checkout_total([{\"unit_price\": price, \"quantity\": quantity}], threshold) == expected\nE       AssertionError: assert 33 == 100\nE        +  where 33 = checkout_total([{'unit_price': 25, 'quantity': 4}], 100)\n\ntest_acceptance.py:19: AssertionError\n___________________________ test_totals[10-0-100-8] ____________________________\n\nprice = 10, quantity = 0, threshold = 100, expected = 8\n\n    @pytest.mark.parametrize(\n        \"price,quantity,threshold,expected\",\n        [\n            (20, 1, 100, 28),\n            (60, 2, 100, 120),\n            (25, 4, 100, 100),\n            (10, 0, 100, 8),\n            (12.5, 3, 100, 45.5),\n            (10, 3, 30, 30),\n            (10, 2, 30, 28),\n            (0, 5, 100, 8),\n        ],\n    )\n    def test_totals(price, quantity, threshold, expected):\n>       assert checkout_total([{\"unit_price\": price, \"quantity\": quantity}], threshold) == expected\nE       AssertionError: assert 18 == 8\nE        +  where 18 = checkout_total([{'unit_price': 10, 'quantity': 0}], 100)\n\ntest_acceptance.py:19: AssertionError\n_________________________ test_totals[12.5-3-100-45.5] _________________________\n\nprice = 12.5, quantity = 3, threshold = 100, expected = 45.5\n\n    @pytest.mark.parametrize(\n        \"price,quantity,threshold,expected\",\n        [\n            (20, 1, 100, 28),\n            (60, 2, 100, 120),\n            (25, 4, 100, 100),\n            (10, 0, 100, 8),\n            (12.5, 3, 100, 45.5),\n            (10, 3, 30, 30),\n            (10, 2, 30, 28),\n            (0, 5, 100, 8),\n        ],\n    )\n    def test_totals(price, quantity, threshold, expected):\n>       assert checkout_total([{\"unit_price\": price, \"quantity\": quantity}], threshold) == expected\nE       AssertionError: assert 20.5 == 45.5\nE        +  where 20.5 = checkout_total([{'unit_price': 12.5, 'quantity': 3}], 100)\n\ntest_acceptance.py:19: AssertionError\n___________________________ test_totals[10-3-30-30] ____________________________\n\nprice = 10, quantity = 3, threshold = 30, expected = 30\n\n    @pytest.mark.parametrize(\n        \"price,quantity,threshold,expected\",\n        [\n            (20, 1, 100, 28),\n            (60, 2, 100, 120),\n            (25, 4, 100, 100),\n            (10, 0, 100, 8),\n            (12.5, 3, 100, 45.5),\n            (10, 3, 30, 30),\n            (10, 2, 30, 28),\n            (0, 5, 100, 8),\n        ],\n    )\n    def test_totals(price, quantity, threshold, expected):\n>       assert checkout_total([{\"unit_price\": price, \"quantity\": quantity}], threshold) == expected\nE       AssertionError: assert 18 == 30\nE        +  where 18 = checkout_total([{'unit_price': 10, 'quantity': 3}], 30)\n\ntest_acceptance.py:19: AssertionError\n___________________________ test_totals[10-2-30-28] ____________________________\n\nprice = 10, quantity = 2, threshold = 30, expected = 28\n\n    @pytest.mark.parametrize(\n        \"price,quantity,threshold,expected\",\n        [\n            (20, 1, 100, 28),\n            (60, 2, 100, 120),\n            (25, 4, 100, 100),\n            (10, 0, 100, 8),\n            (12.5, 3, 100, 45.5),\n            (10, 3, 30, 30),\n            (10, 2, 30, 28),\n            (0, 5, 100, 8),\n        ],\n    )\n    def test_totals(price, quantity, threshold, expected):\n>       assert checkout_total([{\"unit_price\": price, \"quantity\": quantity}], threshold) == expected\nE       AssertionError: assert 18 == 28\nE        +  where 18 = checkout_total([{'unit_price': 10, 'quantity': 2}], 30)\n\ntest_acceptance.py:19: AssertionError\n_______________________________ test_no_mutation _______________________________\n\n    def test_no_mutation():\n        items = [{\"unit_price\": 9, \"quantity\": 3}]\n        original = [dict(item) for item in items]\n>       assert checkout_total(items) == 35\nE       AssertionError: assert 17 == 35\nE        +  where 17 = checkout_total([{'unit_price': 9, 'quantity': 3}])\n\ntest_acceptance.py:29: AssertionError\n________________________ test_quantity_changes_shipping ________________________\n\n    def test_quantity_changes_shipping():\n>       assert checkout_total([{\"unit_price\": 60, \"quantity\": 2}]) == 120\nE       AssertionError: assert 68 == 120\nE        +  where 68 = checkout_total([{'unit_price': 60, 'quantity': 2}])\n\ntest_checkout.py:9: AssertionError\n_______________________________ test_mixed_order _______________________________\n\n    def test_mixed_order():\n>       assert (\n            checkout_total([{\"unit_price\": 12, \"quantity\": 3}, {\"unit_price\": 7, \"quantity\": 2}]) == 58\n        )\nE       AssertionError: assert 27 == 58\nE        +  where 27 = checkout_total([{'unit_price': 12, 'quantity': 3}, {'unit_price': 7, 'quantity': 2}])\n\ntest_checkout.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED test_acceptance.py::test_totals[60-2-100-120] - AssertionError: assert...\nFAILED test_acceptance.py::test_totals[25-4-100-100] - AssertionError: assert...\nFAILED test_acceptance.py::test_totals[10-0-100-8] - AssertionError: assert 1...\nFAILED test_acceptance.py::test_totals[12.5-3-100-45.5] - AssertionError: ass...\nFAILED test_acceptance.py::test_totals[10-3-30-30] - AssertionError: assert 1...\nFAILED test_acceptance.py::test_totals[10-2-30-28] - AssertionError: assert 1...\nFAILED test_acceptance.py::test_no_mutation - AssertionError: assert 17 == 35\nFAILED test_checkout.py::test_quantity_changes_shipping - AssertionError: ass...\nFAILED test_checkout.py::test_mixed_order - AssertionError: assert 27 == 58\n9 failed, 4 passed in 0.02s\n"
+      },
+      "after": {
+        "exit_code": 0,
+        "calls": [
+          {
+            "nodeid": "test_acceptance.py::test_totals[20-1-100-28]",
+            "args": [
+              [
+                {
+                  "unit_price": 20,
+                  "quantity": 1
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 28,
+            "args_after": [
+              [
+                {
+                  "unit_price": 20,
+                  "quantity": 1
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[60-2-100-120]",
+            "args": [
+              [
+                {
+                  "unit_price": 60,
+                  "quantity": 2
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 120,
+            "args_after": [
+              [
+                {
+                  "unit_price": 60,
+                  "quantity": 2
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[25-4-100-100]",
+            "args": [
+              [
+                {
+                  "unit_price": 25,
+                  "quantity": 4
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 100,
+            "args_after": [
+              [
+                {
+                  "unit_price": 25,
+                  "quantity": 4
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[10-0-100-8]",
+            "args": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 0
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 8,
+            "args_after": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 0
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[12.5-3-100-45.5]",
+            "args": [
+              [
+                {
+                  "unit_price": 12.5,
+                  "quantity": 3
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 45.5,
+            "args_after": [
+              [
+                {
+                  "unit_price": 12.5,
+                  "quantity": 3
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[10-3-30-30]",
+            "args": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 3
+                }
+              ],
+              30
+            ],
+            "kwargs": {},
+            "return": 30,
+            "args_after": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 3
+                }
+              ],
+              30
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[10-2-30-28]",
+            "args": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 2
+                }
+              ],
+              30
+            ],
+            "kwargs": {},
+            "return": 28,
+            "args_after": [
+              [
+                {
+                  "unit_price": 10,
+                  "quantity": 2
+                }
+              ],
+              30
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_totals[0-5-100-8]",
+            "args": [
+              [
+                {
+                  "unit_price": 0,
+                  "quantity": 5
+                }
+              ],
+              100
+            ],
+            "kwargs": {},
+            "return": 8,
+            "args_after": [
+              [
+                {
+                  "unit_price": 0,
+                  "quantity": 5
+                }
+              ],
+              100
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_empty",
+            "args": [
+              []
+            ],
+            "kwargs": {},
+            "return": 8,
+            "args_after": [
+              []
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_no_mutation",
+            "args": [
+              [
+                {
+                  "unit_price": 9,
+                  "quantity": 3
+                }
+              ]
+            ],
+            "kwargs": {},
+            "return": 35,
+            "args_after": [
+              [
+                {
+                  "unit_price": 9,
+                  "quantity": 3
+                }
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_checkout.py::test_single_unit",
+            "args": [
+              [
+                {
+                  "unit_price": 20,
+                  "quantity": 1
+                }
+              ]
+            ],
+            "kwargs": {},
+            "return": 28,
+            "args_after": [
+              [
+                {
+                  "unit_price": 20,
+                  "quantity": 1
+                }
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_checkout.py::test_quantity_changes_shipping",
+            "args": [
+              [
+                {
+                  "unit_price": 60,
+                  "quantity": 2
+                }
+              ]
+            ],
+            "kwargs": {},
+            "return": 120,
+            "args_after": [
+              [
+                {
+                  "unit_price": 60,
+                  "quantity": 2
+                }
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_checkout.py::test_mixed_order",
+            "args": [
+              [
+                {
+                  "unit_price": 12,
+                  "quantity": 3
+                },
+                {
+                  "unit_price": 7,
+                  "quantity": 2
+                }
+              ]
+            ],
+            "kwargs": {},
+            "return": 58,
+            "args_after": [
+              [
+                {
+                  "unit_price": 12,
+                  "quantity": 3
+                },
+                {
+                  "unit_price": 7,
+                  "quantity": 2
+                }
+              ]
+            ]
+          }
+        ],
+        "pytest_output": ".............                                                            [100%]\n13 passed in 0.01s\n"
+      }
+    },
+    "intervals": {
+      "before": {
+        "exit_code": 1,
+        "calls": [
+          {
+            "nodeid": "test_acceptance.py::test_cases[data0-expected0]",
+            "args": [
+              []
+            ],
+            "kwargs": {},
+            "exception": "IndexError",
+            "args_after": [
+              []
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data1-expected1]",
+            "args": [
+              [
+                [
+                  0,
+                  0
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                0,
+                0
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data2-expected2]",
+            "args": [
+              [
+                [
+                  2,
+                  3
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                3
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data3-expected3]",
+            "args": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  6
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                3
+              ],
+              [
+                4,
+                6
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  6
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data4-expected4]",
+            "args": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                2
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data5-expected5]",
+            "args": [
+              [
+                [
+                  -5,
+                  -1
+                ],
+                [
+                  -2,
+                  2
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                -5,
+                2
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  -5,
+                  -1
+                ],
+                [
+                  -2,
+                  2
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data6-expected6]",
+            "args": [
+              [
+                [
+                  0.5,
+                  1.5
+                ],
+                [
+                  1.5,
+                  2.5
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                0.5,
+                1.5
+              ],
+              [
+                1.5,
+                2.5
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  0.5,
+                  1.5
+                ],
+                [
+                  1.5,
+                  2.5
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data7-expected7]",
+            "args": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                3,
+                4
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  3,
+                  4
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data8-expected8]",
+            "args": [
+              [
+                [
+                  9,
+                  10
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                2
+              ],
+              [
+                9,
+                10
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  9,
+                  10
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data9-expected9]",
+            "args": [
+              [
+                [
+                  1,
+                  5
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  5,
+                  8
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                5
+              ],
+              [
+                5,
+                5
+              ],
+              [
+                5,
+                8
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  5
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  5,
+                  8
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_disjoint",
+            "args": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  4,
+                  5
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                2
+              ],
+              [
+                4,
+                5
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  4,
+                  5
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_empty",
+            "args": [
+              []
+            ],
+            "kwargs": {},
+            "exception": "IndexError",
+            "args_after": [
+              []
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_touching",
+            "args": [
+              [
+                [
+                  1,
+                  3
+                ],
+                [
+                  3,
+                  5
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                3
+              ],
+              [
+                3,
+                5
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  3
+                ],
+                [
+                  3,
+                  5
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_nested",
+            "args": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                3
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_no_mutation",
+            "args": [
+              [
+                [
+                  4,
+                  6
+                ],
+                [
+                  1,
+                  5
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                6
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  5
+                ],
+                [
+                  4,
+                  6
+                ]
+              ]
+            ]
+          }
+        ],
+        "pytest_output": "F.FF..FFFF.FFFF                                                          [100%]\n=================================== FAILURES ===================================\n_________________________ test_cases[data0-expected0] __________________________\n\ndata = [], expected = []\n\n    @pytest.mark.parametrize(\n        \"data,expected\",\n        [\n            ([], []),\n            ([[0, 0]], [[0, 0]]),\n            ([[2, 3], [1, 2]], [[1, 3]]),\n            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),\n            ([[1, 2], [1, 2]], [[1, 2]]),\n            ([[-5, -1], [-2, 2]], [[-5, 2]]),\n            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),\n            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),\n            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),\n            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),\n        ],\n    )\n    def test_cases(data, expected):\n        before = deepcopy(data)\n>       assert merge_intervals(data) == expected\n               ^^^^^^^^^^^^^^^^^^^^^\n\ntest_acceptance.py:24: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nintervals = []\n\n    def merge_intervals(intervals):\n        intervals.sort()\n>       merged = [list(intervals[0])]\n                       ^^^^^^^^^^^^\nE       IndexError: list index out of range\n\nintervals.py:3: IndexError\n_________________________ test_cases[data2-expected2] __________________________\n\ndata = [[1, 2], [2, 3]], expected = [[1, 3]]\n\n    @pytest.mark.parametrize(\n        \"data,expected\",\n        [\n            ([], []),\n            ([[0, 0]], [[0, 0]]),\n            ([[2, 3], [1, 2]], [[1, 3]]),\n            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),\n            ([[1, 2], [1, 2]], [[1, 2]]),\n            ([[-5, -1], [-2, 2]], [[-5, 2]]),\n            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),\n            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),\n            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),\n            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),\n        ],\n    )\n    def test_cases(data, expected):\n        before = deepcopy(data)\n>       assert merge_intervals(data) == expected\nE       assert [[1, 2], [2, 3]] == [[1, 3]]\nE         \nE         At index 0 diff: [1, 2] != [1, 3]\nE         Left contains one more item: [2, 3]\nE         Use -v to get more diff\n\ntest_acceptance.py:24: AssertionError\n_________________________ test_cases[data3-expected3] __________________________\n\ndata = [[1, 10], [2, 3], [4, 6]], expected = [[1, 10]]\n\n    @pytest.mark.parametrize(\n        \"data,expected\",\n        [\n            ([], []),\n            ([[0, 0]], [[0, 0]]),\n            ([[2, 3], [1, 2]], [[1, 3]]),\n            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),\n            ([[1, 2], [1, 2]], [[1, 2]]),\n            ([[-5, -1], [-2, 2]], [[-5, 2]]),\n            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),\n            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),\n            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),\n            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),\n        ],\n    )\n    def test_cases(data, expected):\n        before = deepcopy(data)\n>       assert merge_intervals(data) == expected\nE       assert [[1, 3], [4, 6]] == [[1, 10]]\nE         \nE         At index 0 diff: [1, 3] != [1, 10]\nE         Left contains one more item: [4, 6]\nE         Use -v to get more diff\n\ntest_acceptance.py:24: AssertionError\n_________________________ test_cases[data6-expected6] __________________________\n\ndata = [[0.5, 1.5], [1.5, 2.5]], expected = [[0.5, 2.5]]\n\n    @pytest.mark.parametrize(\n        \"data,expected\",\n        [\n            ([], []),\n            ([[0, 0]], [[0, 0]]),\n            ([[2, 3], [1, 2]], [[1, 3]]),\n            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),\n            ([[1, 2], [1, 2]], [[1, 2]]),\n            ([[-5, -1], [-2, 2]], [[-5, 2]]),\n            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),\n            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),\n            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),\n            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),\n        ],\n    )\n    def test_cases(data, expected):\n        before = deepcopy(data)\n>       assert merge_intervals(data) == expected\nE       assert [[0.5, 1.5], [1.5, 2.5]] == [[0.5, 2.5]]\nE         \nE         At index 0 diff: [0.5, 1.5] != [0.5, 2.5]\nE         Left contains one more item: [1.5, 2.5]\nE         Use -v to get more diff\n\ntest_acceptance.py:24: AssertionError\n_________________________ test_cases[data7-expected7] __________________________\n\ndata = [[1, 2], [2, 3], [3, 4]], expected = [[1, 4]]\n\n    @pytest.mark.parametrize(\n        \"data,expected\",\n        [\n            ([], []),\n            ([[0, 0]], [[0, 0]]),\n            ([[2, 3], [1, 2]], [[1, 3]]),\n            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),\n            ([[1, 2], [1, 2]], [[1, 2]]),\n            ([[-5, -1], [-2, 2]], [[-5, 2]]),\n            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),\n            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),\n            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),\n            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),\n        ],\n    )\n    def test_cases(data, expected):\n        before = deepcopy(data)\n>       assert merge_intervals(data) == expected\nE       assert [[1, 2], [2, 3], [3, 4]] == [[1, 4]]\nE         \nE         At index 0 diff: [1, 2] != [1, 4]\nE         Left contains 2 more items, first extra item: [2, 3]\nE         Use -v to get more diff\n\ntest_acceptance.py:24: AssertionError\n_________________________ test_cases[data8-expected8] __________________________\n\ndata = [[1, 2], [9, 10]], expected = [[1, 2], [9, 10]]\n\n    @pytest.mark.parametrize(\n        \"data,expected\",\n        [\n            ([], []),\n            ([[0, 0]], [[0, 0]]),\n            ([[2, 3], [1, 2]], [[1, 3]]),\n            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),\n            ([[1, 2], [1, 2]], [[1, 2]]),\n            ([[-5, -1], [-2, 2]], [[-5, 2]]),\n            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),\n            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),\n            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),\n            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),\n        ],\n    )\n    def test_cases(data, expected):\n        before = deepcopy(data)\n        assert merge_intervals(data) == expected\n>       assert data == before\nE       assert [[1, 2], [9, 10]] == [[9, 10], [1, 2]]\nE         \nE         At index 0 diff: [1, 2] != [9, 10]\nE         Use -v to get more diff\n\ntest_acceptance.py:25: AssertionError\n_________________________ test_cases[data9-expected9] __________________________\n\ndata = [[1, 5], [5, 5], [5, 8]], expected = [[1, 8]]\n\n    @pytest.mark.parametrize(\n        \"data,expected\",\n        [\n            ([], []),\n            ([[0, 0]], [[0, 0]]),\n            ([[2, 3], [1, 2]], [[1, 3]]),\n            ([[1, 10], [2, 3], [4, 6]], [[1, 10]]),\n            ([[1, 2], [1, 2]], [[1, 2]]),\n            ([[-5, -1], [-2, 2]], [[-5, 2]]),\n            ([[0.5, 1.5], [1.5, 2.5]], [[0.5, 2.5]]),\n            ([[1, 2], [3, 4], [2, 3]], [[1, 4]]),\n            ([[9, 10], [1, 2]], [[1, 2], [9, 10]]),\n            ([[1, 5], [5, 5], [5, 8]], [[1, 8]]),\n        ],\n    )\n    def test_cases(data, expected):\n        before = deepcopy(data)\n>       assert merge_intervals(data) == expected\nE       assert [[1, 5], [5, 5], [5, 8]] == [[1, 8]]\nE         \nE         At index 0 diff: [1, 5] != [1, 8]\nE         Left contains 2 more items, first extra item: [5, 5]\nE         Use -v to get more diff\n\ntest_acceptance.py:24: AssertionError\n__________________________________ test_empty __________________________________\n\n    def test_empty():\n>       assert merge_intervals([]) == []\n               ^^^^^^^^^^^^^^^^^^^\n\ntest_intervals.py:9: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nconftest.py:16: in observed\n    value = original(*args, **kwargs)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nintervals = []\n\n    def merge_intervals(intervals):\n        intervals.sort()\n>       merged = [list(intervals[0])]\n                       ^^^^^^^^^^^^\nE       IndexError: list index out of range\n\nintervals.py:3: IndexError\n________________________________ test_touching _________________________________\n\n    def test_touching():\n>       assert merge_intervals([[1, 3], [3, 5]]) == [[1, 5]]\nE       assert [[1, 3], [3, 5]] == [[1, 5]]\nE         \nE         At index 0 diff: [1, 3] != [1, 5]\nE         Left contains one more item: [3, 5]\nE         Use -v to get more diff\n\ntest_intervals.py:13: AssertionError\n_________________________________ test_nested __________________________________\n\n    def test_nested():\n>       assert merge_intervals([[1, 10], [2, 3]]) == [[1, 10]]\nE       assert [[1, 3]] == [[1, 10]]\nE         \nE         At index 0 diff: [1, 3] != [1, 10]\nE         Use -v to get more diff\n\ntest_intervals.py:17: AssertionError\n_______________________________ test_no_mutation _______________________________\n\n    def test_no_mutation():\n        data = [[4, 6], [1, 5]]\n        assert merge_intervals(data) == [[1, 6]]\n>       assert data == [[4, 6], [1, 5]]\nE       assert [[1, 5], [4, 6]] == [[4, 6], [1, 5]]\nE         \nE         At index 0 diff: [1, 5] != [4, 6]\nE         Use -v to get more diff\n\ntest_intervals.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED test_acceptance.py::test_cases[data0-expected0] - IndexError: list ind...\nFAILED test_acceptance.py::test_cases[data2-expected2] - assert [[1, 2], [2, ...\nFAILED test_acceptance.py::test_cases[data3-expected3] - assert [[1, 3], [4, ...\nFAILED test_acceptance.py::test_cases[data6-expected6] - assert [[0.5, 1.5], ...\nFAILED test_acceptance.py::test_cases[data7-expected7] - assert [[1, 2], [2, ...\nFAILED test_acceptance.py::test_cases[data8-expected8] - assert [[1, 2], [9, ...\nFAILED test_acceptance.py::test_cases[data9-expected9] - assert [[1, 5], [5, ...\nFAILED test_intervals.py::test_empty - IndexError: list index out of range\nFAILED test_intervals.py::test_touching - assert [[1, 3], [3, 5]] == [[1, 5]]\nFAILED test_intervals.py::test_nested - assert [[1, 3]] == [[1, 10]]\nFAILED test_intervals.py::test_no_mutation - assert [[1, 5], [4, 6]] == [[4, ...\n11 failed, 4 passed in 0.02s\n"
+      },
+      "after": {
+        "exit_code": 0,
+        "calls": [
+          {
+            "nodeid": "test_acceptance.py::test_cases[data0-expected0]",
+            "args": [
+              []
+            ],
+            "kwargs": {},
+            "return": [],
+            "args_after": [
+              []
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data1-expected1]",
+            "args": [
+              [
+                [
+                  0,
+                  0
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                0,
+                0
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  0,
+                  0
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data2-expected2]",
+            "args": [
+              [
+                [
+                  2,
+                  3
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                3
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  2,
+                  3
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data3-expected3]",
+            "args": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  6
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                10
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  3
+                ],
+                [
+                  4,
+                  6
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data4-expected4]",
+            "args": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                2
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data5-expected5]",
+            "args": [
+              [
+                [
+                  -5,
+                  -1
+                ],
+                [
+                  -2,
+                  2
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                -5,
+                2
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  -5,
+                  -1
+                ],
+                [
+                  -2,
+                  2
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data6-expected6]",
+            "args": [
+              [
+                [
+                  0.5,
+                  1.5
+                ],
+                [
+                  1.5,
+                  2.5
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                0.5,
+                2.5
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  0.5,
+                  1.5
+                ],
+                [
+                  1.5,
+                  2.5
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data7-expected7]",
+            "args": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                4
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  3,
+                  4
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data8-expected8]",
+            "args": [
+              [
+                [
+                  9,
+                  10
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                2
+              ],
+              [
+                9,
+                10
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  9,
+                  10
+                ],
+                [
+                  1,
+                  2
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_acceptance.py::test_cases[data9-expected9]",
+            "args": [
+              [
+                [
+                  1,
+                  5
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  5,
+                  8
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                8
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  5
+                ],
+                [
+                  5,
+                  5
+                ],
+                [
+                  5,
+                  8
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_disjoint",
+            "args": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  4,
+                  5
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                2
+              ],
+              [
+                4,
+                5
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  2
+                ],
+                [
+                  4,
+                  5
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_empty",
+            "args": [
+              []
+            ],
+            "kwargs": {},
+            "return": [],
+            "args_after": [
+              []
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_touching",
+            "args": [
+              [
+                [
+                  1,
+                  3
+                ],
+                [
+                  3,
+                  5
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                5
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  3
+                ],
+                [
+                  3,
+                  5
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_nested",
+            "args": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                10
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  1,
+                  10
+                ],
+                [
+                  2,
+                  3
+                ]
+              ]
+            ]
+          },
+          {
+            "nodeid": "test_intervals.py::test_no_mutation",
+            "args": [
+              [
+                [
+                  4,
+                  6
+                ],
+                [
+                  1,
+                  5
+                ]
+              ]
+            ],
+            "kwargs": {},
+            "return": [
+              [
+                1,
+                6
+              ]
+            ],
+            "args_after": [
+              [
+                [
+                  4,
+                  6
+                ],
+                [
+                  1,
+                  5
+                ]
+              ]
+            ]
+          }
+        ],
+        "pytest_output": "...............                                                          [100%]\n15 passed in 0.01s\n"
+      }
+    }
+  }
+}
