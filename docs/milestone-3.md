@@ -53,3 +53,7 @@ Wiki：[AgenticFix‐7：Docker没有启动时如何留证，环境构建如何�
 另外发现开发pytest混用当前包与旧的安装副本config.py。通过显式pythonpath及来源断言修复，修复提交bf523a4e978fb4c0e1d0b8ec7d61ca2add289f3c；临时脚本也需显式项目导入路径，修复范围不能泛化为所有启动入口。最终工程测试96 passed、1 skipped，28.08秒，mypy与ruff通过。
 
 完整数据追加至 [AgenticFix‐8：Patch通过729项验证，为什么三轮仍然没有完成任务？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)，独立工程问题见 [AgenticFix‐9：源码新增了配置，为什么pytest仍然说字段不存在？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%909%EF%BC%9A%E6%BA%90%E7%A0%81%E6%96%B0%E5%A2%9E%E4%BA%86%E9%85%8D%E7%BD%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88pytest%E4%BB%8D%E7%84%B6%E8%AF%B4%E5%AD%97%E6%AE%B5%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%9F)。下一步优先验证请求预算估算，不继续无依据叠加正文删除规则。
+
+## 环境错误反馈修复
+
+长构建/测试失败现在保留结构化状态、日志头尾和有界疑似错误行。真实Docker故障注入与同输入消息对照验证错误可见，消息12258字符→6004字符；未测量真实模型Token或重试收益。中间错误的头尾遗漏也已记录并补充确定性测试。完整工程测试99 passed、1 skipped，28.41秒。详见 [AgenticFix‐10：Docker报了缺依赖，为什么模型只看到下载进度？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%9010%EF%BC%9ADocker%E6%8A%A5%E4%BA%86%E7%BC%BA%E4%BE%9D%E8%B5%96%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%A8%A1%E5%9E%8B%E5%8F%AA%E7%9C%8B%E5%88%B0%E4%B8%8B%E8%BD%BD%E8%BF%9B%E5%BA%A6%EF%BC%9F)。
