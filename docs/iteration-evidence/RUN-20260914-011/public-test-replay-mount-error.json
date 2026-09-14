@@ -1,0 +1,16 @@
+{
+  "kind": "Post-run targeted Docker replay of original failed-run patch; not an original model tool call",
+  "image_id": "sha256:7f452ecfe1a00e70a2c1417c8487d5f4e162868b8f2c088de2ee2eb75bbf2f30",
+  "result": {
+    "stdout": "",
+    "stderr": "docker: Error response from daemon: invalid mount config for type \"bind\": invalid mount path: 'runs/m3-development/run011-public-replay/agenticfix-test-2948d50d5937' mount path must be absolute\n\nRun 'docker run --help' for more information\n",
+    "exit_code": 125,
+    "duration": 0.0205535839922959,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null,
+    "diagnostic_lines": [
+      "stderr: docker: Error response from daemon: invalid mount config for type \"bind\": invalid mount path: 'runs/m3-development/run011-public-replay/agenticfix-test-2948d50d5937' mount path must be absolute"
+    ]
+  }
+}

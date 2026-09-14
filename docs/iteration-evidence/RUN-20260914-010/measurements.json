@@ -1,0 +1,329 @@
+{
+  "requests": [
+    {
+      "event": "model_finished",
+      "call_id": "c46177a1394c457487ba662f1e35eb87",
+      "duration": 0.8653401659976225,
+      "usage": {
+        "prompt_tokens": 1921,
+        "completion_tokens": 68,
+        "total_tokens": 1989
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "92ed435d3235444b99c5753f6ba0944c",
+      "duration": 1.4806407919968478,
+      "usage": {
+        "prompt_tokens": 2325,
+        "completion_tokens": 135,
+        "total_tokens": 2460
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "2c2d4c9681d64ecb87e2a662c899d495",
+      "duration": 1.9735618749982677,
+      "usage": {
+        "prompt_tokens": 3505,
+        "completion_tokens": 357,
+        "total_tokens": 3862
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "4762a1bd276a420fb01cc98c1d8d30ba",
+      "duration": 0.8950560410012258,
+      "usage": {
+        "prompt_tokens": 4121,
+        "completion_tokens": 63,
+        "total_tokens": 4184
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "c07f370ed4264e128ecc50bcba11287d",
+      "duration": 0.7782747080054833,
+      "usage": {
+        "prompt_tokens": 4716,
+        "completion_tokens": 128,
+        "total_tokens": 4844
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "77b7e32fc5404d75955d9f8bdb22553d",
+      "duration": 1.0673097499966389,
+      "usage": {
+        "prompt_tokens": 6854,
+        "completion_tokens": 172,
+        "total_tokens": 7026
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "2fa6383267a54fb2b5e915f7ed7c1829",
+      "duration": 0.8336263750097714,
+      "usage": {
+        "prompt_tokens": 9109,
+        "completion_tokens": 183,
+        "total_tokens": 9292
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "6d3a8649a9834204a7e4df342ce2012c",
+      "duration": 1.6622651670040796,
+      "usage": {
+        "prompt_tokens": 11491,
+        "completion_tokens": 268,
+        "total_tokens": 11759
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "a1a93ed37b4844f4aa2a4195b73a6399",
+      "duration": 1.1102834580087801,
+      "usage": {
+        "prompt_tokens": 12128,
+        "completion_tokens": 230,
+        "total_tokens": 12358
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "880b31e51afa412da4e1de53cf5bc792",
+      "duration": 2.003808499997831,
+      "usage": {
+        "prompt_tokens": 12421,
+        "completion_tokens": 491,
+        "total_tokens": 12912
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "2fc85fcc9c2a447998afa9ade71c4037",
+      "duration": 0.8331734590028645,
+      "usage": {
+        "prompt_tokens": 12974,
+        "completion_tokens": 56,
+        "total_tokens": 13030
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "fc48d64407c44f1da51cd09ece28a2ee",
+      "duration": 0.9348373749962775,
+      "usage": {
+        "prompt_tokens": 13560,
+        "completion_tokens": 48,
+        "total_tokens": 13608
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "3983d1a054d14c4a8b73669e0e77db2a",
+      "duration": 1.5986420000117505,
+      "usage": {
+        "prompt_tokens": 14205,
+        "completion_tokens": 241,
+        "total_tokens": 14446
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    }
+  ],
+  "tools": [
+    {
+      "tool": "list_files",
+      "duration": 0.0036526670010061935,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0004677499964600429,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0003191670111846179,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0002674579882295802,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "build_environment",
+      "duration": 29.258677082994836,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "run_tests",
+      "duration": 13.196412416000385,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.007482667002477683,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.007014457994955592,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0025272080092690885,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0023542909912066534,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.00230679199739825,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0015999169991118833,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0028360419964883476,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "edit_file",
+      "duration": 0.0038834160077385604,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "edit_file",
+      "duration": 0.005047667000326328,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "run_tests",
+      "duration": 12.201248208002653,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "git_diff",
+      "duration": 0.1667246669967426,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "run_tests",
+      "duration": 12.506253333995119,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "git_diff",
+      "duration": 0.09621299999707844,
+      "success": true,
+      "error_code": null
+    }
+  ],
+  "tests": [
+    {
+      "stdout": "................................................................................... [ 11%]\n......................................................... [ 19%]\n........................................................................ [ 29%]\n.................................................. [ 36%]\n..................................................................... [ 46%]\n..................................... [ 51%]\n.................................... [ 56%]\n.............................................................................................. [ 69%]\n............................................................ [ 78%]\n.................................................. [ 85%]\n.............................................. [ 91%]\n.............................................................                                                      [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469\n  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /workspace/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/workspace/pytest-cache-files-kfob_578'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n715 passed, 1 warning, 19896 subtests passed in 12.56s\n",
+      "stderr": "",
+      "exit_code": 0,
+      "duration": 12.983538792002946,
+      "timed_out": false,
+      "truncated": false,
+      "launch_error": null,
+      "diagnostic_lines": [],
+      "status": "passed",
+      "tested_revision": 0,
+      "target": "default",
+      "image_id": "sha256:ab3fad47dd1804f1f5b1b9d5d1738937adf1e1f61a99393d74a21555bde7f26b",
+      "container": "agenticfix-test-6682b15efe8d",
+      "output_directory": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-ba72a49c0ec8/environment/agenticfix-test-6682b15efe8d",
+      "artifact": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-ba72a49c0ec8/test-6.json"
+    },
+    {
+      "stdout": "................................................................................... [ 11%]\n......................................................... [ 19%]\n........................................................................ [ 29%]\n.................................................. [ 36%]\n..................................................................... [ 46%]\n..................................... [ 51%]\n.................................... [ 56%]\n.............................................................................................. [ 69%]\n............................................................ [ 78%]\n.................................................. [ 85%]\n.............................................. [ 91%]\n.............................................................                                                      [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469\n  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /workspace/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/workspace/pytest-cache-files-c8rc83om'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n715 passed, 1 warning, 19896 subtests passed in 11.69s\n",
+      "stderr": "",
+      "exit_code": 0,
+      "duration": 12.052363624999998,
+      "timed_out": false,
+      "truncated": false,
+      "launch_error": null,
+      "diagnostic_lines": [],
+      "status": "passed",
+      "tested_revision": 2,
+      "target": "default",
+      "image_id": "sha256:ab3fad47dd1804f1f5b1b9d5d1738937adf1e1f61a99393d74a21555bde7f26b",
+      "container": "agenticfix-test-c402ef5e1454",
+      "output_directory": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-ba72a49c0ec8/environment/agenticfix-test-c402ef5e1454",
+      "artifact": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-ba72a49c0ec8/test-16.json"
+    },
+    {
+      "stdout": "................................................................................... [ 11%]\n......................................................... [ 19%]\n........................................................................ [ 29%]\n.................................................. [ 36%]\n..................................................................... [ 46%]\n..................................... [ 51%]\n.................................... [ 56%]\n.............................................................................................. [ 69%]\n............................................................ [ 78%]\n.................................................. [ 85%]\n.............................................. [ 91%]\n.............................................................                                                      [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469\n  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /workspace/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/workspace/pytest-cache-files-plziojb_'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n715 passed, 1 warning, 19896 subtests passed in 11.95s\n",
+      "stderr": "",
+      "exit_code": 0,
+      "duration": 12.316036750009516,
+      "timed_out": false,
+      "truncated": false,
+      "launch_error": null,
+      "diagnostic_lines": [],
+      "status": "passed",
+      "tested_revision": 2,
+      "target": "default",
+      "image_id": "sha256:ab3fad47dd1804f1f5b1b9d5d1738937adf1e1f61a99393d74a21555bde7f26b",
+      "container": "agenticfix-test-0dc4acfd3ae8",
+      "output_directory": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-ba72a49c0ec8/environment/agenticfix-test-0dc4acfd3ae8",
+      "artifact": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-ba72a49c0ec8/test-18.json"
+    }
+  ]
+}

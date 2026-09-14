@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "image",
+    "inspect",
+    "agenticfix:61a5865b802d"
+  ],
+  "result": {
+    "stdout": "[\n    {\n        \"Id\": \"sha256:1eae238b4ba67a8880bf05fe80f8c6a137f3f5f54932801faff2e01297ca68cb\",\n        \"RepoTags\": [\n            \"agenticfix:61a5865b802d\"\n        ],\n        \"RepoDigests\": [],\n        \"Comment\": \"buildkit.dockerfile.v0\",\n        \"Created\": \"2026-09-14T04:55:57.293081623Z\",\n        \"Config\": {\n            \"Env\": [\n                \"PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\",\n                \"LANG=C.UTF-8\",\n                \"GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D\",\n                \"PYTHON_VERSION=3.10.21\",\n                \"PYTHON_SHA256=a0da1e72132e950154eca0f6f47d5db828454700de20e5113667940d81e0db04\"\n            ],\n            \"Cmd\": [\n                \"python3\"\n            ],\n            \"WorkingDir\": \"/workspace\"\n        },\n        \"Architecture\": \"arm64\",\n        \"Os\": \"linux\",\n        \"Size\": 174001533,\n        \"GraphDriver\": {\n            \"Data\": {\n                \"LowerDir\": \"/var/lib/docker/overlay2/1bfb5dde278e9936377f6556babaa077c7236717676b7ec71de2a0625bbda936/diff:/var/lib/docker/overlay2/e7b91228f45f20307bd37012351c49b86b4ad1d28cf416d29bedb37524533c2b/diff:/var/lib/docker/overlay2/c6b54c40eb4f8c5f09e5660c96e2db99865fece4154f2a6c3f44e6a44cdb32df/diff:/var/lib/docker/overlay2/bab4287093b7da883cfa2bc7a24c48a8c09314ad4544890b300826e1f89b4091/diff:/var/lib/docker/overlay2/21e35dac8dfea3f741e424f38d4681cff213e3d7ce8a2d32797edbb1dfe41974/diff:/var/lib/docker/overlay2/7db90b1e0e40a3d3ea4890dff55b1ae09d302ec2d9c43cbc2da7683ce1e1dce8/diff\",\n                \"MergedDir\": \"/var/lib/docker/overlay2/bccee913e9bc85988eada9beb0ac50c966c6841bc303327857cce8fc75b79994/merged\",\n                \"UpperDir\": \"/var/lib/docker/overlay2/bccee913e9bc85988eada9beb0ac50c966c6841bc303327857cce8fc75b79994/diff\",\n                \"WorkDir\": \"/var/lib/docker/overlay2/bccee913e9bc85988eada9beb0ac50c966c6841bc303327857cce8fc75b79994/work\"\n            },\n            \"Name\": \"overlay2\"\n        },\n        \"RootFS\": {\n            \"Type\": \"layers\",\n            \"Layers\": [\n                \"sha256:41d6505109809884e681a97f978542a2d4d3506af0124f18b3f3a471edfcc9b7\",\n                \"sha256:72407a95f22b7c2e8de2c5300fdcddc64778642ace0e0c63272503dc9e399c59\",\n                \"sha256:7254bde0e3935acaa87ac76616c055c2d11683eccfabda3bdaefd9ffe726a5cb\",\n                \"sha256:74c8a6861cc4b2aa11974dbde7befba8be0d4dde9453f6fc9d13f0ff4e7ee19b\",\n                \"sha256:1f8588f1542fed66bb79e76e3a7bfa7a8a86143fa5529375a8f5d3e9f326f7a5\",\n                \"sha256:46596a2e324818dcddeaf8899db4df208a876dfdb7d070095a920e7817d3d447\",\n                \"sha256:5eb097cb34008fb87d86eeb6d69dd78390dff8881d1f50aaa6f66a3935855a34\"\n            ]\n        },\n        \"Metadata\": {\n            \"LastTagTime\": \"0001-01-01T00:00:00Z\"\n        }\n    }\n]\n",
+    "stderr": "",
+    "exit_code": 0,
+    "duration": 0.05999370799690951,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null,
+    "diagnostic_lines": []
+  },
+  "cancelled": false,
+  "output_retention": "head quarter and rolling tail when truncated"
+}

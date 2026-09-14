@@ -1,0 +1,34 @@
+{
+  "kind": "Post-run diagnostic, correction by evaluator, not model success",
+  "image_id": "sha256:7f452ecfe1a00e70a2c1417c8487d5f4e162868b8f2c088de2ee2eb75bbf2f30",
+  "base_commit": "247e15b3a489d5805375c95dfa79486c9bd0eb1b",
+  "original": {
+    "stdout": "F                                                                        [100%]\n=================================== FAILURES ===================================\n_______________________ NumericRangeTests.test_reversed ________________________\n\nself = <tests.test_more.NumericRangeTests testMethod=test_reversed>\n\n    def test_reversed(self):\n        for args, expected in [\n            ((0,), []),\n            ((1.0, 1.0), []),\n            ((1.0, 0.0), []),\n            ((1.0, 0.0, -1.0), []),\n            ((7.0,), [6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.0]),\n            ((1.0, 7.0), [6.0, 5.0, 4.0, 3.0, 2.0, 1.0]),\n            ((7.0, 1.0, -1.5), [2.5, 4.0, 5.5, 7.0]),\n            ((7.0, 0.9, -1.5), [1.0, 2.5, 4.0, 5.5, 7.0]),\n            (\n                (Decimal(\"1.0\"), Decimal(\"5.0\"), Decimal(\"1.5\")),\n                [Decimal('4.0'), Decimal('2.5'), Decimal('1.0')],\n            ),\n            (\n                (Fraction(1, 1), Fraction(5, 1), Fraction(3, 2)),\n                [Fraction(4, 1), Fraction(5, 2), Fraction(1, 1)],\n            ),\n            (\n                (\n                    datetime(2019, 3, 29),\n                    datetime(2019, 3, 30),\n                    timedelta(hours=10),\n                ),\n                [\n                    datetime(2019, 3, 29, 20),\n                    datetime(2019, 3, 29, 10),\n                    datetime(2019, 3, 29),\n                ],\n            ),\n        ]:\n>           self.assertEqual(expected, list(reversed(mi.numeric_range(*args))))\nE           AssertionError: Lists differ: [] != [1.0]\nE           \nE           Second list contains 1 additional elements.\nE           First extra element 0:\nE           1.0\nE           \nE           - []\nE           + [1.0]\n\ntests/test_more.py:3028: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_more.py::NumericRangeTests::test_reversed - AssertionError:...\n1 failed in 0.16s\n",
+    "stderr": "",
+    "exit_code": 1,
+    "duration": 0.4574220840004273,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null,
+    "diagnostic_lines": [
+      "stdout: E           AssertionError: Lists differ: [] != [1.0]",
+      "stdout: tests/test_more.py:3028: AssertionError",
+      "stdout: FAILED tests/test_more.py::NumericRangeTests::test_reversed - AssertionError:...",
+      "stdout: 1 failed in 0.16s"
+    ]
+  },
+  "correction": {
+    "old": "((1.0, 0.0, -1.0), []),",
+    "new": "((0.0, 1.0, -1.0), []),"
+  },
+  "corrected": {
+    "stdout": ".                                                                        [100%]\n1 passed in 0.09s\n",
+    "stderr": "",
+    "exit_code": 0,
+    "duration": 0.33732325000164565,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null,
+    "diagnostic_lines": []
+  }
+}

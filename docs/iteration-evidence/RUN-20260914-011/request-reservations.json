@@ -1,0 +1,106 @@
+[
+  {
+    "iteration": 1,
+    "reserved_tokens": 11923,
+    "context_bytes": 7571,
+    "input_reserve": 7827,
+    "remaining_budget": 150000,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 2,
+    "reserved_tokens": 14796,
+    "context_bytes": 10444,
+    "input_reserve": 10700,
+    "remaining_budget": 147947,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 3,
+    "reserved_tokens": 19252,
+    "context_bytes": 14900,
+    "input_reserve": 15156,
+    "remaining_budget": 145062,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 4,
+    "reserved_tokens": 21106,
+    "context_bytes": 16754,
+    "input_reserve": 17010,
+    "remaining_budget": 140896,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 5,
+    "reserved_tokens": 23631,
+    "context_bytes": 19279,
+    "input_reserve": 19535,
+    "remaining_budget": 136445,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 6,
+    "reserved_tokens": 29381,
+    "context_bytes": 25029,
+    "input_reserve": 25285,
+    "remaining_budget": 131295,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 7,
+    "reserved_tokens": 30590,
+    "context_bytes": 26238,
+    "input_reserve": 26494,
+    "remaining_budget": 124338,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 8,
+    "reserved_tokens": 37889,
+    "context_bytes": 33537,
+    "input_reserve": 33793,
+    "remaining_budget": 117098,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 9,
+    "reserved_tokens": 40962,
+    "context_bytes": 36610,
+    "input_reserve": 36866,
+    "remaining_budget": 107475,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 10,
+    "reserved_tokens": 44991,
+    "context_bytes": 40639,
+    "input_reserve": 40895,
+    "remaining_budget": 96736,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 11,
+    "reserved_tokens": 47072,
+    "context_bytes": 42720,
+    "input_reserve": 42976,
+    "remaining_budget": 84790,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 12,
+    "reserved_tokens": 50811,
+    "context_bytes": 46459,
+    "input_reserve": 46715,
+    "remaining_budget": 71186,
+    "max_completion_tokens": 4096
+  },
+  {
+    "iteration": 13,
+    "reserved_tokens": 51852,
+    "context_bytes": 47500,
+    "input_reserve": 47756,
+    "remaining_budget": 57218,
+    "max_completion_tokens": 4096
+  }
+]

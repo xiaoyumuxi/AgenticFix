@@ -1,0 +1,295 @@
+{
+  "requests": [
+    {
+      "event": "model_finished",
+      "call_id": "98a961d0dbe84564ab747b90c2422488",
+      "duration": 1.4764168340043398,
+      "usage": {
+        "prompt_tokens": 1921,
+        "completion_tokens": 132,
+        "total_tokens": 2053
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "2ded4546774d4fe68a6e1a0e2b94f76e",
+      "duration": 1.0553478749934584,
+      "usage": {
+        "prompt_tokens": 2661,
+        "completion_tokens": 224,
+        "total_tokens": 2885
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "abade26e88484e4b95dcc90c439a1478",
+      "duration": 1.8447627080022357,
+      "usage": {
+        "prompt_tokens": 3930,
+        "completion_tokens": 236,
+        "total_tokens": 4166
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "69b6fb95d42142a8bea2d2d424b25662",
+      "duration": 0.8886579160025576,
+      "usage": {
+        "prompt_tokens": 4423,
+        "completion_tokens": 28,
+        "total_tokens": 4451
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "03a6643d556b471282f22934b0f6f85d",
+      "duration": 1.0082592079997994,
+      "usage": {
+        "prompt_tokens": 4983,
+        "completion_tokens": 167,
+        "total_tokens": 5150
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "3ead392c7b834350a11219d2eef08528",
+      "duration": 0.9730501669982914,
+      "usage": {
+        "prompt_tokens": 6809,
+        "completion_tokens": 148,
+        "total_tokens": 6957
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "30676904fb8045edb7a944ee93009168",
+      "duration": 0.8136838329955935,
+      "usage": {
+        "prompt_tokens": 7095,
+        "completion_tokens": 145,
+        "total_tokens": 7240
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "0c20e3efea814bfdb0d1eb93cf69b1fb",
+      "duration": 1.1711522919940762,
+      "usage": {
+        "prompt_tokens": 9529,
+        "completion_tokens": 94,
+        "total_tokens": 9623
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "f815ca52b13d429a907044e23b73a8e2",
+      "duration": 0.6111274589929963,
+      "usage": {
+        "prompt_tokens": 10623,
+        "completion_tokens": 116,
+        "total_tokens": 10739
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "9acee92a4f244ed3954cc2f9801bb6ac",
+      "duration": 0.822420583004714,
+      "usage": {
+        "prompt_tokens": 11785,
+        "completion_tokens": 161,
+        "total_tokens": 11946
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "f6437bf8fde148c49d0a906396927c1f",
+      "duration": 4.58764104200236,
+      "usage": {
+        "prompt_tokens": 12469,
+        "completion_tokens": 1135,
+        "total_tokens": 13604
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "fe550ffa4ae745888ca2a2c25fea8b08",
+      "duration": 1.500495416999911,
+      "usage": {
+        "prompt_tokens": 13667,
+        "completion_tokens": 301,
+        "total_tokens": 13968
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "a7885489f1404f1cbc99e5fb4837d646",
+      "duration": 1.9536735830042744,
+      "usage": {
+        "prompt_tokens": 14030,
+        "completion_tokens": 458,
+        "total_tokens": 14488
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    }
+  ],
+  "tools": [
+    {
+      "tool": "list_files",
+      "duration": 0.0031738329998916015,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.01007008300803136,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0012340410030446947,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0012231660075485706,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0007540410006185994,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "build_environment",
+      "duration": 48.80054991599172,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "run_tests",
+      "duration": 13.411163999990094,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.002019417006522417,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0017406249971827492,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.006975167008931749,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.005238083002041094,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.00669170799665153,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.001595624999026768,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.001781791987014003,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0018559589952928945,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.002369082998484373,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "edit_file",
+      "duration": 0.004378999990876764,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "edit_file",
+      "duration": 0.0051228340016677976,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "edit_file",
+      "duration": 0.0012926670024171472,
+      "success": false,
+      "error_code": "NOT_INSPECTED"
+    }
+  ],
+  "tests": [
+    {
+      "stdout": "................................................................................... [ 11%]\n......................................................... [ 19%]\n........................................................................ [ 29%]\n.................................................. [ 36%]\n..................................................................... [ 46%]\n..................................... [ 51%]\n.................................... [ 56%]\n.............................................................................................. [ 69%]\n............................................................ [ 78%]\n.................................................. [ 85%]\n.............................................. [ 91%]\n.............................................................                                                      [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.10/site-packages/_pytest/cacheprovider.py:469\n  /usr/local/lib/python3.10/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /workspace/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/workspace/pytest-cache-files-ju_zqyk4'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n715 passed, 1 warning, 19896 subtests passed in 12.83s\n",
+      "stderr": "",
+      "exit_code": 0,
+      "duration": 13.232872124994174,
+      "timed_out": false,
+      "truncated": false,
+      "launch_error": null,
+      "diagnostic_lines": [],
+      "status": "passed",
+      "tested_revision": 0,
+      "target": "default",
+      "image_id": "sha256:7f452ecfe1a00e70a2c1417c8487d5f4e162868b8f2c088de2ee2eb75bbf2f30",
+      "container": "agenticfix-test-f27dff16b23c",
+      "output_directory": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-38f2d2d08252/environment/agenticfix-test-f27dff16b23c",
+      "artifact": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-38f2d2d08252/test-7.json"
+    }
+  ]
+}
