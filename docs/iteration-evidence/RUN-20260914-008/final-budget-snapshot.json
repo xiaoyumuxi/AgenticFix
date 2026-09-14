@@ -1,0 +1,13 @@
+{
+  "used_reported": 118525,
+  "estimated": 0,
+  "budget": 150000,
+  "remaining": 31475,
+  "context_bytes": 42778,
+  "input_reserve": 43034,
+  "completion_cap": 4096,
+  "stop_reason": "token_budget",
+  "kind": "Post-run diagnostic, not necessarily a budget stop",
+  "explanation": "request() uses serialized UTF-8 bytes + 256 as conservative input reserve; no request is sent if it leaves <1 completion token.",
+  "context_scope": "Projected next request with retained_read_results=3, not full audit messages"
+}

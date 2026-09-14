@@ -1,0 +1,14 @@
+{
+  "run_id": "agent-38801e977fa7",
+  "source": "/Users/yaoyao/Dev/OpenRes/agent/.cache/m3-upstream",
+  "requested_ref": "247e15b3a489d5805375c95dfa79486c9bd0eb1b",
+  "base_commit": "247e15b3a489d5805375c95dfa79486c9bd0eb1b",
+  "issue": "Minor bug in numeric_range()\n\nThe code for `__reversed__` needs a special case for empty ranges.\n\nAn empty regular range, `list(reversed(range(0)))`, returns an empty list.  In contrast, an empty numeric range, `list(reversed(numeric_range(0)))` raises an `IndexError`.",
+  "test_command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q"
+  ],
+  "execution": "docker"
+}
