@@ -1,0 +1,18 @@
+{
+  "synthetic": {
+    "before_message_chars": 12597,
+    "after_message_chars": 5217,
+    "before_has_cause": false,
+    "after_has_cause": true,
+    "before_has_exit_code": false,
+    "after_has_exit_code": true
+  },
+  "docker": {
+    "before_message_chars": 12258,
+    "after_message_chars": 6004,
+    "before_has_cause": false,
+    "after_has_cause": true,
+    "before_has_exit_code": false,
+    "after_has_exit_code": true
+  }
+}

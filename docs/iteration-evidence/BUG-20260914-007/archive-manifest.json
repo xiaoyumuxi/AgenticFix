@@ -1,0 +1,82 @@
+{
+  "probe-output.txt": {
+    "sha256": "36b78534a3720477d2af0983817e6d0206beb91ff8f718fd5ba783f136645d7d",
+    "bytes": 434
+  },
+  "reproduce.py": {
+    "sha256": "e2f5a2a5b68cc66e734be1736bad2e2a54420367815989a8cc3759df9346eec6",
+    "bytes": 2874
+  },
+  "full-tests-final.txt": {
+    "sha256": "ad939610eaf3ba29d819484f9f56f05bbcbdc5a7373cd1484acf0474def7f783",
+    "bytes": 191
+  },
+  "Dockerfile": {
+    "sha256": "2f8034538125125adc2033f3128bf61ea9303ec5ec703bfdf242e86f1873dc3c",
+    "bytes": 133
+  },
+  "metadata.json": {
+    "sha256": "012310f83c3ca5b98e1de26752394fbbd03bc7fcc320989a4683e2138294941f",
+    "bytes": 1308
+  },
+  "comparison.json": {
+    "sha256": "679c47cd0edc5b12361bf97bc68384b78205d4813f687922a3b1500125410186",
+    "bytes": 38058
+  },
+  "development-source.patch": {
+    "sha256": "b0d71f77787382f304f09a21d6180b923990d6901aa64999f7369d0a5c97cefa",
+    "bytes": 11220
+  },
+  "targeted-initial.txt": {
+    "sha256": "270010c1e994ef573663533774639a08a66358c7f67583c0fa6ccf1b90ab5b67",
+    "bytes": 111
+  },
+  "build-result.json": {
+    "sha256": "91f9b0c39ddb1fb6ec3bd3a5fc03e0d4114d73695f4857059d151833787a192d",
+    "bytes": 21301
+  },
+  "docker/cli-2.json": {
+    "sha256": "b480d925354ea3e952c371ae7af4f4d14d94cafacc29a362a1d5d7e5ff278822",
+    "bytes": 21713
+  },
+  "docker/cli-3.json": {
+    "sha256": "a96dc408f3516ae01c15eee6c1e1c550912ab259270b4efbd5160229fe8ccf52",
+    "bytes": 427
+  },
+  "docker/cli-1.json": {
+    "sha256": "0bae16eb3bc35fe04dfe29727fd27579b13e16845ad92a43bcd706a873e37baf",
+    "bytes": 548
+  },
+  "docker/build-1.Dockerfile": {
+    "sha256": "2f8034538125125adc2033f3128bf61ea9303ec5ec703bfdf242e86f1873dc3c",
+    "bytes": 133
+  },
+  "attempt-head-tail/Dockerfile": {
+    "sha256": "2f8034538125125adc2033f3128bf61ea9303ec5ec703bfdf242e86f1873dc3c",
+    "bytes": 133
+  },
+  "attempt-head-tail/probe-failed.txt": {
+    "sha256": "4ebd2c7b4423052479328f1e4bae3c155170bc534d4c1877796a7f21f003e95c",
+    "bytes": 900
+  },
+  "attempt-head-tail/build-result.json": {
+    "sha256": "3fb68155803904e6a70b15c347a3a35ab2e4437f503a8ea401e67e6405838fea",
+    "bytes": 20513
+  },
+  "attempt-head-tail/docker/cli-2.json": {
+    "sha256": "b3c2885fefd17a02985fe65eeb4c16770dc500bba94506b80a1a15f64c5021c2",
+    "bytes": 20911
+  },
+  "attempt-head-tail/docker/cli-3.json": {
+    "sha256": "524df91842ffb56b8ade0d4ba414ee15f6f71ac597d1a77f4eda9c10a988a80c",
+    "bytes": 399
+  },
+  "attempt-head-tail/docker/cli-1.json": {
+    "sha256": "01116f04dae32f1b6aed0e67f14d59789003a039589d6d7aba460b02ac697d5a",
+    "bytes": 521
+  },
+  "attempt-head-tail/docker/build-1.Dockerfile": {
+    "sha256": "2f8034538125125adc2033f3128bf61ea9303ec5ec703bfdf242e86f1873dc3c",
+    "bytes": 133
+  }
+}

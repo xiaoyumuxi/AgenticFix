@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "buildx",
+    "create",
+    "--name",
+    "agenticfix-7772514c9f5a",
+    "--driver",
+    "docker-container",
+    "--driver-opt",
+    "memory=2g,memory-swap=2g,cpu-period=100000,cpu-quota=200000"
+  ],
+  "result": {
+    "stdout": "agenticfix-7772514c9f5a\n",
+    "stderr": "",
+    "exit_code": 0,
+    "duration": 0.22552824999729637,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null
+  },
+  "cancelled": false,
+  "output_retention": "head quarter and rolling tail when truncated"
+}

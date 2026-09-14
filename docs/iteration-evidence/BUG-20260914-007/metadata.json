@@ -1,0 +1,24 @@
+{
+  "kind": "Engineering probes: no model calls, synthetic Docker failure, not real issue evaluation",
+  "record_id": "BUG-20260914-007",
+  "captured_after_run_at": "2026-09-14T02:18:24.804877+00:00",
+  "timezone": "Asia/Singapore",
+  "agent_base_commit": "2fd3229a08f279671745180699a3b135969e9347",
+  "dirty_during_probe": true,
+  "metadata_timing": "Post-run capture; source unchanged since final probe, not a start-time snapshot",
+  "source_sha256": {
+    "agent/loop.py": "bf01cf748f3fe56ad46ea4eacf96d833c7bfe4156481ee6d41b9751b49e2b4c5",
+    "agent/feedback.py": "156c465f69f26ef0ea16d41959de7f4047f19e496f5b3738d2a0d0d8a295a4dd",
+    "sandbox/base.py": "80b14c7dec9de53099ca34fdb3352cf185ee91a48a4d6df1cdf9d57cba5a083e",
+    "sandbox/docker.py": "c2fe51acb91067933631674c581bd4db73782681b67ecef6416bc7e28a360f91",
+    "tests/test_execution_feedback.py": "6d8b4edb07609a8d12418f019fb589ce60073e9e691979527b68db3b8ca356f0"
+  },
+  "source_patch_sha256": "b0d71f77787382f304f09a21d6180b923990d6901aa64999f7369d0a5c97cefa",
+  "python": "3.14.7",
+  "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+  "uv_lock_sha256": "8256210a762f06efc6bed4bbb655daeafefc851ffb2ef343cd0b63c269ef24df",
+  "docker_capture_max_output_bytes": 20000,
+  "model_message_limit": 12000,
+  "model_requests": 0,
+  "model_tokens": 0
+}

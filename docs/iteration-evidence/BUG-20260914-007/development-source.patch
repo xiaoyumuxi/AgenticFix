@@ -1,0 +1,296 @@
+diff --git a/agent/loop.py b/agent/loop.py
+index fb7e9b1..b5b325c 100644
+--- a/agent/loop.py
++++ b/agent/loop.py
+@@ -8,6 +8,7 @@ from pathlib import Path
+ from typing import Any
+ from uuid import uuid4
+ 
++from agent.feedback import execution_failure_message
+ from agent.llm import LLMClient, ModelError, ModelReply
+ from agent.prompts import prompt_for_environment
+ from tools.base import ToolResult
+@@ -84,6 +85,13 @@ class AgentLoop:
+         limit = self.settings.max_tool_message_chars
+         if len(text) <= limit:
+             return text
++        if tool_name in {"build_environment", "run_tests"} and (
++            not result.success
++            or result.data.get("exit_code") not in {None, 0}
++            or result.data.get("timed_out")
++            or result.data.get("launch_error")
++        ):
++            return execution_failure_message(result, limit)
+         return json.dumps(
+             {
+                 "success": result.success,
+diff --git a/sandbox/base.py b/sandbox/base.py
+index 670499a..4effa4d 100644
+--- a/sandbox/base.py
++++ b/sandbox/base.py
+@@ -1,7 +1,7 @@
+ from abc import ABC, abstractmethod
+ from pathlib import Path
+ 
+-from pydantic import BaseModel
++from pydantic import BaseModel, Field
+ 
+ 
+ class ExecutionResult(BaseModel):
+@@ -12,6 +12,7 @@ class ExecutionResult(BaseModel):
+     timed_out: bool = False
+     truncated: bool = False
+     launch_error: str | None = None
++    diagnostic_lines: list[str] = Field(default_factory=list)
+ 
+ 
+ class Sandbox(ABC):
+diff --git a/sandbox/docker.py b/sandbox/docker.py
+index 2db3184..50eba76 100644
+--- a/sandbox/docker.py
++++ b/sandbox/docker.py
+@@ -8,6 +8,7 @@ import re
+ import shutil
+ import tempfile
+ import time
++from collections import deque
+ from pathlib import Path
+ from typing import Any
+ from uuid import uuid4
+@@ -123,18 +124,52 @@ class DockerSandbox(Sandbox):
+             )
+         buffers = [bytearray(), bytearray()]
+         truncated = False
++        stream_truncated = [False, False]
++        candidates: deque[str] = deque(maxlen=16)
++        pattern = re.compile(rb"error|exception|traceback|failed|not found|no module named", re.I)
++        marker = b"\n...[middle omitted]...\n"
+ 
+-        async def drain(stream: asyncio.StreamReader | None, buffer: bytearray) -> None:
++        async def drain(stream: asyncio.StreamReader | None, index: int) -> None:
+             nonlocal truncated
+             assert stream is not None
++            buffer = buffers[index]
++            pending = b""
++
++            def inspect(line: bytes) -> None:
++                match = pattern.search(line)
++                if match:
++                    start = max(0, match.start() - 80)
++                    text = (
++                        ("stdout" if index == 0 else "stderr")
++                        + ": "
++                        + line[start : start + 512].decode(errors="replace")
++                    )
++                    if text not in candidates:
++                        candidates.append(text)
++
+             while chunk := await stream.read(65536):
+-                remaining = max(0, self.max_output_bytes - len(buffer))
+-                buffer.extend(chunk[:remaining])
+-                truncated |= len(chunk) > remaining
++                lines = (pending + chunk).split(b"\n")
++                for line in lines[:-1]:
++                    inspect(line)
++                # Bound an unterminated long line as well as the retained output.
++                pending = lines[-1]
++                if len(pending) > 2048:
++                    inspect(pending)
++                    pending = pending[-2048:]
++                buffer.extend(chunk)
++                if stream_truncated[index] or len(buffer) > self.max_output_bytes:
++                    truncated = True
++                    stream_truncated[index] = True
++                    # Keep the first quarter and a rolling tail, within the byte cap.
++                    retained = max(0, self.max_output_bytes - len(marker))
++                    head = retained // 4
++                    tail = retained - head
++                    buffer[:] = buffer[:head] + (buffer[-tail:] if tail else b"")
++            inspect(pending)
+ 
+         tasks = [
+-            asyncio.create_task(drain(process.stdout, buffers[0])),
+-            asyncio.create_task(drain(process.stderr, buffers[1])),
++            asyncio.create_task(drain(process.stdout, 0)),
++            asyncio.create_task(drain(process.stderr, 1)),
+         ]
+         timed_out = False
+         cancelled = False
+@@ -153,6 +188,10 @@ class DockerSandbox(Sandbox):
+             await asyncio.gather(*tasks)
+             cancelled = isinstance(exc, asyncio.CancelledError)
+             timed_out = not cancelled
++        for index, was_truncated in enumerate(stream_truncated):
++            if was_truncated:
++                head = max(0, self.max_output_bytes - len(marker)) // 4
++                buffers[index][head:head] = marker[: self.max_output_bytes]
+         result = ExecutionResult(
+             stdout=buffers[0].decode(errors="replace"),
+             stderr=buffers[1].decode(errors="replace"),
+@@ -160,6 +199,7 @@ class DockerSandbox(Sandbox):
+             duration=time.monotonic() - start,
+             timed_out=timed_out,
+             truncated=truncated,
++            diagnostic_lines=list(candidates),
+         )
+ 
+         (self.directory / f"cli-{cli_number}.json").write_text(
+@@ -168,6 +208,7 @@ class DockerSandbox(Sandbox):
+                     "argv": list(args),
+                     "result": result.model_dump(),
+                     "cancelled": cancelled,
++                    "output_retention": "head quarter and rolling tail when truncated",
+                 },
+                 ensure_ascii=False,
+                 indent=2,
+diff --git a/agent/feedback.py b/agent/feedback.py
+new file mode 100644
+index 0000000..72839b3
+--- /dev/null
++++ b/agent/feedback.py
+@@ -0,0 +1,54 @@
++"""Bounded execution feedback preserving process status and both ends of logs."""
++
++import json
++
++from tools.base import ToolResult
++
++
++def head_tail(text: str, limit: int) -> str:
++    if len(text) <= limit:
++        return text
++    marker = "\n...[middle omitted]...\n"
++    room = max(0, limit - len(marker))
++    head = room // 4
++    tail = room - head
++    return text[:head] + marker + (text[-tail:] if tail else "")
++
++
++def execution_failure_message(result: ToolResult, limit: int) -> str:
++    data = {
++        key: value
++        for key, value in result.data.items()
++        if key
++        in {
++            "exit_code",
++            "timed_out",
++            "launch_error",
++            "status",
++            "target",
++            "tested_revision",
++            "image_id",
++            "dockerfile_sha256",
++            "duration",
++            "total_duration",
++            "cleanup_exit_code",
++            "artifact",
++        }
++    }
++    candidates = "\n".join(result.data.get("diagnostic_lines", []))
++    data["diagnostic_excerpt"] = head_tail(candidates, limit // 4)
++    # Each stream gets a share so a noisy stdout cannot hide stderr, or vice versa.
++    for stream in ("stdout", "stderr"):
++        data[stream] = head_tail(str(result.data.get(stream, "")), (limit * 3) // 8)
++    return json.dumps(
++        result.model_dump()
++        | {
++            "data": data,
++            "truncated": True,
++            "hint": "Execution log excerpts retain the beginning and end; the middle is omitted. "
++            "Diagnostic excerpts are keyword-matched log lines, not a root-cause judgment. "
++            "Use the exit status and actual error to revise the environment or source. "
++            "The captured log is retained in the run artifact; it may itself be truncated.",
++        },
++        ensure_ascii=False,
++    )
+diff --git a/tests/test_execution_feedback.py b/tests/test_execution_feedback.py
+new file mode 100644
+index 0000000..21d1d58
+--- /dev/null
++++ b/tests/test_execution_feedback.py
+@@ -0,0 +1,85 @@
++import asyncio
++import json
++
++import pytest
++
++from agent.loop import AgentLoop
++from sandbox.docker import DockerSandbox
++from tools.base import ToolResult
++from tools.factory import build_registry
++
++
++@pytest.mark.parametrize(
++    "name,success,exit_code",
++    [
++        ("build_environment", False, 1),
++        ("run_tests", True, 2),
++    ],
++)
++def test_long_execution_failure_keeps_status_and_error_tail(context, name, success, exit_code):
++    result = ToolResult(
++        success=success,
++        error_code="ENVIRONMENT_BUILD_FAILED" if not success else None,
++        data={
++            "stdout": "setup started\n" + "progress\n" * 10000,
++            "stderr": "first warning\n" + "download\n" * 3000 + "ERROR: missing-dependency\n",
++            "exit_code": exit_code,
++            "timed_out": False,
++            "artifact": "environment-1.json",
++        },
++    )
++    original = result.model_dump()
++    loop = AgentLoop(None, build_registry(context))
++    message = json.loads(loop.tool_message(result, name))
++    assert message["success"] == success
++    assert message["data"]["exit_code"] == exit_code
++    assert message["data"]["timed_out"] is False
++    assert "setup started" in message["data"]["stdout"]
++    assert "first warning" in message["data"]["stderr"]
++    assert "ERROR: missing-dependency" in message["data"]["stderr"]
++    assert message["truncated"]
++    assert result.model_dump() == original
++    assert len(message["data"]["stderr"]) <= context.settings.max_tool_message_chars // 2
++
++
++async def test_docker_capture_keeps_error_after_large_output(tmp_path, monkeypatch):
++    class Process:
++        returncode = 1
++        stdout = asyncio.StreamReader()
++        stderr = asyncio.StreamReader()
++
++        async def wait(self):
++            return 1
++
++    process = Process()
++    process.stdout.feed_data(b"start\n" + b"x" * 150000 + b"final stdout\n")
++    process.stderr.feed_data(
++        b"first warning\n"
++        + b"y" * 80000
++        + b"\nModuleNotFoundError: middle-error\n"
++        + b"y" * 90000
++        + b"ERROR: package unavailable\n"
++    )
++    process.stdout.feed_eof()
++    process.stderr.feed_eof()
++
++    async def create(*args, **kwargs):
++        return process
++
++    monkeypatch.setattr(asyncio, "create_subprocess_exec", create)
++    sandbox = DockerSandbox(tmp_path, max_output_bytes=512)
++    result = await sandbox.cli("version")
++    assert result.exit_code == 1 and result.truncated
++    assert len(result.stdout.encode()) <= 512
++    assert len(result.stderr.encode()) <= 512
++    assert result.stdout.startswith("start\n") and result.stdout.endswith("final stdout\n")
++    assert result.stderr.startswith("first warning\n")
++    assert result.stderr.endswith("ERROR: package unavailable\n")
++    saved = json.loads((tmp_path / "cli-1.json").read_text())
++    assert saved["result"]["stderr"] == result.stderr
++    assert "middle-error" not in result.stderr
++    assert any("middle-error" in line for line in result.diagnostic_lines)
++    from agent.feedback import execution_failure_message
++
++    message = execution_failure_message(ToolResult(success=False, data=result.model_dump()), 12000)
++    assert "middle-error" in message
