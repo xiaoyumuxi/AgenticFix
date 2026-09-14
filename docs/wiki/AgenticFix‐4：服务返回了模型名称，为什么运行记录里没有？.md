@@ -23,17 +23,46 @@
 
 首次完整工程测试为 80 passed；随后增加模型标识回归测试（先失败再修复），最终完整测试为 **81 passed（32.53 秒）**；ruff 检查/格式检查通过，mypy 严格检查 29 个源文件通过，sdist/wheel 构建通过。复现程序、前后原始输出和修复版本见本页的证据链接。
 
+## 响应字段与断言的具体对比
+
+| 检查位置 | 修改前 | 修改后 |
+| --- | --- | --- |
+| HTTP Mock 响应顶层 model | `provider-resolved-revision` | `provider-resolved-revision` |
+| ModelReply 对 model 的定义 | 没有该字段 | 可空字符串，默认 `None` |
+| 适配器构造 ModelReply | 没有传入 body.model | 传入 `model=body.get("model")` |
+| 本用例 `model_dump()` 中的 model | 字段缺失 | `provider-resolved-revision` |
+| 对缺失字段使用 `.get("model")` | `None` | `provider-resolved-revision` |
+| 与预期字符串比较 | 不相等 | 相等 |
+| 同一个回归测试结果 | **1 failed** | **1 passed** |
+| 原始 pytest 输出记录的耗时 | 0.03 秒 | 0.01 秒 |
+
+关键区别是旧代码直接丢弃字段，不是服务返回了空值。原始失败输出为：
+
+```text
+assert reply.model_dump().get("model") == "provider-resolved-revision"
+AssertionError: assert None == 'provider-resolved-revision'
+1 failed in 0.03s
+```
+
+修改后原始输出为：
+
+```text
+1 passed in 0.01s
+```
+
+0.03 秒和 0.01 秒来自单次本地 Mock 测试，不能用来证明接口性能提升；两边都没有真实服务请求，也没有实际模型费用。服务不返回 model 时，新字段允许 None，这属于兼容性设计，本页这组对照只验证“服务明确返回字符串时不再丢失”。
+
+本次断言只检验 model 字段；不能拿后来完整工程套件的 81 passed 当成这一个字段修复带来的通过数量。
+
 ## 修复版本与固定证据
 
 修复提交：[完整代码差异](https://github.com/xiaoyumuxi/AgenticFix/commit/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1)。两条缺陷原版本均为 `85782f9cbe66099ec4247b8080407108d75b365b`；初次验证发生在开发工作区，准备故障随后在干净 `66f48ec0e6fbdbf6705a733bbadca87283ee5fa1` 上重复，结果一致。
 
-- BUG-002：[复现程序](https://github.com/xiaoyumuxi/AgenticFix/blob/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1/docs/iteration-evidence/BUG-20260914-002/reproduce.py)、[干净版本对照结果](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/BUG-20260914-002/clean-version-result.json)、[版本/命令上下文](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/BUG-20260914-002/clean-version-context.json)。
 - BUG-003：[修改前断言失败](https://github.com/xiaoyumuxi/AgenticFix/blob/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1/docs/iteration-evidence/BUG-20260914-003/before.txt)、[相同测试修改后通过](https://github.com/xiaoyumuxi/AgenticFix/blob/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1/docs/iteration-evidence/BUG-20260914-003/after.txt)、[回归测试源码](https://github.com/xiaoyumuxi/AgenticFix/blob/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1/tests/test_llm.py)。
 
 复现命令（在主仓库根目录）：
 
 ```bash
-uv run python -m docs.iteration-evidence.BUG-20260914-002.reproduce
 uv run pytest -q tests/test_llm.py::test_response_model_identifier_is_preserved
 ```
 
