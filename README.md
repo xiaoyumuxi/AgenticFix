@@ -4,6 +4,8 @@
 
 **已实现 worktree、模型 Loop、模型编写 Dockerfile 与首个真实历史 Issue 的独立验收。** `demo` 保留预先编排的工具验证，`run` 使用模型选择动作。首次真实 DeepSeek 示例修复与干净工作区验证已通过；更多真实任务效果仍待评测。完整架构见 [AGENTS.md](AGENTS.md)，实施记录见 [第一阶段构建记录](docs/milestone-1.md)。
 
+最新真实Issue结果：**more-itertools #1152 已端到端完成**，修复前7失败/722通过，修复后729全通过。15次请求、110534 Token、164.78秒（含独立验收）。[完整迭代记录](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)；历史失败数据保留在下文。
+
 ## 架构
 
 ```text
@@ -189,3 +191,14 @@ uv run python main.py run
 工程测试现为96通过、1跳过；已修复 pytest 导入安装副本配置的问题，证据见 [AgenticFix‐9：源码新增了配置，为什么pytest仍然说字段不存在？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%909%EF%BC%9A%E6%BA%90%E7%A0%81%E6%96%B0%E5%A2%9E%E4%BA%86%E9%85%8D%E7%BD%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88pytest%E4%BB%8D%E7%84%B6%E8%AF%B4%E5%AD%97%E6%AE%B5%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%9F)。
 
 长Docker错误反馈现保留退出状态、日志头尾与疑似错误行，避免只给模型下载进度。工程测试现为99通过、1跳过；真实模型收益未测量。失败与修复对照见 [AgenticFix‐10：Docker报了缺依赖，为什么模型只看到下载进度？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%9010%EF%BC%9ADocker%E6%8A%A5%E4%BA%86%E7%BC%BA%E4%BE%9D%E8%B5%96%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%A8%A1%E5%9E%8B%E5%8F%AA%E7%9C%8B%E5%88%B0%E4%B8%8B%E8%BD%BD%E8%BF%9B%E5%BA%A6%EF%BC%9F)。
+
+
+## 2026-09-14：首个真实Issue端到端完成
+
+RUN-20260914-009在相同more-itertools #1152 base与固定729项验收上完成：DeepSeek自建Docker环境、修复空范围反转、增加4组公开测试输入、测试并提交完成答复。Runtime completed；独立验证从7失败/722通过变为729全通过，无新增回归、无缺失用例。
+
+15次模型请求、20次工具调用（含Runtime收尾2次）、110534服务报告Token，估算入账0；Loop89.59秒，含独立冷重建/验收总164.78秒。总预算仍150000。主要调整environment-v3的修改→测试→交付顺序，以007构建摘要配置为参照，关闭008的旧读取正文删除。单次成功不能证明稳定提示词收益，默认配置暂未改变。
+
+提示词提交`c1dc3cdb69d6d07532b9c6e96f3fbdd2aca9dd40`；证据提交`cca439b44c1292b3b2bee7face13ce7dd975f99f`。累计同一Issue6次尝试，端到端1/6、候选验收5/6，不代表6个独立任务。工程测试99 passed、1 skipped（28.62秒），ruff/mypy通过。
+
+[完整Wiki前后比较与逐次用量](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F) · [已验证Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/cca439b44c1292b3b2bee7face13ce7dd975f99f/docs/iteration-evidence/RUN-20260914-009/candidate.patch) · [独立验收结果](https://github.com/xiaoyumuxi/AgenticFix/blob/cca439b44c1292b3b2bee7face13ce7dd975f99f/docs/iteration-evidence/RUN-20260914-009/summary.json)。

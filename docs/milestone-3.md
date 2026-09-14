@@ -57,3 +57,14 @@ Wiki：[AgenticFix‐7：Docker没有启动时如何留证，环境构建如何�
 ## 环境错误反馈修复
 
 长构建/测试失败现在保留结构化状态、日志头尾和有界疑似错误行。真实Docker故障注入与同输入消息对照验证错误可见，消息12258字符→6004字符；未测量真实模型Token或重试收益。中间错误的头尾遗漏也已记录并补充确定性测试。完整工程测试99 passed、1 skipped，28.41秒。详见 [AgenticFix‐10：Docker报了缺依赖，为什么模型只看到下载进度？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%9010%EF%BC%9ADocker%E6%8A%A5%E4%BA%86%E7%BC%BA%E4%BE%9D%E8%B5%96%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%A8%A1%E5%9E%8B%E5%8F%AA%E7%9C%8B%E5%88%B0%E4%B8%8B%E8%BD%BD%E8%BF%9B%E5%BA%A6%EF%BC%9F)。
+
+
+## 2026-09-14：首个真实Issue端到端完成
+
+RUN-20260914-009在相同more-itertools #1152 base与固定729项验收上完成：DeepSeek自建Docker环境、修复空范围反转、增加4组公开测试输入、测试并提交完成答复。Runtime completed；独立验证从7失败/722通过变为729全通过，无新增回归、无缺失用例。
+
+15次模型请求、20次工具调用（含Runtime收尾2次）、110534服务报告Token，估算入账0；Loop89.59秒，含独立冷重建/验收总164.78秒。总预算仍150000。主要调整environment-v3的修改→测试→交付顺序，以007构建摘要配置为参照，关闭008的旧读取正文删除。单次成功不能证明稳定提示词收益，默认配置暂未改变。
+
+提示词提交`c1dc3cdb69d6d07532b9c6e96f3fbdd2aca9dd40`；证据提交`cca439b44c1292b3b2bee7face13ce7dd975f99f`。累计同一Issue6次尝试，端到端1/6、候选验收5/6，不代表6个独立任务。工程测试99 passed、1 skipped（28.62秒），ruff/mypy通过。
+
+[完整Wiki前后比较与逐次用量](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F) · [已验证Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/cca439b44c1292b3b2bee7face13ce7dd975f99f/docs/iteration-evidence/RUN-20260914-009/candidate.patch) · [独立验收结果](https://github.com/xiaoyumuxi/AgenticFix/blob/cca439b44c1292b3b2bee7face13ce7dd975f99f/docs/iteration-evidence/RUN-20260914-009/summary.json)。

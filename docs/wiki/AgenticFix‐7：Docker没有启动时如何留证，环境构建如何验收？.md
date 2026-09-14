@@ -43,3 +43,8 @@ Git worktree 固定修复前版本、保存模型编辑并导出 Patch。真实�
 实现提交：`1d43d4ce68f181b570d1f823058a2b3f8c8759e9`。当时工程开发包含未提交过程；三轮正式模型运行则各自保存了干净提交、环境、Prompt 与依赖锁哈希。当前能力已支持“模型写 Dockerfile → 构建 → 测试”，但尚未观察到真实依赖安装失败后的模型恢复；这需要后续任务检验。
 
 后续上下文实验中的测试入口与辅助脚本导入错误，另见 [AgenticFix‐9：源码新增了配置，为什么pytest仍然说字段不存在？](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%909%EF%BC%9A%E6%BA%90%E7%A0%81%E6%96%B0%E5%A2%9E%E4%BA%86%E9%85%8D%E7%BD%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88pytest%E4%BB%8D%E7%84%B6%E8%AF%B4%E5%AD%97%E6%AE%B5%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%9F)（BUG-20260914-006），不混入此页环境失败计数。
+
+
+## 2026-09-14 追加：RUN-20260914-009的只读缓存警告
+
+ENV-20260914-002在三次公开测试再次出现：基线、模型修改后、Runtime收尾均715通过、exit_code=0，各有一次`PytestCacheWarning`，原因仍是`/workspace`只读而pytest尝试写`.pytest_cache`。独立验收使用`-p no:cacheprovider`，729项通过。没有新增环境失败；本次模型与评测端各成功构建一次。模型Dockerfile仅安装pytest，实际Python3.10.21、pytest9.1.1。完整比较和固定证据见[本次记录](https://github.com/xiaoyumuxi/AgenticFix/wiki/AgenticFix%E2%80%908%EF%BC%9APatch%E9%80%9A%E8%BF%87729%E9%A1%B9%E9%AA%8C%E8%AF%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%89%E8%BD%AE%E4%BB%8D%E7%84%B6%E6%B2%A1%E6%9C%89%E5%AE%8C%E6%88%90%E4%BB%BB%E5%8A%A1%EF%BC%9F)。
