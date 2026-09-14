@@ -1,0 +1,43 @@
+{
+  "argv": [
+    "run",
+    "--rm",
+    "--name",
+    "agenticfix-test-f478c3706158",
+    "--network=none",
+    "--memory=1g",
+    "--memory-swap=1g",
+    "--cpus=2",
+    "--pids-limit=128",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--read-only",
+    "--user=65534:65534",
+    "--tmpfs=/tmp:rw,nosuid,size=128m",
+    "--mount",
+    "type=bind,src=/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/agenticfix-test-3hklsg6l/source,dst=/workspace,readonly",
+    "--mount",
+    "type=bind,src=/Users/yaoyao/Dev/OpenRes/agent/runs/agent-6fc5120cab68/environment/agenticfix-test-f478c3706158,dst=/results",
+    "--workdir=/workspace",
+    "--env=PYTHONDONTWRITEBYTECODE=1",
+    "--env=PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+    "--env=PYTHONPATH=/workspace",
+    "--env=HOME=/tmp",
+    "--entrypoint",
+    "python",
+    "sha256:44ced898653d12adbe99ef608d41f0563eb5cd0cc691809569e558143df41abd",
+    "-m",
+    "pytest",
+    "-q"
+  ],
+  "result": {
+    "stdout": "................................................................................... [ 11%]\n......................................................... [ 19%]\n........................................................................ [ 29%]\n.................................................. [ 36%]\n..................................................................... [ 46%]\n..................................... [ 51%]\n.................................... [ 56%]\n.............................................................................................. [ 69%]\n............................................................ [ 78%]\n.................................................. [ 85%]\n.............................................. [ 91%]\n.............................................................                                                      [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469\n  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /workspace/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/workspace/pytest-cache-files-oiras3ko'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n715 passed, 1 warning, 19896 subtests passed in 10.94s\n",
+    "stderr": "",
+    "exit_code": 0,
+    "duration": 11.350690207997104,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null
+  },
+  "cancelled": false
+}

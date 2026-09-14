@@ -1,0 +1,352 @@
+{
+  "requests": [
+    {
+      "event": "model_finished",
+      "call_id": "83394545f73441d08eaf171907d0c685",
+      "duration": 1.000494375010021,
+      "usage": {
+        "prompt_tokens": 1803,
+        "completion_tokens": 75,
+        "total_tokens": 1878
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "f39bd244ad0b4a1fb65e7d9fd8f96fae",
+      "duration": 1.0206319159915438,
+      "usage": {
+        "prompt_tokens": 2214,
+        "completion_tokens": 94,
+        "total_tokens": 2308
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "9c933c99564c45359642a66a5c85ff8c",
+      "duration": 1.2864598329906585,
+      "usage": {
+        "prompt_tokens": 3193,
+        "completion_tokens": 197,
+        "total_tokens": 3390
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "32136ba0b0874f588aa6f96579d594cd",
+      "duration": 1.266900207992876,
+      "usage": {
+        "prompt_tokens": 3531,
+        "completion_tokens": 153,
+        "total_tokens": 3684
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "0be76793d1334a779a5c471517c639b3",
+      "duration": 1.2596130000019912,
+      "usage": {
+        "prompt_tokens": 3932,
+        "completion_tokens": 136,
+        "total_tokens": 4068
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "ca15cc46636b4ea1bcd7091a70f26b9c",
+      "duration": 1.167462750003324,
+      "usage": {
+        "prompt_tokens": 4576,
+        "completion_tokens": 129,
+        "total_tokens": 4705
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "ab30bf4b24bd4109b4bab81c87f1177a",
+      "duration": 0.8431484580069082,
+      "usage": {
+        "prompt_tokens": 4913,
+        "completion_tokens": 79,
+        "total_tokens": 4992
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "db44b01547e5429ea568f5572661c234",
+      "duration": 1.0179239999997662,
+      "usage": {
+        "prompt_tokens": 6249,
+        "completion_tokens": 90,
+        "total_tokens": 6339
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "9c9843439c494be78e16651a5ec43dbb",
+      "duration": 1.2120993330026977,
+      "usage": {
+        "prompt_tokens": 7064,
+        "completion_tokens": 131,
+        "total_tokens": 7195
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "5d1929a293a84b7091f81caffc9c436a",
+      "duration": 1.3633639170002425,
+      "usage": {
+        "prompt_tokens": 7625,
+        "completion_tokens": 207,
+        "total_tokens": 7832
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "5126bc42eb3645b8bae8048719903948",
+      "duration": 1.3067803330050083,
+      "usage": {
+        "prompt_tokens": 7970,
+        "completion_tokens": 78,
+        "total_tokens": 8048
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "fea82c7a47214145a649d46018a2ef29",
+      "duration": 0.7008205419988371,
+      "usage": {
+        "prompt_tokens": 9511,
+        "completion_tokens": 137,
+        "total_tokens": 9648
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "30ba8b5786ab4f3685394c63f6ebac2f",
+      "duration": 1.0156625829986297,
+      "usage": {
+        "prompt_tokens": 9817,
+        "completion_tokens": 78,
+        "total_tokens": 9895
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "68c42a7bd72e4d49a7dcb4aa9f890936",
+      "duration": 1.646818416993483,
+      "usage": {
+        "prompt_tokens": 11313,
+        "completion_tokens": 320,
+        "total_tokens": 11633
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "b530b21297d4430d9cf44a51b0ef0420",
+      "duration": 2.600664332989254,
+      "usage": {
+        "prompt_tokens": 11696,
+        "completion_tokens": 561,
+        "total_tokens": 12257
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    },
+    {
+      "event": "model_finished",
+      "call_id": "ff75627d87984a3cb14a99904dbcd557",
+      "duration": 1.3458266669913428,
+      "usage": {
+        "prompt_tokens": 12319,
+        "completion_tokens": 165,
+        "total_tokens": 12484
+      },
+      "model": "deepseek-flash",
+      "error_code": null
+    }
+  ],
+  "tools": [
+    {
+      "tool": "list_files",
+      "duration": 0.005121833994053304,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0017457920039305463,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0011601660080486909,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0012400419946061447,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "build_environment",
+      "duration": 56.83386633401096,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "run_tests",
+      "duration": 12.237172167006065,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.005817707991809584,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.003979999994044192,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0037572919973172247,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.00307987499400042,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0020139170082984492,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.008837333007249981,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.007622667006216943,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0026012079906649888,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.0071767089975764975,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "search_code",
+      "duration": 0.006613792007556185,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "read_file",
+      "duration": 0.0013371669920161366,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "edit_file",
+      "duration": 0.004416250012582168,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "edit_file",
+      "duration": 0.004721250006696209,
+      "success": true,
+      "error_code": null
+    },
+    {
+      "tool": "run_tests",
+      "duration": 11.53659970901208,
+      "success": true,
+      "error_code": null
+    }
+  ],
+  "tests": [
+    {
+      "stdout": "................................................................................... [ 11%]\n......................................................... [ 19%]\n........................................................................ [ 29%]\n.................................................. [ 36%]\n..................................................................... [ 46%]\n..................................... [ 51%]\n.................................... [ 56%]\n.............................................................................................. [ 69%]\n............................................................ [ 78%]\n.................................................. [ 85%]\n.............................................. [ 91%]\n.............................................................                                                      [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469\n  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /workspace/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/workspace/pytest-cache-files-8hfox66y'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n715 passed, 1 warning, 19896 subtests passed in 11.65s\n",
+      "stderr": "",
+      "exit_code": 0,
+      "duration": 12.04651591599395,
+      "timed_out": false,
+      "truncated": false,
+      "launch_error": null,
+      "status": "passed",
+      "tested_revision": 0,
+      "target": "default",
+      "image_id": "sha256:44ced898653d12adbe99ef608d41f0563eb5cd0cc691809569e558143df41abd",
+      "container": "agenticfix-test-6306423bc7ac",
+      "output_directory": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-6fc5120cab68/environment/agenticfix-test-6306423bc7ac",
+      "artifact": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-6fc5120cab68/test-6.json"
+    },
+    {
+      "stdout": "................................................................................... [ 11%]\n......................................................... [ 19%]\n........................................................................ [ 29%]\n.................................................. [ 36%]\n..................................................................... [ 46%]\n..................................... [ 51%]\n.................................... [ 56%]\n.............................................................................................. [ 69%]\n............................................................ [ 78%]\n.................................................. [ 85%]\n.............................................. [ 91%]\n.............................................................                                                      [100%]\n=============================== warnings summary ===============================\n../usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469\n  /usr/local/lib/python3.11/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /workspace/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/workspace/pytest-cache-files-oiras3ko'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n715 passed, 1 warning, 19896 subtests passed in 10.94s\n",
+      "stderr": "",
+      "exit_code": 0,
+      "duration": 11.350690207997104,
+      "timed_out": false,
+      "truncated": false,
+      "launch_error": null,
+      "status": "passed",
+      "tested_revision": 2,
+      "target": "default",
+      "image_id": "sha256:44ced898653d12adbe99ef608d41f0563eb5cd0cc691809569e558143df41abd",
+      "container": "agenticfix-test-f478c3706158",
+      "output_directory": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-6fc5120cab68/environment/agenticfix-test-f478c3706158",
+      "artifact": "/Users/yaoyao/Dev/OpenRes/agent/runs/agent-6fc5120cab68/test-20.json"
+    }
+  ]
+}
