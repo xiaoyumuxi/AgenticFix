@@ -1,0 +1,655 @@
+FFFFFFFFFFFFFFFFFF                                                       [100%]
+=================================== FAILURES ===================================
+_ test_three_offline_tasks_repair_and_clean_apply[def calculate(a, b):\n    return a - b\n-assert calculate(2, 3) == 5] _
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bc97c20 [unlocked]>)
+body = 'def calculate(a, b):\n    return a - b\n'
+expected = 'assert calculate(2, 3) == 5'
+
+    @pytest.mark.parametrize(
+        "body,expected",
+        [
+            ("def calculate(a, b):\n    return a - b\n", "assert calculate(2, 3) == 5"),
+            ("def calculate(a, b):\n    return a * b\n", "assert calculate(2, 3) == 5"),
+            ("def calculate(a, b):\n    return a / b\n", "assert calculate(2, 3) == 5"),
+        ],
+    )
+    async def test_three_offline_tasks_repair_and_clean_apply(context, body, expected):
+        # Deterministic clients exercise orchestration, not real-model success rate.
+        (context.workspace.path / "sample.py").write_text(body)
+        (context.workspace.path / "test_sample.py").write_text(
+            "from sample import calculate\ndef test_issue():\n    " + expected + "\n",
+        )
+        context.state.issue = "Correct calculate to add two numbers."
+        client = QueueClient(
+            [
+                reply_call("read_file", {"path": "test_sample.py"}),
+                reply_call("read_file", {"path": "sample.py"}),
+                edit_after_read(body, "def calculate(a, b):\n    return a + b\n"),
+                reply_call("run_tests", {}),
+                reply_final(),
+            ]
+        )
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["status"] == "completed"
+E       AssertionError: assert 'failed' == 'completed'
+E         
+E         - completed
+E         + failed
+
+tests/test_agent_loop.py:97: AssertionError
+_ test_three_offline_tasks_repair_and_clean_apply[def calculate(a, b):\n    return a * b\n-assert calculate(2, 3) == 5] _
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcd6fc0 [unlocked]>)
+body = 'def calculate(a, b):\n    return a * b\n'
+expected = 'assert calculate(2, 3) == 5'
+
+    @pytest.mark.parametrize(
+        "body,expected",
+        [
+            ("def calculate(a, b):\n    return a - b\n", "assert calculate(2, 3) == 5"),
+            ("def calculate(a, b):\n    return a * b\n", "assert calculate(2, 3) == 5"),
+            ("def calculate(a, b):\n    return a / b\n", "assert calculate(2, 3) == 5"),
+        ],
+    )
+    async def test_three_offline_tasks_repair_and_clean_apply(context, body, expected):
+        # Deterministic clients exercise orchestration, not real-model success rate.
+        (context.workspace.path / "sample.py").write_text(body)
+        (context.workspace.path / "test_sample.py").write_text(
+            "from sample import calculate\ndef test_issue():\n    " + expected + "\n",
+        )
+        context.state.issue = "Correct calculate to add two numbers."
+        client = QueueClient(
+            [
+                reply_call("read_file", {"path": "test_sample.py"}),
+                reply_call("read_file", {"path": "sample.py"}),
+                edit_after_read(body, "def calculate(a, b):\n    return a + b\n"),
+                reply_call("run_tests", {}),
+                reply_final(),
+            ]
+        )
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["status"] == "completed"
+E       AssertionError: assert 'failed' == 'completed'
+E         
+E         - completed
+E         + failed
+
+tests/test_agent_loop.py:97: AssertionError
+_ test_three_offline_tasks_repair_and_clean_apply[def calculate(a, b):\n    return a / b\n-assert calculate(2, 3) == 5] _
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcd7380 [unlocked]>)
+body = 'def calculate(a, b):\n    return a / b\n'
+expected = 'assert calculate(2, 3) == 5'
+
+    @pytest.mark.parametrize(
+        "body,expected",
+        [
+            ("def calculate(a, b):\n    return a - b\n", "assert calculate(2, 3) == 5"),
+            ("def calculate(a, b):\n    return a * b\n", "assert calculate(2, 3) == 5"),
+            ("def calculate(a, b):\n    return a / b\n", "assert calculate(2, 3) == 5"),
+        ],
+    )
+    async def test_three_offline_tasks_repair_and_clean_apply(context, body, expected):
+        # Deterministic clients exercise orchestration, not real-model success rate.
+        (context.workspace.path / "sample.py").write_text(body)
+        (context.workspace.path / "test_sample.py").write_text(
+            "from sample import calculate\ndef test_issue():\n    " + expected + "\n",
+        )
+        context.state.issue = "Correct calculate to add two numbers."
+        client = QueueClient(
+            [
+                reply_call("read_file", {"path": "test_sample.py"}),
+                reply_call("read_file", {"path": "sample.py"}),
+                edit_after_read(body, "def calculate(a, b):\n    return a + b\n"),
+                reply_call("run_tests", {}),
+                reply_final(),
+            ]
+        )
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["status"] == "completed"
+E       AssertionError: assert 'failed' == 'completed'
+E         
+E         - completed
+E         + failed
+
+tests/test_agent_loop.py:97: AssertionError
+_____________________ test_failed_edit_test_feedback_retry _____________________
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcdd5b0 [unlocked]>)
+
+    async def test_failed_edit_test_feedback_retry(context):
+        path = context.workspace.path / "sample.py"
+        path.write_text("value = 1\n")
+        (context.workspace.path / "test_sample.py").write_text(
+            "from sample import value\ndef test_value():\n    assert value == 3\n",
+        )
+        client = QueueClient(
+            [
+                reply_call("read_file", {"path": "sample.py"}),
+                edit_after_read("value = 1", "value = 2"),
+                reply_call("run_tests", {}),
+                reply_final("Premature finish"),
+                reply_call("read_file", {"path": "sample.py"}),
+                edit_after_read("value = 2", "value = 3"),
+                reply_final(),
+            ]
+        )
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["status"] == "completed"
+E       AssertionError: assert 'failed' == 'completed'
+E         
+E         - completed
+E         + failed
+
+tests/test_agent_loop.py:129: AssertionError
+___ test_budget_stops_preserve_artifacts[max_iterations-1-iteration_budget] ____
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcde6c0 [unlocked]>)
+setting = 'max_iterations', value = 1, reason = 'iteration_budget'
+
+    @pytest.mark.parametrize(
+        "setting,value,reason",
+        [
+            ("max_iterations", 1, "iteration_budget"),
+            ("max_tool_calls", 1, "tool_budget"),
+            ("max_token_budget", 1, "token_budget"),
+            ("max_context_bytes", 100, "context_budget"),
+        ],
+    )
+    async def test_budget_stops_preserve_artifacts(context, setting, value, reason):
+        setattr(context.settings, setting, value)
+        client = QueueClient([reply_call("read_file", {"path": "sample.py"})] * 10)
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == reason
+E       AssertionError: assert 'runtime_error:AttributeError' == 'iteration_budget'
+E         
+E         - iteration_budget
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:148: AssertionError
+______ test_budget_stops_preserve_artifacts[max_tool_calls-1-tool_budget] ______
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcdf470 [unlocked]>)
+setting = 'max_tool_calls', value = 1, reason = 'tool_budget'
+
+    @pytest.mark.parametrize(
+        "setting,value,reason",
+        [
+            ("max_iterations", 1, "iteration_budget"),
+            ("max_tool_calls", 1, "tool_budget"),
+            ("max_token_budget", 1, "token_budget"),
+            ("max_context_bytes", 100, "context_budget"),
+        ],
+    )
+    async def test_budget_stops_preserve_artifacts(context, setting, value, reason):
+        setattr(context.settings, setting, value)
+        client = QueueClient([reply_call("read_file", {"path": "sample.py"})] * 10)
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == reason
+E       AssertionError: assert 'runtime_error:AttributeError' == 'tool_budget'
+E         
+E         - tool_budget
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:148: AssertionError
+____ test_budget_stops_preserve_artifacts[max_token_budget-1-token_budget] _____
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcde7e0 [unlocked]>)
+setting = 'max_token_budget', value = 1, reason = 'token_budget'
+
+    @pytest.mark.parametrize(
+        "setting,value,reason",
+        [
+            ("max_iterations", 1, "iteration_budget"),
+            ("max_tool_calls", 1, "tool_budget"),
+            ("max_token_budget", 1, "token_budget"),
+            ("max_context_bytes", 100, "context_budget"),
+        ],
+    )
+    async def test_budget_stops_preserve_artifacts(context, setting, value, reason):
+        setattr(context.settings, setting, value)
+        client = QueueClient([reply_call("read_file", {"path": "sample.py"})] * 10)
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == reason
+E       AssertionError: assert 'runtime_error:AttributeError' == 'token_budget'
+E         
+E         - token_budget
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:148: AssertionError
+__ test_budget_stops_preserve_artifacts[max_context_bytes-100-context_budget] __
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcde9c0 [unlocked]>)
+setting = 'max_context_bytes', value = 100, reason = 'context_budget'
+
+    @pytest.mark.parametrize(
+        "setting,value,reason",
+        [
+            ("max_iterations", 1, "iteration_budget"),
+            ("max_tool_calls", 1, "tool_budget"),
+            ("max_token_budget", 1, "token_budget"),
+            ("max_context_bytes", 100, "context_budget"),
+        ],
+    )
+    async def test_budget_stops_preserve_artifacts(context, setting, value, reason):
+        setattr(context.settings, setting, value)
+        client = QueueClient([reply_call("read_file", {"path": "sample.py"})] * 10)
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == reason
+E       AssertionError: assert 'runtime_error:AttributeError' == 'context_budget'
+E         
+E         - context_budget
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:148: AssertionError
+__________________ test_multi_tool_batch_cannot_bypass_budget __________________
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10be30f80 [unlocked]>)
+
+    async def test_multi_tool_batch_cannot_bypass_budget(context):
+        context.settings.max_tool_calls = 2  # baseline + one model tool
+        reply = reply_call("read_file", {"path": "sample.py"})
+        second = reply.message.tool_calls[0].model_copy(deep=True)
+        second.id = "second"
+        reply.message.tool_calls.append(second)
+        result = await AgentLoop(QueueClient([reply]), build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == "tool_budget"
+E       AssertionError: assert 'runtime_error:AttributeError' == 'tool_budget'
+E         
+E         - tool_budget
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:160: AssertionError
+___________________ test_model_retry_usage_and_auth_failure ____________________
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10be30680 [unlocked]>)
+
+    async def test_model_retry_usage_and_auth_failure(context):
+        context.settings.retry_delay = 0
+        client = QueueClient(
+            [
+                ModelError("HTTP_429", retryable=True),
+                reply_call("read_file", {"path": "sample.py"}, usage=False),
+                ModelError("HTTP_401"),
+            ]
+        )
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == "HTTP_401"
+E       AssertionError: assert 'runtime_error:AttributeError' == 'HTTP_401'
+E         
+E         - HTTP_401
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:174: AssertionError
+________________ test_invalid_arguments_feedback_and_repetition ________________
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10be33470 [unlocked]>)
+
+    async def test_invalid_arguments_feedback_and_repetition(context):
+        malformed = reply_call("read_file", {})
+        malformed.message.tool_calls[0].function.arguments = "not JSON"
+        client = QueueClient([malformed] + [reply_call("read_file", {"path": "missing"})] * 5)
+        result = await AgentLoop(client, build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == "repeated_action"
+E       AssertionError: assert 'runtime_error:AttributeError' == 'repeated_action'
+E         
+E         - repeated_action
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:185: AssertionError
+________________ test_truncated_completion_never_executes_tools ________________
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10be304a0 [unlocked]>)
+
+    async def test_truncated_completion_never_executes_tools(context):
+        reply = reply_call("read_file", {"path": "sample.py"})
+        reply.finish_reason = "length"
+        result = await AgentLoop(QueueClient([reply]), build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == "model_finish_length"
+E       AssertionError: assert 'runtime_error:AttributeError' == 'model_finish_length'
+E         
+E         - model_finish_length
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:194: AssertionError
+___________ test_run_timeout_accounts_for_inflight_model_and_exports ___________
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10be32ae0 [unlocked]>)
+
+    async def test_run_timeout_accounts_for_inflight_model_and_exports(context):
+        class Slow(LLMClient):
+            async def generate(self, messages, tools, max_tokens):
+                await asyncio.sleep(10)
+    
+        context.settings.max_run_duration = 2
+        result = await AgentLoop(Slow(), build_registry(context)).run()
+>       assert result["state"]["stop_reason"] == "run_timeout"
+E       AssertionError: assert 'runtime_error:AttributeError' == 'run_timeout'
+E         
+E         - run_timeout
+E         + runtime_error:AttributeError
+
+tests/test_agent_loop.py:205: AssertionError
+_______________________ test_empty_patch_is_not_success ________________________
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10be33e30 [unlocked]>)
+
+    async def test_empty_patch_is_not_success(context):
+        context.settings.max_iterations = 2
+        result = await AgentLoop(QueueClient([reply_final()] * 2), build_registry(context)).run()
+        assert result["state"]["status"] == "failed"
+>       assert "empty patch" in (context.tracer.directory / "messages.json").read_text()
+E       assert 'empty patch' in '{\n  "messages": [\n    {\n      "role": "system",\n      "content": "You repair a repository issue using the supplie...pe; do not claim absolute correctness.\\n"\n    },\n    {\n      "role": "user",\n      "content": ""\n    }\n  ]\n}\n'
+E        +  where '{\n  "messages": [\n    {\n      "role": "system",\n      "content": "You repair a repository issue using the supplie...pe; do not claim absolute correctness.\\n"\n    },\n    {\n      "role": "user",\n      "content": ""\n    }\n  ]\n}\n' = read_text()
+E        +    where read_text = (PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yaoyao/pytest-15/test_empty_patch_is_not_succes0/runs/run-1') / 'messages.json').read_text
+E        +      where PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yaoyao/pytest-15/test_empty_patch_is_not_succes0/runs/run-1') = <tracing.tracer.Tracer object at 0x10be31d60>.directory
+E        +        where <tracing.tracer.Tracer object at 0x10be31d60> = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10be33e30 [unlocked]>).tracer
+
+tests/test_agent_loop.py:214: AssertionError
+___________________ test_tools_return_bounded_model_context ____________________
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10be320f0 [unlocked]>)
+
+    async def test_tools_return_bounded_model_context(context):
+        context.settings.max_tool_message_chars = 200
+        loop = AgentLoop(QueueClient([]), build_registry(context))
+        from tools.base import ToolResult
+    
+>       clipped = json.loads(loop.tool_message(ToolResult(success=True, data={"output": "x" * 10000})))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_agent_loop.py:222: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+agent/loop.py:51: in tool_message
+    self.settings.compact_successful_build
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Settings(cache_dir=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yaoyao/pytest-15/test....0, max_model_retries=2, retry_delay=1.0, max_context_bytes=150000, max_tool_message_chars=200, max_repeated_actions=3)
+item = 'compact_successful_build'
+
+    def __getattr__(self, item: str) -> Any:
+        private_attributes = object.__getattribute__(self, '__private_attributes__')
+        if item in private_attributes:
+            attribute = private_attributes[item]
+            if hasattr(attribute, '__get__'):
+                return attribute.__get__(self, type(self))  # type: ignore
+    
+            try:
+                # Note: self.__pydantic_private__ cannot be None if self.__private_attributes__ has items
+                return self.__pydantic_private__[item]  # type: ignore
+            except KeyError as exc:
+                raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}') from exc
+        else:
+            # `__pydantic_extra__` can fail to be set if the model is not yet fully initialized.
+            # See `BaseModel.__repr_args__` for more details
+            try:
+                pydantic_extra = object.__getattribute__(self, '__pydantic_extra__')
+            except AttributeError:
+                pydantic_extra = None
+    
+            if pydantic_extra and item in pydantic_extra:
+                return pydantic_extra[item]
+            else:
+                if hasattr(self.__class__, item):
+                    return super().__getattribute__(item)  # Raises AttributeError if appropriate
+                else:
+                    # this is the current error
+>                   raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+E                   AttributeError: 'Settings' object has no attribute 'compact_successful_build'
+
+.venv/lib/python3.12/site-packages/pydantic/main.py:1042: AttributeError
+_ test_build_context_projection_preserves_failures_and_original[True-0-sha256:built-False] _
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcdce00 [unlocked]>)
+success = True, exit_code = 0, image = 'sha256:built', timed_out = False
+
+    @pytest.mark.parametrize(
+        "success,exit_code,image,timed_out",
+        [
+            (True, 0, "sha256:built", False),
+            (False, 1, None, False),
+            (False, 0, "sha256:old", True),
+        ],
+    )
+    def test_build_context_projection_preserves_failures_and_original(
+        context, success, exit_code, image, timed_out
+    ):
+        from tools.base import ToolResult
+    
+>       context.settings.compact_successful_build = True
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_agent_loop.py:240: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/pydantic/main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Settings(cache_dir=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yaoyao/pytest-15/test..., max_model_retries=2, retry_delay=1.0, max_context_bytes=150000, max_tool_message_chars=12000, max_repeated_actions=3)
+name = 'compact_successful_build', value = True
+
+    def _setattr_handler(self, name: str, value: Any) -> Callable[[BaseModel, str, Any], None] | None:
+        """Get a handler for setting an attribute on the model instance.
+    
+        Returns:
+            A handler for setting an attribute on the model instance. Used for memoization of the handler.
+            Memoizing the handlers leads to a dramatic performance improvement in `__setattr__`
+            Returns `None` when memoization is not safe, then the attribute is set directly.
+        """
+        cls = self.__class__
+        if name in cls.__class_vars__:
+            raise AttributeError(
+                f'{name!r} is a ClassVar of `{cls.__name__}` and cannot be set on an instance. '
+                f'If you want to set a value on the class, use `{cls.__name__}.{name} = value`.'
+            )
+        elif not _fields.is_valid_field_name(name):
+            if (attribute := cls.__private_attributes__.get(name)) is not None:
+                if hasattr(attribute, '__set__'):
+                    return lambda model, _name, val: attribute.__set__(model, val)
+                else:
+                    return _SIMPLE_SETATTR_HANDLERS['private']
+            else:
+                _object_setattr(self, name, value)
+                return None  # Can not return memoized handler with possibly freeform attr names
+    
+        attr = getattr(cls, name, None)
+        # NOTE: We currently special case properties and `cached_property`, but we might need
+        # to generalize this to all data/non-data descriptors at some point. For non-data descriptors
+        # (such as `cached_property`), it isn't obvious though. `cached_property` caches the value
+        # to the instance's `__dict__`, but other non-data descriptors might do things differently.
+        if isinstance(attr, cached_property):
+            return _SIMPLE_SETATTR_HANDLERS['cached_property']
+    
+        _check_frozen(cls, name, value)
+    
+        # We allow properties to be set only on non frozen models for now (to match dataclasses).
+        # This can be changed if it ever gets requested.
+        if isinstance(attr, property):
+            return lambda model, _name, val: attr.__set__(model, val)
+        elif cls.model_config.get('validate_assignment'):
+            return _SIMPLE_SETATTR_HANDLERS['validate_assignment']
+        elif name not in cls.__pydantic_fields__:
+            if cls.model_config.get('extra') != 'allow':
+                # TODO - matching error
+>               raise ValueError(f'"{cls.__name__}" object has no field "{name}"')
+E               ValueError: "Settings" object has no field "compact_successful_build"
+
+.venv/lib/python3.12/site-packages/pydantic/main.py:1095: ValueError
+_ test_build_context_projection_preserves_failures_and_original[False-1-None-False] _
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcde4b0 [unlocked]>)
+success = False, exit_code = 1, image = None, timed_out = False
+
+    @pytest.mark.parametrize(
+        "success,exit_code,image,timed_out",
+        [
+            (True, 0, "sha256:built", False),
+            (False, 1, None, False),
+            (False, 0, "sha256:old", True),
+        ],
+    )
+    def test_build_context_projection_preserves_failures_and_original(
+        context, success, exit_code, image, timed_out
+    ):
+        from tools.base import ToolResult
+    
+>       context.settings.compact_successful_build = True
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_agent_loop.py:240: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/pydantic/main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Settings(cache_dir=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yaoyao/pytest-15/test..., max_model_retries=2, retry_delay=1.0, max_context_bytes=150000, max_tool_message_chars=12000, max_repeated_actions=3)
+name = 'compact_successful_build', value = True
+
+    def _setattr_handler(self, name: str, value: Any) -> Callable[[BaseModel, str, Any], None] | None:
+        """Get a handler for setting an attribute on the model instance.
+    
+        Returns:
+            A handler for setting an attribute on the model instance. Used for memoization of the handler.
+            Memoizing the handlers leads to a dramatic performance improvement in `__setattr__`
+            Returns `None` when memoization is not safe, then the attribute is set directly.
+        """
+        cls = self.__class__
+        if name in cls.__class_vars__:
+            raise AttributeError(
+                f'{name!r} is a ClassVar of `{cls.__name__}` and cannot be set on an instance. '
+                f'If you want to set a value on the class, use `{cls.__name__}.{name} = value`.'
+            )
+        elif not _fields.is_valid_field_name(name):
+            if (attribute := cls.__private_attributes__.get(name)) is not None:
+                if hasattr(attribute, '__set__'):
+                    return lambda model, _name, val: attribute.__set__(model, val)
+                else:
+                    return _SIMPLE_SETATTR_HANDLERS['private']
+            else:
+                _object_setattr(self, name, value)
+                return None  # Can not return memoized handler with possibly freeform attr names
+    
+        attr = getattr(cls, name, None)
+        # NOTE: We currently special case properties and `cached_property`, but we might need
+        # to generalize this to all data/non-data descriptors at some point. For non-data descriptors
+        # (such as `cached_property`), it isn't obvious though. `cached_property` caches the value
+        # to the instance's `__dict__`, but other non-data descriptors might do things differently.
+        if isinstance(attr, cached_property):
+            return _SIMPLE_SETATTR_HANDLERS['cached_property']
+    
+        _check_frozen(cls, name, value)
+    
+        # We allow properties to be set only on non frozen models for now (to match dataclasses).
+        # This can be changed if it ever gets requested.
+        if isinstance(attr, property):
+            return lambda model, _name, val: attr.__set__(model, val)
+        elif cls.model_config.get('validate_assignment'):
+            return _SIMPLE_SETATTR_HANDLERS['validate_assignment']
+        elif name not in cls.__pydantic_fields__:
+            if cls.model_config.get('extra') != 'allow':
+                # TODO - matching error
+>               raise ValueError(f'"{cls.__name__}" object has no field "{name}"')
+E               ValueError: "Settings" object has no field "compact_successful_build"
+
+.venv/lib/python3.12/site-packages/pydantic/main.py:1095: ValueError
+_ test_build_context_projection_preserves_failures_and_original[False-0-sha256:old-True] _
+
+context = ToolContext(workspace=Workspace(path=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yao... '-q')}, trusted_local=True, docker=None, read_versions={}, lock=<asyncio.locks.Lock object at 0x10bcdc350 [unlocked]>)
+success = False, exit_code = 0, image = 'sha256:old', timed_out = True
+
+    @pytest.mark.parametrize(
+        "success,exit_code,image,timed_out",
+        [
+            (True, 0, "sha256:built", False),
+            (False, 1, None, False),
+            (False, 0, "sha256:old", True),
+        ],
+    )
+    def test_build_context_projection_preserves_failures_and_original(
+        context, success, exit_code, image, timed_out
+    ):
+        from tools.base import ToolResult
+    
+>       context.settings.compact_successful_build = True
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_agent_loop.py:240: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/pydantic/main.py:1048: in __setattr__
+    elif (setattr_handler := self._setattr_handler(name, value)) is not None:
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = Settings(cache_dir=PosixPath('/private/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/pytest-of-yaoyao/pytest-15/test..., max_model_retries=2, retry_delay=1.0, max_context_bytes=150000, max_tool_message_chars=12000, max_repeated_actions=3)
+name = 'compact_successful_build', value = True
+
+    def _setattr_handler(self, name: str, value: Any) -> Callable[[BaseModel, str, Any], None] | None:
+        """Get a handler for setting an attribute on the model instance.
+    
+        Returns:
+            A handler for setting an attribute on the model instance. Used for memoization of the handler.
+            Memoizing the handlers leads to a dramatic performance improvement in `__setattr__`
+            Returns `None` when memoization is not safe, then the attribute is set directly.
+        """
+        cls = self.__class__
+        if name in cls.__class_vars__:
+            raise AttributeError(
+                f'{name!r} is a ClassVar of `{cls.__name__}` and cannot be set on an instance. '
+                f'If you want to set a value on the class, use `{cls.__name__}.{name} = value`.'
+            )
+        elif not _fields.is_valid_field_name(name):
+            if (attribute := cls.__private_attributes__.get(name)) is not None:
+                if hasattr(attribute, '__set__'):
+                    return lambda model, _name, val: attribute.__set__(model, val)
+                else:
+                    return _SIMPLE_SETATTR_HANDLERS['private']
+            else:
+                _object_setattr(self, name, value)
+                return None  # Can not return memoized handler with possibly freeform attr names
+    
+        attr = getattr(cls, name, None)
+        # NOTE: We currently special case properties and `cached_property`, but we might need
+        # to generalize this to all data/non-data descriptors at some point. For non-data descriptors
+        # (such as `cached_property`), it isn't obvious though. `cached_property` caches the value
+        # to the instance's `__dict__`, but other non-data descriptors might do things differently.
+        if isinstance(attr, cached_property):
+            return _SIMPLE_SETATTR_HANDLERS['cached_property']
+    
+        _check_frozen(cls, name, value)
+    
+        # We allow properties to be set only on non frozen models for now (to match dataclasses).
+        # This can be changed if it ever gets requested.
+        if isinstance(attr, property):
+            return lambda model, _name, val: attr.__set__(model, val)
+        elif cls.model_config.get('validate_assignment'):
+            return _SIMPLE_SETATTR_HANDLERS['validate_assignment']
+        elif name not in cls.__pydantic_fields__:
+            if cls.model_config.get('extra') != 'allow':
+                # TODO - matching error
+>               raise ValueError(f'"{cls.__name__}" object has no field "{name}"')
+E               ValueError: "Settings" object has no field "compact_successful_build"
+
+.venv/lib/python3.12/site-packages/pydantic/main.py:1095: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_agent_loop.py::test_three_offline_tasks_repair_and_clean_apply[def calculate(a, b):\n    return a - b\n-assert calculate(2, 3) == 5]
+FAILED tests/test_agent_loop.py::test_three_offline_tasks_repair_and_clean_apply[def calculate(a, b):\n    return a * b\n-assert calculate(2, 3) == 5]
+FAILED tests/test_agent_loop.py::test_three_offline_tasks_repair_and_clean_apply[def calculate(a, b):\n    return a / b\n-assert calculate(2, 3) == 5]
+FAILED tests/test_agent_loop.py::test_failed_edit_test_feedback_retry - Asser...
+FAILED tests/test_agent_loop.py::test_budget_stops_preserve_artifacts[max_iterations-1-iteration_budget]
+FAILED tests/test_agent_loop.py::test_budget_stops_preserve_artifacts[max_tool_calls-1-tool_budget]
+FAILED tests/test_agent_loop.py::test_budget_stops_preserve_artifacts[max_token_budget-1-token_budget]
+FAILED tests/test_agent_loop.py::test_budget_stops_preserve_artifacts[max_context_bytes-100-context_budget]
+FAILED tests/test_agent_loop.py::test_multi_tool_batch_cannot_bypass_budget
+FAILED tests/test_agent_loop.py::test_model_retry_usage_and_auth_failure - As...
+FAILED tests/test_agent_loop.py::test_invalid_arguments_feedback_and_repetition
+FAILED tests/test_agent_loop.py::test_truncated_completion_never_executes_tools
+FAILED tests/test_agent_loop.py::test_run_timeout_accounts_for_inflight_model_and_exports
+FAILED tests/test_agent_loop.py::test_empty_patch_is_not_success - assert 'em...
+FAILED tests/test_agent_loop.py::test_tools_return_bounded_model_context - At...
+FAILED tests/test_agent_loop.py::test_build_context_projection_preserves_failures_and_original[True-0-sha256:built-False]
+FAILED tests/test_agent_loop.py::test_build_context_projection_preserves_failures_and_original[False-1-None-False]
+FAILED tests/test_agent_loop.py::test_build_context_projection_preserves_failures_and_original[False-0-sha256:old-True]
+18 failed in 9.17s

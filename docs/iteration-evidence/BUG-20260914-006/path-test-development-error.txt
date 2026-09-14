@@ -1,0 +1,15 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_development_tests_use_checkout_configuration _______________
+
+    def test_development_tests_use_checkout_configuration():
+        import config
+    
+>       assert Path(config.__file__).resolve() == Path(__file__).resolve().parents[1] / "config.py"
+               ^^^^
+E       NameError: name 'Path' is not defined
+
+tests/test_foundation.py:111: NameError
+=========================== short test summary info ============================
+FAILED tests/test_foundation.py::test_development_tests_use_checkout_configuration
+1 failed in 0.03s

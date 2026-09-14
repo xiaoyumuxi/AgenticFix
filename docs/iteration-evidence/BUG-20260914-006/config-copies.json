@@ -1,0 +1,12 @@
+[
+  {
+    "path": "config.py",
+    "sha256": "7e6c556b7290c86ca721f59d724b42ab732bf77fcba430de0d6fbd998813d3df",
+    "has_new_field": true
+  },
+  {
+    "path": ".venv/lib/python3.12/site-packages/config.py",
+    "sha256": "8feb07faefc262f1de3b01877b955a2be63c74840a1ae91e1eb2a5146d82842e",
+    "has_new_field": false
+  }
+]

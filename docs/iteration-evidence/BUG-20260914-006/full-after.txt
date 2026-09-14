@@ -1,0 +1,7 @@
+   Building agentic-fix @ file:///Users/yaoyao/Dev/OpenRes/agent
+      Built agentic-fix @ file:///Users/yaoyao/Dev/OpenRes/agent
+Uninstalled 1 package in 1ms
+Installed 1 package in 1ms
+................................s....................................... [ 75%]
+.......................                                                  [100%]
+94 passed, 1 skipped in 27.10s

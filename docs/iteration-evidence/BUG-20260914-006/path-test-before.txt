@@ -1,0 +1,18 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______________ test_development_tests_use_checkout_configuration _______________
+
+    def test_development_tests_use_checkout_configuration():
+        import config
+    
+>       assert Path(config.__file__).resolve() == Path(__file__).resolve().parents[1] / "config.py"
+E       AssertionError: assert PosixPath('/Users/yaoyao/Dev/OpenRes/agent/.venv/lib/python3.12/site-packages/config.py') == (PosixPath('/Users/yaoyao/Dev/OpenRes/agent') / 'config.py')
+E        +  where PosixPath('/Users/yaoyao/Dev/OpenRes/agent/.venv/lib/python3.12/site-packages/config.py') = resolve()
+E        +    where resolve = PosixPath('/Users/yaoyao/Dev/OpenRes/agent/.venv/lib/python3.12/site-packages/config.py').resolve
+E        +      where PosixPath('/Users/yaoyao/Dev/OpenRes/agent/.venv/lib/python3.12/site-packages/config.py') = Path('/Users/yaoyao/Dev/OpenRes/agent/.venv/lib/python3.12/site-packages/config.py')
+E        +        where '/Users/yaoyao/Dev/OpenRes/agent/.venv/lib/python3.12/site-packages/config.py' = <module 'config' from '/Users/yaoyao/Dev/OpenRes/agent/.venv/lib/python3.12/site-packages/config.py'>.__file__
+
+tests/test_foundation.py:112: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_foundation.py::test_development_tests_use_checkout_configuration
+1 failed in 0.03s

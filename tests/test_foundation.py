@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -103,3 +104,9 @@ async def test_recoverable_io_error(registry, context, monkeypatch):
     assert result.error_code == "IO_ERROR" and not result.fatal
     monkeypatch.setattr(context, "read", original)
     assert (await registry.call("read_file", {"path": "sample.py"})).success
+
+
+def test_development_tests_use_checkout_configuration():
+    import config
+
+    assert Path(config.__file__).resolve() == Path(__file__).resolve().parents[1] / "config.py"
