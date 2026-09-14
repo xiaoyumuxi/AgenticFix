@@ -1,0 +1,10 @@
+{
+  "used_reported": 119879,
+  "estimated": 0,
+  "budget": 150000,
+  "remaining": 30121,
+  "context_bytes": 44267,
+  "input_reserve": 44523,
+  "completion_cap": 4096,
+  "explanation": "request() uses serialized UTF-8 bytes + 256 as conservative input reserve; no request is sent if it leaves <1 completion token."
+}

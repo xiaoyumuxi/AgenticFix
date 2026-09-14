@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "finished_at": "2026-09-14T01:30:25.245831+00:00",
+  "scope": "Recursive artifacts; excludes manifest and hidden files. Local evidence.",
+  "artifacts": {
+    "agent-diff.json": {
+      "sha256": "ca3b37b5701a8f06b2f3c8aabcc8d4360a42f4a1f2568d953b0439b9426e94ef",
+      "bytes": 18
+    },
+    "docker-version.json": {
+      "sha256": "959328967b90e25ad591c13093e935763c761b17fe3f4d40e824afe431028644",
+      "bytes": 1520
+    },
+    "environment/build-1-image.json": {
+      "sha256": "0bea650e3168d9b16a111a7346e68fa7028ffaa0937c899214053106ddbe55f6",
+      "bytes": 1582
+    },
+    "environment/build-1.Dockerfile": {
+      "sha256": "ac1819be357a902c993e2066669468097b5ff3b0e5fcfcc21e3b9a694e339df2",
+      "bytes": 98
+    },
+    "environment/cli-1.json": {
+      "sha256": "a6eb2eaf37262baa9a9810afc6eac776f9adfb3111a1cb830833da042b18ece7",
+      "bytes": 1639
+    },
+    "environment/cli-2.json": {
+      "sha256": "d41bc6ef8634cf70f2ca750b4ac40871ccd836ef3060ea4053f4e72412b29425",
+      "bytes": 451
+    },
+    "environment/cli-3.json": {
+      "sha256": "9ad77acdaed8be98a7a81768ac21e5b58b67958f1e9cfdcf73af12e6ff20dfda",
+      "bytes": 8561
+    },
+    "environment/cli-4.json": {
+      "sha256": "166ed57e02175c2cec5700c38d9bd0d23ad4bd2fd46c88d230984015d0c17be9",
+      "bytes": 3230
+    },
+    "environment/cli-5.json": {
+      "sha256": "671e451b53791c5a9daf8ba4d328269297b24e31fb21fcde9e3a9c57b23c9015",
+      "bytes": 329
+    },
+    "environment/cli-6.json": {
+      "sha256": "74656cbd42cc6f6fa1b66788f697774980896b764d8eb8ddfbe9f97609377433",
+      "bytes": 2624
+    },
+    "environment/cli-7.json": {
+      "sha256": "2f42b5a7ba1913f49ea189b832c065cf78eb77033d22d8c10dc66be69f3c5df2",
+      "bytes": 359
+    },
+    "environment-1.json": {
+      "sha256": "3ce899fec33b29d444d4303d063be169089da39e64e1bee8f197d82aacbf9eda",
+      "bytes": 8736
+    },
+    "events.jsonl": {
+      "sha256": "aef5accee741e0b52b482e4ef32b63d4ff47a74a57b4db85e73956eab1b6287a",
+      "bytes": 53901
+    },
+    "final.patch": {
+      "sha256": "536d73bdbd10908f3926dcd5067395439d27d42272c5a0d44bdd6d1e0e817f30",
+      "bytes": 1174
+    },
+    "measurements.json": {
+      "sha256": "21c1ab5de141de103063ea976cb89e7ec3daf5b03f720ff69085d7b849d69164",
+      "bytes": 8452
+    },
+    "messages.json": {
+      "sha256": "22203f26cb1886f99c150da704a3187acd038a6731f87dd5757777d567ffe9f4",
+      "bytes": 43969
+    },
+    "metadata.json": {
+      "sha256": "d4b1155a4eff6f8d98f64b5ef90a3eda74cfac14cfeda7a7f81075596e05a4be",
+      "bytes": 5563
+    },
+    "model.json": {
+      "sha256": "5cfbac1b84ad175c7376ed8e34302e40d4e8dce6f697698f2ec9deb9182c79cf",
+      "bytes": 135
+    },
+    "prompt.json": {
+      "sha256": "d586e056651ef93841fd3d71bc06c5ea8141c84598f8815bb3b2202d796aed37",
+      "bytes": 3474
+    },
+    "result.json": {
+      "sha256": "eba089928c377e4b58b7c8771f0735c861f0f8cb291eae7c1198debd4fbbd314",
+      "bytes": 2435
+    },
+    "state.json": {
+      "sha256": "83fec9bc3fce060c1f67e79b00fecd73332410fd9f8bca253954c3f0e3dbf897",
+      "bytes": 1088
+    },
+    "task.json": {
+      "sha256": "e55e848b4dbf787f386a18584217f4361ef02a94b1d6d34865ba610d8ed9c5e2",
+      "bytes": 612
+    },
+    "test-6.json": {
+      "sha256": "6ff9cf1a9c8a291e87fcd03f801f060b0506b7744eae48422495eeac86829a33",
+      "bytes": 1951
+    }
+  }
+}

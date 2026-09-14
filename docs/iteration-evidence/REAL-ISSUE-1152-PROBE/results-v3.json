@@ -1,0 +1,448 @@
+{
+  "kind": "Supplemental Docker value probes, separate from original pytest runs",
+  "base_commit": "247e15b3a489d5805375c95dfa79486c9bd0eb1b",
+  "image_id": "sha256:edad5944068aa7be45add22b3ad75e39eec0f589ae5c25b66b8bddb367d23665",
+  "rows": {
+    "before": [
+      {
+        "args": "(0,)",
+        "expected": "[]",
+        "actual": "IndexError",
+        "passed": false
+      },
+      {
+        "args": "(3, 3)",
+        "expected": "[]",
+        "actual": "IndexError",
+        "passed": false
+      },
+      {
+        "args": "(2, 1)",
+        "expected": "[]",
+        "actual": "IndexError",
+        "passed": false
+      },
+      {
+        "args": "(1, 2, -1)",
+        "expected": "[]",
+        "actual": "IndexError",
+        "passed": false
+      },
+      {
+        "args": "(0.0,)",
+        "expected": "[]",
+        "actual": "IndexError",
+        "passed": false
+      },
+      {
+        "args": "(Decimal('0'),)",
+        "expected": "[]",
+        "actual": "IndexError",
+        "passed": false
+      },
+      {
+        "args": "(Fraction(0, 1),)",
+        "expected": "[]",
+        "actual": "IndexError",
+        "passed": false
+      },
+      {
+        "args": "(5,)",
+        "expected": "[4, 3, 2, 1, 0]",
+        "actual": "[4, 3, 2, 1, 0]",
+        "passed": true
+      },
+      {
+        "args": "(1, 6, 2)",
+        "expected": "[5, 3, 1]",
+        "actual": "[5, 3, 1]",
+        "passed": true
+      },
+      {
+        "args": "(5, 0, -2)",
+        "expected": "[1, 3, 5]",
+        "actual": "[1, 3, 5]",
+        "passed": true
+      },
+      {
+        "args": "(0, 1, 0.25)",
+        "expected": "[0.75, 0.5, 0.25, 0.0]",
+        "actual": "[0.75, 0.5, 0.25, 0.0]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'), Decimal('1'), Decimal('0.25'))",
+        "expected": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "actual": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1), Fraction(1, 1), Fraction(1, 4))",
+        "expected": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "actual": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "passed": true
+      },
+      {
+        "args": "(4,)",
+        "expected": "[3, 2, 1, 0]",
+        "actual": "[3, 2, 1, 0]",
+        "passed": true,
+        "forward_after": "[0, 1, 2, 3]",
+        "second_reverse": "[3, 2, 1, 0]"
+      }
+    ],
+    "official": [
+      {
+        "args": "(0,)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(3, 3)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(2, 1)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(1, 2, -1)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(0.0,)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'),)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1),)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(5,)",
+        "expected": "[4, 3, 2, 1, 0]",
+        "actual": "[4, 3, 2, 1, 0]",
+        "passed": true
+      },
+      {
+        "args": "(1, 6, 2)",
+        "expected": "[5, 3, 1]",
+        "actual": "[5, 3, 1]",
+        "passed": true
+      },
+      {
+        "args": "(5, 0, -2)",
+        "expected": "[1, 3, 5]",
+        "actual": "[1, 3, 5]",
+        "passed": true
+      },
+      {
+        "args": "(0, 1, 0.25)",
+        "expected": "[0.75, 0.5, 0.25, 0.0]",
+        "actual": "[0.75, 0.5, 0.25, 0.0]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'), Decimal('1'), Decimal('0.25'))",
+        "expected": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "actual": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1), Fraction(1, 1), Fraction(1, 4))",
+        "expected": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "actual": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "passed": true
+      },
+      {
+        "args": "(4,)",
+        "expected": "[3, 2, 1, 0]",
+        "actual": "[3, 2, 1, 0]",
+        "passed": true,
+        "forward_after": "[0, 1, 2, 3]",
+        "second_reverse": "[3, 2, 1, 0]"
+      }
+    ],
+    "v1": [
+      {
+        "args": "(0,)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(3, 3)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(2, 1)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(1, 2, -1)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(0.0,)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'),)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1),)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(5,)",
+        "expected": "[4, 3, 2, 1, 0]",
+        "actual": "[4, 3, 2, 1, 0]",
+        "passed": true
+      },
+      {
+        "args": "(1, 6, 2)",
+        "expected": "[5, 3, 1]",
+        "actual": "[5, 3, 1]",
+        "passed": true
+      },
+      {
+        "args": "(5, 0, -2)",
+        "expected": "[1, 3, 5]",
+        "actual": "[1, 3, 5]",
+        "passed": true
+      },
+      {
+        "args": "(0, 1, 0.25)",
+        "expected": "[0.75, 0.5, 0.25, 0.0]",
+        "actual": "[0.75, 0.5, 0.25, 0.0]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'), Decimal('1'), Decimal('0.25'))",
+        "expected": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "actual": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1), Fraction(1, 1), Fraction(1, 4))",
+        "expected": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "actual": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "passed": true
+      },
+      {
+        "args": "(4,)",
+        "expected": "[3, 2, 1, 0]",
+        "actual": "[3, 2, 1, 0]",
+        "passed": true,
+        "forward_after": "[0, 1, 2, 3]",
+        "second_reverse": "[3, 2, 1, 0]"
+      }
+    ],
+    "v2": [
+      {
+        "args": "(0,)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(3, 3)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(2, 1)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(1, 2, -1)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(0.0,)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'),)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1),)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(5,)",
+        "expected": "[4, 3, 2, 1, 0]",
+        "actual": "[4, 3, 2, 1, 0]",
+        "passed": true
+      },
+      {
+        "args": "(1, 6, 2)",
+        "expected": "[5, 3, 1]",
+        "actual": "[5, 3, 1]",
+        "passed": true
+      },
+      {
+        "args": "(5, 0, -2)",
+        "expected": "[1, 3, 5]",
+        "actual": "[1, 3, 5]",
+        "passed": true
+      },
+      {
+        "args": "(0, 1, 0.25)",
+        "expected": "[0.75, 0.5, 0.25, 0.0]",
+        "actual": "[0.75, 0.5, 0.25, 0.0]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'), Decimal('1'), Decimal('0.25'))",
+        "expected": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "actual": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1), Fraction(1, 1), Fraction(1, 4))",
+        "expected": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "actual": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "passed": true
+      },
+      {
+        "args": "(4,)",
+        "expected": "[3, 2, 1, 0]",
+        "actual": "[3, 2, 1, 0]",
+        "passed": true,
+        "forward_after": "[0, 1, 2, 3]",
+        "second_reverse": "[3, 2, 1, 0]"
+      }
+    ],
+    "v3": [
+      {
+        "args": "(0,)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(3, 3)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(2, 1)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(1, 2, -1)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(0.0,)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'),)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1),)",
+        "expected": "[]",
+        "actual": "[]",
+        "passed": true
+      },
+      {
+        "args": "(5,)",
+        "expected": "[4, 3, 2, 1, 0]",
+        "actual": "[4, 3, 2, 1, 0]",
+        "passed": true
+      },
+      {
+        "args": "(1, 6, 2)",
+        "expected": "[5, 3, 1]",
+        "actual": "[5, 3, 1]",
+        "passed": true
+      },
+      {
+        "args": "(5, 0, -2)",
+        "expected": "[1, 3, 5]",
+        "actual": "[1, 3, 5]",
+        "passed": true
+      },
+      {
+        "args": "(0, 1, 0.25)",
+        "expected": "[0.75, 0.5, 0.25, 0.0]",
+        "actual": "[0.75, 0.5, 0.25, 0.0]",
+        "passed": true
+      },
+      {
+        "args": "(Decimal('0'), Decimal('1'), Decimal('0.25'))",
+        "expected": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "actual": "[Decimal('0.75'), Decimal('0.50'), Decimal('0.25'), Decimal('0.00')]",
+        "passed": true
+      },
+      {
+        "args": "(Fraction(0, 1), Fraction(1, 1), Fraction(1, 4))",
+        "expected": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "actual": "[Fraction(3, 4), Fraction(1, 2), Fraction(1, 4), Fraction(0, 1)]",
+        "passed": true
+      },
+      {
+        "args": "(4,)",
+        "expected": "[3, 2, 1, 0]",
+        "actual": "[3, 2, 1, 0]",
+        "passed": true,
+        "forward_after": "[0, 1, 2, 3]",
+        "second_reverse": "[3, 2, 1, 0]"
+      }
+    ]
+  },
+  "probe_sha256": "bbdddea498515c04e546c9faf4a131ec5a679053d1f6969b1536191a5f3313f8"
+}

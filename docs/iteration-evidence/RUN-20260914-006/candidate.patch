@@ -1,0 +1,28 @@
+diff --git a/more_itertools/more.py b/more_itertools/more.py
+index 3703a9c4426e702c14f09e19820ba56ae68803c6..df277ba03df35a8cef6977ef2cbf23ed14ff18d1 100755
+--- a/more_itertools/more.py
++++ b/more_itertools/more.py
+@@ -2402,6 +2402,8 @@ class numeric_range(Sequence):
+         )
+ 
+     def __reversed__(self):
++        if not self._len:
++            return iter(())
+         return iter(
+             numeric_range(
+                 self._get_by_index(-1), self._start - self._step, -self._step
+diff --git a/tests/test_more.py b/tests/test_more.py
+index 084006d3b38f20bf997840b358403cbe4c9e2f7e..4bcae369c73643b59dc00e9bca4ae9bc1dbea3ab 100644
+--- a/tests/test_more.py
++++ b/tests/test_more.py
+@@ -2997,6 +2997,10 @@ class NumericRangeTests(TestCase):
+     def test_reversed(self):
+         for args, expected in [
+             ((7.0,), [6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.0]),
++            ((0,), []),
++            ((0, 0), []),
++            ((1.0, 7.0, -1.5), []),
++            ((7.0, 1.0, 1.5), []),
+             ((1.0, 7.0), [6.0, 5.0, 4.0, 3.0, 2.0, 1.0]),
+             ((7.0, 1.0, -1.5), [2.5, 4.0, 5.5, 7.0]),
+             ((7.0, 0.9, -1.5), [1.0, 2.5, 4.0, 5.5, 7.0]),

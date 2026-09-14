@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "buildx",
+    "rm",
+    "--force",
+    "agenticfix-45a53eeef15d"
+  ],
+  "result": {
+    "stdout": "",
+    "stderr": "agenticfix-45a53eeef15d removed\n",
+    "exit_code": 0,
+    "duration": 0.44125562500266824,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null
+  },
+  "cancelled": false
+}
