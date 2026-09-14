@@ -51,5 +51,19 @@ typing, documentation and packaging tool requirements unless a build/test error 
 )
 
 
+ENVIRONMENT_PROMPTS["environment-v3"] = (
+    ENVIRONMENT_PROMPTS["environment-v2"]
+    + """
+Complete the repair within the run budget. Once you have read the relevant implementation and
+public tests and can explain the failing behavior from the issue, make the smallest supported
+edit. Do not keep surveying neighboring code without a specific unresolved question.
+After editing implementation and any regression tests, prioritize run_tests over further reading.
+If tests fail, investigate the concrete failure and revise. If the current default tests pass
+and your patch addresses the issue, return your final summary immediately; the runtime will run
+its own final verification and export the patch. Do not restart discovery or add unrelated changes.
+"""
+)
+
+
 def prompt_for_environment(version: str | None = None) -> str:
     return SYSTEM_PROMPT + ("\n" + ENVIRONMENT_PROMPTS[version] if version else "")
