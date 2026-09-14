@@ -63,14 +63,63 @@ quantity 使用 get(..., 1) 额外允许缺省数量；Issue 约定每项都有 
 
 下一步先接入 DockerSandbox 与独立 Eval，再选择真实历史 Issue。失败恢复仍保留为未完成验证项；将来出现真实失败时完整留存，不通过人为改坏一次来包装恢复能力。
 
-## 固定版本证据
+## 逐项数据对比
+
+下面每行对应一个验收用例，保留公开测试与独立测试中重复的输入，不合并计数。通过/失败来自原始验收记录；具体返回值及输入是否被改动，是本次用固定提交 `66f48ec0e6fbdbf6705a733bbadca87283ee5fa1` 和原归档 Patch 补跑采集的。没有重新调用模型，也没有改变测试断言。
+
+| 用例 | 输入 | 预期返回 | 修复前实际 | 修复后实际 | 输入被改动（前→后） | 原验收结果（前→后） |
+| --- | --- | --- | --- | --- | --- | --- |
+| 独立 test_totals[20-1-100-28] | 20元×1件；门槛100 | `28` | `28` | `28` | 否→否 | 通过→通过 |
+| 独立 test_totals[60-2-100-120] | 60元×2件；门槛100 | `120` | `68` | `120` | 否→否 | 失败→通过 |
+| 独立 test_totals[25-4-100-100] | 25元×4件；门槛100 | `100` | `33` | `100` | 否→否 | 失败→通过 |
+| 独立 test_totals[10-0-100-8] | 10元×0件；门槛100 | `8` | `18` | `8` | 否→否 | 失败→通过 |
+| 独立 test_totals[12.5-3-100-45.5] | 12.5元×3件；门槛100 | `45.5` | `20.5` | `45.5` | 否→否 | 失败→通过 |
+| 独立 test_totals[10-3-30-30] | 10元×3件；门槛30 | `30` | `18` | `30` | 否→否 | 失败→通过 |
+| 独立 test_totals[10-2-30-28] | 10元×2件；门槛30 | `28` | `18` | `28` | 否→否 | 失败→通过 |
+| 独立 test_totals[0-5-100-8] | 0元×5件；门槛100 | `8` | `8` | `8` | 否→否 | 通过→通过 |
+| 独立 test_empty | 空订单；门槛100 | `8` | `8` | `8` | 否→否 | 通过→通过 |
+| 独立 test_no_mutation | 9元×3件；门槛100 | `35` | `17` | `35` | 否→否 | 失败→通过 |
+| 公开 test_single_unit | 20元×1件；门槛100 | `28` | `28` | `28` | 否→否 | 通过→通过 |
+| 公开 test_quantity_changes_shipping | 60元×2件；门槛100 | `120` | `68` | `120` | 否→否 | 失败→通过 |
+| 公开 test_mixed_order | 12元×3件 + 7元×2件；门槛100 | `58` | `27` | `58` | 否→否 | 失败→通过 |
+
+这里修复的是数值计算：例如零数量从 **18→8**，自定义门槛 30 下的三件 10 元商品从 **18→30**。名为 test_no_mutation 的独立用例原来失败于 **17 != 35**，尚未执行到输入不变性断言；补跑观察到该输入前后都未被修改，不能据用例名称把它归因为修改输入的 Bug。
+
+### 版本与整体变化
+
+修复前使用目标 base_commit `1d2aba9eac5daf0f7b560e7e12fac1a129e14d18`；修复后在同一基准上应用原 Patch，SHA-256 为 `616b017f89278b3c916376fdbb2685b61d5168b1cf434d9cd68dc50c6dc15047`。没有为修复后目标创建新 commit，因此用 base_commit + Patch 哈希标识它。
+
+| 指标 | 修复前 | 修复后 | 变化 |
+| --- | ---: | ---: | --- |
+| 测试数 | 13 | 13 | 测试集相同 |
+| 通过 | 4 | 13 | +9 |
+| 失败 | 9 | 0 | −9 |
+| pytest 退出码 | 1 | 0 | 失败→通过 |
+| 原本通过的用例 | 4 | 4 | 全部保留 |
+| 缺失用例 | — | 0 | 没有靠少跑测试通过 |
+
+### 每轮调用的实际数据
+
+这是生成该 Patch 的一次运行，修复前基线没有调用模型，因此不存在同条件的“修复前模型 Token”。下表按请求逐轮列出，不能把不同任务的消耗差异当成优化收益。
+
+| 请求 | 工具动作 | 输入 Token | 输出 Token | 总 Token | 请求耗时（秒） |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 1 | list_files, read_file | 1741 | 67 | 1808 | 0.9563 |
+| 2 | read_file, read_file, read_file, read_file | 2158 | 128 | 2286 | 0.9512 |
+| 3 | edit_file | 2927 | 290 | 3217 | 1.6452 |
+| 4 | run_tests | 3277 | 23 | 3300 | 0.6062 |
+| 5 | git_diff | 3464 | 28 | 3492 | 0.8567 |
+| 6 | 返回完成说明 | 3757 | 172 | 3929 | 1.4246 |
+| 合计 | 6 次请求 | 17324 | 708 | 18032 | 6.4402 |
+
+### 原始文件供复核
 
 - RUN-20260914-002：[完整测试前后结果](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-002/summary.json)、[逐轮请求数据](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-002/request-breakdown.json)、[Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-002/final.patch)、[自动版本/配置快照](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-002/metadata.json)、[公开归档 SHA-256 清单](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-002/archive-manifest.json)。
   预先冻结的[公开任务](https://github.com/xiaoyumuxi/AgenticFix/tree/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1/examples/order_total)和[独立验收测试](https://github.com/xiaoyumuxi/AgenticFix/tree/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1/validation/order_total)。
-- RUN-20260914-003：[完整测试前后结果](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-003/summary.json)、[逐轮请求数据](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-003/request-breakdown.json)、[Patch](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-003/final.patch)、[自动版本/配置快照](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-003/metadata.json)、[公开归档 SHA-256 清单](https://github.com/xiaoyumuxi/AgenticFix/blob/b975fcf45ad903e31e28e4ff4cd608ce0ec070cf/docs/iteration-evidence/RUN-20260914-003/archive-manifest.json)。
-  预先冻结的[公开任务](https://github.com/xiaoyumuxi/AgenticFix/tree/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1/examples/intervals)和[独立验收测试](https://github.com/xiaoyumuxi/AgenticFix/tree/66f48ec0e6fbdbf6705a733bbadca87283ee5fa1/validation/intervals)。
 
-local-run-manifest.json 指向原本地运行产物，包含未公开的原始 Trace 哈希；archive-manifest.json 校验本次公开文件，两个范围不能混用。
+[本次逐项补跑数据](https://github.com/xiaoyumuxi/AgenticFix/blob/fcc98204e92e19159096254de712ec6082429b8e/docs/iteration-evidence/WIKI-DATA-COMPARISON/observations.json) · [补跑程序](https://github.com/xiaoyumuxi/AgenticFix/blob/fcc98204e92e19159096254de712ec6082429b8e/docs/iteration-evidence/WIKI-DATA-COMPARISON/reproduce.py)。原始运行记录与补跑数据分开保存；本次补跑的 pytest 汇总分别与原验收一致。
+
+local-run-manifest.json 校验原本地运行产物；archive-manifest.json 校验已公开归档，不包含本次新增补跑文件。
 
 ## 相关记录
 
