@@ -1,0 +1,48 @@
+{
+  "argv": [
+    "run",
+    "--rm",
+    "--name",
+    "agenticfix-test-337506c2b1b8",
+    "--network=none",
+    "--memory=1g",
+    "--memory-swap=1g",
+    "--cpus=2",
+    "--pids-limit=128",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--read-only",
+    "--user=65534:65534",
+    "--tmpfs=/tmp:rw,nosuid,size=128m",
+    "--mount",
+    "type=bind,src=/var/folders/vv/qps8cnjd4qx9qn_yzv17sgtw0000gn/T/agenticfix-test-9hkg9uja/source,dst=/workspace,readonly",
+    "--mount",
+    "type=bind,src=/Users/yaoyao/Dev/OpenRes/agent/runs/real-1152-d44472699a1c/verification-environment/agenticfix-test-337506c2b1b8,dst=/results",
+    "--workdir=/workspace",
+    "--env=PYTHONDONTWRITEBYTECODE=1",
+    "--env=PYTEST_DISABLE_PLUGIN_AUTOLOAD=1",
+    "--env=PYTHONPATH=/workspace",
+    "--env=HOME=/tmp",
+    "--entrypoint",
+    "python",
+    "sha256:14e84f0e4f859693983f153f6e40fa2f63f4c7f722be9f50923f5a75b593b953",
+    "-m",
+    "pip",
+    "freeze",
+    "--all"
+  ],
+  "result": {
+    "stdout": "exceptiongroup==1.3.1\niniconfig==2.3.0\npackaging==26.3\npip==23.0.1\npluggy==1.6.0\nPygments==2.21.0\npytest==9.1.1\nsetuptools==79.0.1\ntomli==2.4.1\ntyping_extensions==4.16.0\nwheel==0.46.3\n",
+    "stderr": "",
+    "exit_code": 0,
+    "duration": 0.2713298750022659,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null,
+    "diagnostic_lines": [
+      "stdout: exceptiongroup==1.3.1"
+    ]
+  },
+  "cancelled": false,
+  "output_retention": "head quarter and rolling tail when truncated"
+}

@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "buildx",
+    "rm",
+    "--force",
+    "agenticfix-49ad3ef20f14"
+  ],
+  "result": {
+    "stdout": "",
+    "stderr": "agenticfix-49ad3ef20f14 removed\n",
+    "exit_code": 0,
+    "duration": 0.27652495801157784,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null,
+    "diagnostic_lines": []
+  },
+  "cancelled": false,
+  "output_retention": "head quarter and rolling tail when truncated"
+}

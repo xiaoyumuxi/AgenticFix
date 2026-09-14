@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "rm",
+    "-f",
+    "agenticfix-test-23b93c5e28fe"
+  ],
+  "result": {
+    "stdout": "",
+    "stderr": "Error response from daemon: No such container: agenticfix-test-23b93c5e28fe\n",
+    "exit_code": 0,
+    "duration": 0.025088458991376683,
+    "timed_out": false,
+    "truncated": false,
+    "launch_error": null,
+    "diagnostic_lines": [
+      "stderr: Error response from daemon: No such container: agenticfix-test-23b93c5e28fe"
+    ]
+  },
+  "cancelled": false,
+  "output_retention": "head quarter and rolling tail when truncated"
+}
